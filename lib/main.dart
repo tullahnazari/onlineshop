@@ -51,16 +51,18 @@ class MyApp extends StatelessWidget {
             accentColor: Colors.black,
             fontFamily: 'Lato',
           ),
-          home: auth.isAuth
-              ? SweepstakesOverview()
-              : FutureBuilder(
-                  future: auth.tryAutoLogin(),
-                  builder: (ctx, authResultSnapshot) =>
-                      authResultSnapshot.connectionState ==
-                              ConnectionState.waiting
-                          ? SplashScreen()
-                          : AuthScreen(),
-                ),
+          home: SweepstakesOverview(),
+          /////fix after landing page is finished
+          // home: auth.isAuth
+          //     ? SweepstakesOverview()
+          //     : FutureBuilder(
+          //         future: auth.tryAutoLogin(),
+          //         builder: (ctx, authResultSnapshot) =>
+          //             authResultSnapshot.connectionState ==
+          //                     ConnectionState.waiting
+          //                 ? SplashScreen()
+          //                 : AuthScreen(),
+          //       ),
           routes: {
             SweepstakesDetail.routeName: (ctx) => SweepstakesDetail(),
             ResultScreen.routeName: (ctx) => ResultScreen(),

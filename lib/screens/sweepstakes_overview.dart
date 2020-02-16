@@ -6,6 +6,7 @@ import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/providers/user_table_roles.dart';
 import 'package:sweepstakes/screens/sweepstake_management.dart';
 import 'package:sweepstakes/widgets/app_drawer.dart';
+import 'package:sweepstakes/widgets/bottom_bar.dart';
 import 'package:sweepstakes/widgets/sweepstake_items.dart';
 
 class SweepstakesOverview extends StatefulWidget {
@@ -43,46 +44,50 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
     final userProvider = Provider.of<Auth>(context);
 
     return Scaffold(
-      drawer: AppDrawer(),
-      appBar: AppBar(
-        actions: <Widget>[
-          PopupMenuButton(
-            icon: Icon(Icons.more_vert),
-            itemBuilder: (_) => [
-              PopupMenuItem(
-                child: FlatButton(
-                    child: Text("Logout"),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pushReplacementNamed('/');
-                      Provider.of<Auth>(context, listen: false).logout();
-                    }),
-              ),
-            ],
-          ),
-        ],
-        title: Text(
-          'Active Sweeps',
-          style: TextStyle(
-            color: Colors.black,
-          ),
-        ),
-      ),
+      // drawer: AppDrawer(),
+      // appBar: AppBar(
+      //   actions: <Widget>[
+      //     PopupMenuButton(
+      //       icon: Icon(Icons.more_vert),
+      //       itemBuilder: (_) => [
+      //         PopupMenuItem(
+      //           child: FlatButton(
+      //               child: Text("Logout"),
+      //               onPressed: () {
+      //                 Navigator.of(context).pop();
+      //                 Navigator.of(context).pushReplacementNamed('/');
+      //                 Provider.of<Auth>(context, listen: false).logout();
+      //               }),
+      //         ),
+      //       ],
+      //     ),
+      //   ],
+      //   title: Text(
+      //     'Active Sweeps',
+      //     style: TextStyle(
+      //       color: Colors.black,
+      //     ),
+      //   ),
+      // ),
+      bottomNavigationBar: BottomBar(),
       body: _isLoading
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : ListView.builder(
-              padding: const EdgeInsets.all(15),
-              itemCount: loadedSweepstake.length,
-              itemBuilder: (ctx, i) => SweepstakeItems(
-                id: loadedSweepstake[i].id,
-                title: loadedSweepstake[i].title,
-                imageUrl: loadedSweepstake[i].imageUrl,
-                price: loadedSweepstake[i].price,
-                dateTime: loadedSweepstake[i].dateTime,
+          : Padding(
+              padding: const EdgeInsets.only(top: 80.0),
+              child: ListView.builder(
+                padding: const EdgeInsets.all(15),
+                itemCount: loadedSweepstake.length,
+                itemBuilder: (ctx, i) => SweepstakeItems(
+                  id: loadedSweepstake[i].id,
+                  title: loadedSweepstake[i].title,
+                  imageUrl: loadedSweepstake[i].imageUrl,
+                  price: loadedSweepstake[i].price,
+                  dateTime: loadedSweepstake[i].dateTime,
+                ),
+                scrollDirection: Axis.vertical,
               ),
-              scrollDirection: Axis.vertical,
             ),
     );
   }
