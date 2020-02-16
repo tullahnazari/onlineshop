@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "85278064958",
+    "firebase_url": "https://bazaar-45301.firebaseio.com",
+    "project_id": "sweepsteaks-31629",
+    "storage_bucket": "sweepsteaks-31629.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85278064958:android:ec79dbdd91eaf13e62ec6f",
+        "android_client_info": {
+          "package_name": "com.tullahnazari.bazaar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "85278064958-g2352qe0u9fntka198an1p1f09ias9g5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tullahnazari.bazaar",
+            "certificate_hash": "38a397004d2d6fc0b27f4123ec210264b35511a3"
+          }
+        },
+        {
+          "client_id": "85278064958-3m7tgpgcsd4frri58q76d8jo06807mve.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGIX26zdksOAHRchMPIgu26aprn3ERyks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "85278064958-3m7tgpgcsd4frri58q76d8jo06807mve.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
