@@ -66,8 +66,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
         title: Text(
           'Near you',
           style: TextStyle(
-            color: Colors.black,
-          ),
+              color: Theme.of(context).accentColor, fontFamily: 'Lato'),
         ),
       ),
       // bottomNavigationBar: BottomBar(),
@@ -88,9 +87,9 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                   price: loadedSweepstake[i].price,
                   dateTime: loadedSweepstake[i].dateTime,
                 ),
-                scrollDirection: Axis.horizontal,
+                scrollDirection: Axis.vertical,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
+                  crossAxisCount: 1,
                   // childAspectRatio: MediaQuery.of(context).size.width /
                   //     (MediaQuery.of(context).size.height / 4),
                 ),

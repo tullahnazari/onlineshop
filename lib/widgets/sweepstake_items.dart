@@ -18,13 +18,29 @@ class SweepstakeItems extends StatelessWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: NetworkImage(imageUrl),
-            fit: BoxFit.fitWidth,
+            fit: BoxFit.fill,
             alignment: Alignment.topCenter,
           ),
         ),
-        child: Text(
-          title,
-          style: TextStyle(fontSize: 24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              title,
+              style: TextStyle(
+                  fontSize: 24,
+                  backgroundColor: Theme.of(context).accentColor,
+                  color: Theme.of(context).primaryColor),
+            ),
+            Text(
+              '\$$price',
+              style: TextStyle(
+                fontSize: 24,
+                backgroundColor: Theme.of(context).accentColor,
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+          ],
         ),
       ),
     );
