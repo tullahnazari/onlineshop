@@ -44,39 +44,41 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
     final userProvider = Provider.of<Auth>(context);
 
     return Scaffold(
-      // drawer: AppDrawer(),
-      // appBar: AppBar(
-      //   actions: <Widget>[
-      //     PopupMenuButton(
-      //       icon: Icon(Icons.more_vert),
-      //       itemBuilder: (_) => [
-      //         PopupMenuItem(
-      //           child: FlatButton(
-      //               child: Text("Logout"),
-      //               onPressed: () {
-      //                 Navigator.of(context).pop();
-      //                 Navigator.of(context).pushReplacementNamed('/');
-      //                 Provider.of<Auth>(context, listen: false).logout();
-      //               }),
-      //         ),
-      //       ],
-      //     ),
-      //   ],
-      //   title: Text(
-      //     'Active Sweeps',
-      //     style: TextStyle(
-      //       color: Colors.black,
-      //     ),
-      //   ),
-      // ),
-      bottomNavigationBar: BottomBar(),
+      drawer: AppDrawer(),
+      appBar: AppBar(
+        actions: <Widget>[
+          Icon(Icons.search),
+          PopupMenuButton(
+            icon: Icon(Icons.more_vert),
+            itemBuilder: (_) => [
+              PopupMenuItem(
+                child: FlatButton(
+                    child: Text("Logout"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pushReplacementNamed('/');
+                      Provider.of<Auth>(context, listen: false).logout();
+                    }),
+              ),
+            ],
+          ),
+        ],
+        title: Text(
+          'Near you',
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+      ),
+      // bottomNavigationBar: BottomBar(),
       body: _isLoading
           ? Center(
               child: CircularProgressIndicator(),
             )
           : Padding(
-              padding: const EdgeInsets.only(top: 80.0),
-              child: ListView.builder(
+              padding:
+                  const EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 5),
+              child: GridView.builder(
                 padding: const EdgeInsets.all(15),
                 itemCount: loadedSweepstake.length,
                 itemBuilder: (ctx, i) => SweepstakeItems(
@@ -86,7 +88,12 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                   price: loadedSweepstake[i].price,
                   dateTime: loadedSweepstake[i].dateTime,
                 ),
-                scrollDirection: Axis.vertical,
+                scrollDirection: Axis.horizontal,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  // childAspectRatio: MediaQuery.of(context).size.width /
+                  //     (MediaQuery.of(context).size.height / 4),
+                ),
               ),
             ),
     );
