@@ -16,7 +16,9 @@ class AuthScreen extends StatelessWidget {
     Widget _signInButton() {
       return OutlineButton(
         splashColor: Colors.grey,
-        onPressed: () {},
+        onPressed: () {
+          Provider.of<Auth>(context, listen: false).initiateSignIn("G");
+        },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
         highlightElevation: 0,
         borderSide: BorderSide(color: Colors.grey),
@@ -48,7 +50,9 @@ class AuthScreen extends StatelessWidget {
     Widget _signInWithFacebook() {
       return OutlineButton(
         splashColor: Colors.grey,
-        onPressed: () {},
+        onPressed: () {
+          Provider.of<Auth>(context, listen: false).initiateSignIn("FB");
+        },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
         highlightElevation: 0,
         borderSide: BorderSide(color: Colors.grey),

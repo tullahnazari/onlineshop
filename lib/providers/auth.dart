@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +11,8 @@ import 'package:sweepstakes/models/http_exception.dart';
 import 'package:sweepstakes/providers/user_table_roles.dart';
 
 class Auth with ChangeNotifier {
+  var loggedIn = false;
+  var firebaseAuth = FirebaseAuth.instance;
   String _token;
   DateTime _expiryDate;
   String _userId;
@@ -78,6 +83,72 @@ class Auth with ChangeNotifier {
 
   Future<void> login(String email, String password) async {
     return _authenticate(email, password, 'signInWithPassword', false);
+  }
+
+  void initiateSignIn(String type) {
+    _handleSignIn(type).then((result) {
+      if (result == 1) {
+        // setState(() {
+        loggedIn = true;
+        // });
+      } else {}
+    });
+  }
+
+  Future<int> _handleSignIn(String type) async {
+    switch (type) {
+      case "FB":
+        FacebookLoginResult facebookLoginResult = await _handleFBSignIn();
+        final accessToken = facebookLoginResult.accessToken.token;
+        if (facebookLoginResult.status == FacebookLoginStatus.loggedIn) {
+          final facebookAuthCred =
+              FacebookAuthProvider.getCredential(accessToken: accessToken);
+          final user =
+              await firebaseAuth.signInWithCredential(facebookAuthCred);
+          print("User : " + user.additionalUserInfo.username);
+          return 1;
+        } else
+          return 0;
+        break;
+      case "G":
+        try {
+          GoogleSignInAccount googleSignInAccount = await _handleGoogleSignIn();
+          final googleAuth = await googleSignInAccount.authentication;
+          final googleAuthCred = GoogleAuthProvider.getCredential(
+              idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+          final user = await firebaseAuth.signInWithCredential(googleAuthCred);
+          print("User : " + user.additionalUserInfo.username);
+          return 1;
+        } catch (error) {
+          return 0;
+        }
+    }
+    return 0;
+  }
+
+  Future<FacebookLoginResult> _handleFBSignIn() async {
+    FacebookLogin facebookLogin = FacebookLogin();
+    FacebookLoginResult facebookLoginResult =
+        await facebookLogin.logIn(['email']);
+    switch (facebookLoginResult.status) {
+      case FacebookLoginStatus.cancelledByUser:
+        print("Cancelled");
+        break;
+      case FacebookLoginStatus.error:
+        print("error");
+        break;
+      case FacebookLoginStatus.loggedIn:
+        print("Logged In");
+        break;
+    }
+    return facebookLoginResult;
+  }
+
+  Future<GoogleSignInAccount> _handleGoogleSignIn() async {
+    GoogleSignIn googleSignIn = GoogleSignIn(
+        scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly']);
+    GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    return googleSignInAccount;
   }
 
   Future<bool> tryAutoLogin() async {
