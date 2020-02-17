@@ -45,24 +45,25 @@ class MyApp extends StatelessWidget {
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(
-          title: 'Sweepstakes',
+          title: 'Halaal Bazaar',
           theme: ThemeData(
-            primaryColor: Colors.amber,
-            accentColor: Colors.black,
+            primaryColor: Colors.blueGrey,
+            accentColor: Colors.white,
             fontFamily: 'Lato',
           ),
-          home: SweepstakesOverview(),
-          /////fix after landing page is finished
-          // home: auth.isAuth
-          //     ? SweepstakesOverview()
-          //     : FutureBuilder(
-          //         future: auth.tryAutoLogin(),
-          //         builder: (ctx, authResultSnapshot) =>
-          //             authResultSnapshot.connectionState ==
-          //                     ConnectionState.waiting
-          //                 ? SplashScreen()
-          //                 : AuthScreen(),
-          //       ),
+          // home: SweepstakesOverview(),
+
+          // /fix after landing page is finished
+          home: auth.isAuth
+              ? SweepstakesOverview()
+              : FutureBuilder(
+                  future: auth.tryAutoLogin(),
+                  builder: (ctx, authResultSnapshot) =>
+                      authResultSnapshot.connectionState ==
+                              ConnectionState.waiting
+                          ? SplashScreen()
+                          : AuthScreen(),
+                ),
           routes: {
             SweepstakesDetail.routeName: (ctx) => SweepstakesDetail(),
             ResultScreen.routeName: (ctx) => ResultScreen(),
