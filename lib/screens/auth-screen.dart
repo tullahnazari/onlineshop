@@ -17,7 +17,7 @@ class AuthScreen extends StatelessWidget {
       return OutlineButton(
         splashColor: Colors.grey,
         onPressed: () {
-          Provider.of<Auth>(context, listen: false).initiateSignIn("G");
+          // Provider.of<Auth>(context, listen: false).initiateSignIn("G");
         },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
         highlightElevation: 0,
@@ -51,7 +51,7 @@ class AuthScreen extends StatelessWidget {
       return OutlineButton(
         splashColor: Colors.grey,
         onPressed: () {
-          Provider.of<Auth>(context, listen: false).initiateSignIn("FB");
+          // Provider.of<Auth>(context, listen: false).initiateSignIn("FB");
         },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
         highlightElevation: 0,
