@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "332622156432",
+    "firebase_url": "https://halaalbazaar-b3f94.firebaseio.com",
+    "project_id": "halaalbazaar-b3f94",
+    "storage_bucket": "halaalbazaar-b3f94.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:332622156432:android:49b13773e631aed308fe15",
+        "android_client_info": {
+          "package_name": "com.tullahnazari.bazaar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "332622156432-4ue8jv7f2u0vi7spsinjugmlq40snhaj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tullahnazari.bazaar",
+            "certificate_hash": "38a397004d2d6fc0b27f4123ec210264b35511a3"
+          }
+        },
+        {
+          "client_id": "332622156432-fhgg27apkho2ertof71fsq08sjmnkrlh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKll2eTXKdB2HdQsup6bx4OkEvOXn43UI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "332622156432-fhgg27apkho2ertof71fsq08sjmnkrlh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "332622156432-jsu3kpa2imqu1ea2ksnv80r6k1gtnm6a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tullahnazari.halaalbazaar"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

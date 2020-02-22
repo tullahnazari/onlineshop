@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sweepstakes/models/user_location.dart';
 import 'package:sweepstakes/providers/auth.dart';
+import 'package:sweepstakes/providers/location_service.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/providers/user_table_roles.dart';
+import 'package:sweepstakes/screens/location_page.dart';
 import 'package:sweepstakes/screens/sweepstake_management.dart';
 import 'package:sweepstakes/widgets/app_drawer.dart';
 import 'package:sweepstakes/widgets/bottom_bar.dart';
@@ -43,11 +46,20 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
     final loadedSweepstake = loadedSweepstakeData.items;
     final userProvider = Provider.of<Auth>(context);
 
-    return Scaffold(
+    return
+        // StreamProvider<UserLocation>(
+        //   create: (context) => LocationService().locationStream,
+        //   child:
+        Scaffold(
       drawer: AppDrawer(),
       appBar: AppBar(
         actions: <Widget>[
-          Icon(Icons.search),
+          RaisedButton(
+            child: Icon(Icons.search),
+            onPressed: (() {
+              Navigator.of(context).pushNamed(LocationPage.routeName);
+            }),
+          ),
           PopupMenuButton(
             icon: Icon(Icons.more_vert),
             itemBuilder: (_) => [
