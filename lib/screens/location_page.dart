@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sweepstakes/helper/location_helper.dart';
 import 'package:sweepstakes/models/user_location.dart';
 import 'package:sweepstakes/providers/location_service.dart';
+import 'package:sweepstakes/screens/map_screen.dart';
 
 class LocationPage extends StatefulWidget {
   static const routeName = '/location-page';
@@ -24,6 +25,20 @@ class _LocationPageState extends State<LocationPage> {
     setState(() {
       _previewImageUrl = staticMapImageUrl;
     });
+  }
+
+  Future<void> _selectOnMap() async {
+    final selectedLocation = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => MapScreen(
+          isSelecting: true,
+        ),
+      ),
+    );
+    if (selectedLocation == null) {
+      return;
+    }
+    //...
   }
 
   @override
@@ -54,6 +69,12 @@ class _LocationPageState extends State<LocationPage> {
               child: Text('Find Location'),
               onPressed: () {
                 getCurrentLocation();
+              },
+            ),
+            RaisedButton(
+              child: Text('Select on a map'),
+              onPressed: () {
+                _selectOnMap();
               },
             ),
           ],
