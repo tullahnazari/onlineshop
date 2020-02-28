@@ -30,9 +30,7 @@ class _LocationPageState extends State<LocationPage> {
   Future<void> _selectOnMap() async {
     final selectedLocation = await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) => MapScreen(
-          isSelecting: true,
-        ),
+        builder: (ctx) => HomePage(),
       ),
     );
     if (selectedLocation == null) {

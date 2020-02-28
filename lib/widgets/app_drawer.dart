@@ -40,7 +40,14 @@ class AppDrawer extends StatelessWidget {
                 case ConnectionState.waiting:
                   return Text('Loading..');
                 default:
-                  return checkRole(snapshot.data, context);
+                  return ListTile(
+                    leading: Icon(Icons.edit),
+                    title: Text('Manage Sweepstakes'),
+                    onTap: () {
+                      Navigator.of(context)
+                          .pushReplacementNamed(SweepstakeManagement.routeName);
+                    },
+                  );
               }
             },
           )

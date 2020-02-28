@@ -24,20 +24,19 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   var _isInit = true;
 
   @override
-  void initState() {
+  void didChangeDependencies() {
     if (_isInit) {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<Sweepstakes>(context, listen: false)
-          .fetchAndSetProducts()
-          .then((_) {
+      Provider.of<Sweepstakes>(context).fetchProducts(false).then((_) {
         setState(() {
           _isLoading = false;
         });
       });
     }
-    super.initState();
+    _isInit = false;
+    super.didChangeDependencies();
   }
 
   @override

@@ -58,6 +58,35 @@ class Sweepstakes with ChangeNotifier {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
+  Future<void> fetchProducts([bool filterByUser = false]) async {
+    final filterString =
+        filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
+    final url =
+        'https://bazaar-45301.firebaseio.com/sweepstakes.json?auth=$authToken&$filterString';
+    try {
+      final response = await http.get(url);
+
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      if (extractedData == null) {
+        return;
+      }
+      final List<Sweepstake> loadedProducts = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(Sweepstake(
+          id: prodId,
+          title: prodData['title'],
+          dateTime: prodData['dateTime'],
+          price: prodData['price'],
+          imageUrl: prodData['imageUrl'],
+        ));
+      });
+      _items = loadedProducts;
+      notifyListeners();
+    } catch (error) {
+      throw (error);
+    }
+  }
+
   Future<void> fetchAndSetProducts() async {
     final url =
         'https://bazaar-45301.firebaseio.com/sweepstakes.json?auth=$authToken';
@@ -117,6 +146,7 @@ class Sweepstakes with ChangeNotifier {
           'dateTime': product.dateTime,
           'imageUrl': product.imageUrl,
           'price': product.price,
+          'creatorId': userId
         }),
       );
       final newProduct = Sweepstake(
