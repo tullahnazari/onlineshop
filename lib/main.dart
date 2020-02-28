@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sweepstakes/models/result.dart';
+import 'package:sweepstakes/models/user_location.dart';
 import 'package:sweepstakes/providers/auth.dart';
+import 'package:sweepstakes/providers/location_service.dart';
 import 'package:sweepstakes/providers/results.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/screens/adding_sweepstakes.dart';
 import 'package:sweepstakes/screens/auth-screen.dart';
+import 'package:sweepstakes/screens/location_page.dart';
 import 'package:sweepstakes/screens/results_screen.dart';
 import 'package:sweepstakes/screens/spash_screen.dart';
 import 'package:sweepstakes/screens/sweepstake_management.dart';
@@ -42,6 +45,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: ResultItem(),
         ),
+        ChangeNotifierProvider.value(
+          value: UserLocation(),
+        ),
+        ChangeNotifierProvider.value(
+          value: LocationService(),
+        ),
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(
@@ -71,6 +80,7 @@ class MyApp extends StatelessWidget {
             SweepstakeManagement.routeName: (ctx) => SweepstakeManagement(),
             SweepstakesOverview.routeName: (ctx) => SweepstakesOverview(),
             YourSweepstake.routeName: (ctx) => YourSweepstake(),
+            LocationPage.routeName: (ctx) => LocationPage(),
           },
         ),
       ),

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "623511190098",
+    "firebase_url": "https://bazaar-45301.firebaseio.com",
+    "project_id": "bazaar-45301",
+    "storage_bucket": "bazaar-45301.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:623511190098:android:3b2fc94dfea0c73d0d7d8b",
+        "android_client_info": {
+          "package_name": "com.tullahnazari.bazaar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "623511190098-vafblp13gfbj1kfo3iinak7q7irsq17c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tullahnazari.bazaar",
+            "certificate_hash": "38a397004d2d6fc0b27f4123ec210264b35511a3"
+          }
+        },
+        {
+          "client_id": "623511190098-quqgrmauc5bvvh8o9e8tb5cut05vagbm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNuyGgPbkkBiqXDbbhY4S3hp79Jn-f14c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "623511190098-quqgrmauc5bvvh8o9e8tb5cut05vagbm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "623511190098-6v8rafogcm0tb2t3j694t2p4m4qjesb4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tullahnazari.bazaar"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
