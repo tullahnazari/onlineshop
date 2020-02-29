@@ -20,7 +20,7 @@ class AppDrawer extends StatelessWidget {
           Divider(),
           ListTile(
             leading: Icon(Icons.shop),
-            title: Text('Sweepstakes'),
+            title: Text('Posting'),
             onTap: () {
               Navigator.of(context).pushReplacementNamed('/');
             },
@@ -42,7 +42,7 @@ class AppDrawer extends StatelessWidget {
                 default:
                   return ListTile(
                     leading: Icon(Icons.edit),
-                    title: Text('Manage Sweepstakes'),
+                    title: Text('Manage Postings'),
                     onTap: () {
                       Navigator.of(context)
                           .pushReplacementNamed(SweepstakeManagement.routeName);

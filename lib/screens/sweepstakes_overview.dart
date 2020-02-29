@@ -53,12 +53,12 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
       drawer: AppDrawer(),
       appBar: AppBar(
         actions: <Widget>[
-          RaisedButton(
-            child: Icon(Icons.search),
-            onPressed: (() {
-              Navigator.of(context).pushNamed(LocationPage.routeName);
-            }),
-          ),
+          // RaisedButton(
+          //   child: Icon(Icons.search),
+          //   onPressed: (() {
+          //     Navigator.of(context).pushNamed(LocationPage.routeName);
+          //   }),
+          // ),
           PopupMenuButton(
             icon: Icon(Icons.more_vert),
             itemBuilder: (_) => [
@@ -83,7 +83,9 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
       // bottomNavigationBar: BottomBar(),
       body: _isLoading
           ? Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                backgroundColor: Theme.of(context).primaryColor,
+              ),
             )
           : Padding(
               padding:
