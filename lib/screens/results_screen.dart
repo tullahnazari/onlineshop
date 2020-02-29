@@ -26,7 +26,10 @@ class _ResultScreenState extends State<ResultScreen> {
             Provider.of<Results>(context, listen: false).fetchAndSetResults(),
         builder: (ctx, dataSnapshot) {
           if (dataSnapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+                child: CircularProgressIndicator(
+              backgroundColor: Theme.of(context).primaryColor,
+            ));
           } else {
             if (dataSnapshot.error != null) {
               // ...

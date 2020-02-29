@@ -17,7 +17,7 @@ class SweepstakeManagement extends StatelessWidget {
     //final productsData = Provider.of<Sweepstakes>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Products'),
+        title: const Text('Your Postings'),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.add),
@@ -33,7 +33,9 @@ class SweepstakeManagement extends StatelessWidget {
         builder: (ctx, snapshot) =>
             snapshot.connectionState == ConnectionState.waiting
                 ? Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(
+                      backgroundColor: Theme.of(context).primaryColor,
+                    ),
                   )
                 : RefreshIndicator(
                     onRefresh: () => _refreshProducts(context),

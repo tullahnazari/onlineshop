@@ -38,6 +38,7 @@ dependencies:
   firebase_auth: ^0.15.4
   location: ^2.4.0
   google_maps_flutter: ^0.5.24+1
+  wave_progress_bars: ^0.1.0
 
 
   
