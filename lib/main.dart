@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(
-          title: 'Halaal Bazaar',
+          title: 'Halal Bazaar',
           theme: ThemeData(
             primaryColor: Colors.blueGrey,
             accentColor: Colors.white,

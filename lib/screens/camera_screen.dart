@@ -38,33 +38,40 @@ class _ImageInputState extends State<ImageInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       children: <Widget>[
-        Container(
-          width: 150,
+        SizedBox(
           height: 100,
-          //   decoration: BoxDecoration(
-          //     border: Border.all(width: 1, color: Colors.grey),
-          //   ),
-          //   child: _storedImage != null
-          //       ? Image.file(
-          //           _storedImage,
-          //           fit: BoxFit.cover,
-          //           width: double.infinity,
-          //         )
-          //       : Text(
-          //           'No Image Taken',
-          //           textAlign: TextAlign.center,
-          //         ),
-          //   alignment: Alignment.center,
-          // ),
-          // SizedBox(
-          //   width: 10,
-          // ),
-          // Expanded(
+        ),
+        Container(
+          padding: EdgeInsets.all(10),
+          width: 350,
+          height: 300,
+          decoration: BoxDecoration(
+            border: Border.all(width: 1, color: Colors.grey),
+          ),
+          child: _storedImage != null
+              ? Image.file(
+                  _storedImage,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                )
+              : Text(
+                  'Please Take Picture',
+                  textAlign: TextAlign.center,
+                ),
+          alignment: Alignment.center,
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        Expanded(
           child: FlatButton.icon(
             icon: Icon(Icons.camera),
-            label: Text('Take Picture'),
+            label: Text(
+              'Take Picture',
+              style: TextStyle(fontSize: 30),
+            ),
             textColor: Theme.of(context).primaryColor,
             onPressed: _takePicture,
           ),
