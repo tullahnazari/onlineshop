@@ -165,7 +165,8 @@ class Sweepstakes with ChangeNotifier {
   }
 
   Future<void> deleteProduct(String id) async {
-    final url = 'https://bazaar-45301.firebaseio.com/sweepstakes/$id.json';
+    final url =
+        'https://bazaar-45301.firebaseio.com/sweepstakes/$id.json?auth=$authToken';
     //optimistic deleting/updating
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
