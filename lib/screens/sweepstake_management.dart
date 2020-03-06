@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sweepstakes/providers/great_places.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
+import 'package:sweepstakes/screens/add_place_screen.dart';
 import 'package:sweepstakes/screens/adding_sweepstakes.dart';
 import 'package:sweepstakes/widgets/app_drawer.dart';
 import 'package:sweepstakes/widgets/user_sweepstakes_item.dart';
@@ -9,7 +11,7 @@ class SweepstakeManagement extends StatelessWidget {
   static const routeName = '/user-sweepstakes';
 
   Future<void> _refreshProducts(BuildContext context) async {
-    await Provider.of<Sweepstakes>(context, listen: false).fetchProducts(true);
+    await Provider.of<GreatPlaces>(context, listen: false).fetchAndSetPlaces();
   }
 
   @override
@@ -22,7 +24,7 @@ class SweepstakeManagement extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
-              Navigator.of(context).pushNamed(AddingSweepstake.routeName);
+              Navigator.of(context).pushNamed(AddPlaceScreen.routeName);
             },
           ),
         ],
@@ -49,7 +51,7 @@ class SweepstakeManagement extends StatelessWidget {
                               UserSweepstakeItem(
                                 productsData.items[i].id,
                                 productsData.items[i].title,
-                                productsData.items[i].imageUrl,
+                                productsData.items[i].image,
                               ),
                               Divider(),
                             ],

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +8,7 @@ import 'package:sweepstakes/providers/auth.dart';
 import 'package:sweepstakes/providers/location_service.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/providers/user_table_roles.dart';
+import 'package:sweepstakes/screens/camera_screen.dart';
 import 'package:sweepstakes/screens/location_page.dart';
 import 'package:sweepstakes/screens/sweepstake_management.dart';
 import 'package:sweepstakes/widgets/app_drawer.dart';
@@ -22,6 +25,12 @@ class SweepstakesOverview extends StatefulWidget {
 class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   var _isLoading = false;
   var _isInit = true;
+
+  File _pickedImage;
+
+  void _selectImage(File pickedImage) {
+    _pickedImage = pickedImage;
+  }
 
   @override
   void didChangeDependencies() {
@@ -53,12 +62,22 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
       drawer: AppDrawer(),
       appBar: AppBar(
         actions: <Widget>[
-          // RaisedButton(
-          //   child: Icon(Icons.search),
-          //   onPressed: (() {
-          //     Navigator.of(context).pushNamed(LocationPage.routeName);
-          //   }),
-          // ),
+          RaisedButton(
+            child: Icon(Icons.search),
+            onPressed: (() {
+              Navigator.of(context).pushNamed(LocationPage.routeName);
+            }),
+          ),
+          RaisedButton(
+            child: Icon(Icons.camera),
+            onPressed: (() {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ImageInput(_selectImage)),
+              );
+            }),
+          ),
           PopupMenuButton(
             icon: Icon(Icons.more_vert),
             itemBuilder: (_) => [
@@ -96,7 +115,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                 itemBuilder: (ctx, i) => SweepstakeItems(
                   id: loadedSweepstake[i].id,
                   title: loadedSweepstake[i].title,
-                  imageUrl: loadedSweepstake[i].imageUrl,
+                  imageUrl: loadedSweepstake[i].image.readAsStringSync(),
                   price: loadedSweepstake[i].price,
                   dateTime: loadedSweepstake[i].dateTime,
                 ),

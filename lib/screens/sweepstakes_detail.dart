@@ -110,7 +110,7 @@ class _SweepstakesDetailState extends State<SweepstakesDetail> {
                 child: AspectRatio(
                   aspectRatio: 300 / 145,
                   child: Image.network(
-                    loadedSweepstake.imageUrl,
+                    loadedSweepstake.image.readAsStringSync(),
                   ),
                 ),
               ),

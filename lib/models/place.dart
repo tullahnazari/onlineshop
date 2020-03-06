@@ -14,7 +14,7 @@ class PlaceLocation {
   });
 }
 
-class Place {
+class Place with ChangeNotifier {
   final String id;
   final String title;
   final PlaceLocation location;
