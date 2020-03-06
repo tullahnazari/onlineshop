@@ -2,122 +2,70 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sweepstakes/models/place.dart';
 import 'package:sweepstakes/widgets/custom_info_widget.dart';
 
-class PointObject {
-  final Widget child;
-  final LatLng location;
+class MapScreen extends StatefulWidget {
+  final PlaceLocation initialLocation;
+  final bool isSelecting;
 
-  PointObject({this.child, this.location});
-}
+  MapScreen({
+    this.initialLocation =
+        const PlaceLocation(latitude: 37.422, longitude: -122.084),
+    this.isSelecting = false,
+  });
 
-class HomePage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _MapScreenState createState() => _MapScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
-  PointObject point = PointObject(
-    child: Text('Lorem Ipsum'),
-    location: LatLng(47.6, 8.8796),
-  );
+class _MapScreenState extends State<MapScreen> {
+  LatLng _pickedLocation;
 
-  StreamSubscription _mapIdleSubscription;
-  InfoWidgetRoute _infoWidgetRoute;
-  GoogleMapController _mapController;
+  void _selectLocation(LatLng position) {
+    setState(() {
+      _pickedLocation = position;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.green,
-        child: GoogleMap(
-          initialCameraPosition: CameraPosition(
-            target: const LatLng(47.6, 8.6796),
-            zoom: 10,
-          ),
-          circles: Set<Circle>()
-            ..add(Circle(
-              circleId: CircleId('hi2'),
-              center: LatLng(47.6, 8.8796),
-              radius: 50,
-              strokeWidth: 10,
-              strokeColor: Colors.black,
-            )),
-          markers: Set<Marker>()
-            ..add(Marker(
-              markerId: MarkerId(point.location.latitude.toString() +
-                  point.location.longitude.toString()),
-              position: point.location,
-              onTap: () => _onTap(point),
-            )),
-          onMapCreated: (mapController) {
-            _mapController = mapController;
-          },
-
-          /// This fakes the onMapIdle, as the googleMaps on Map Idle does not always work
-          /// (see: https://github.com/flutter/flutter/issues/37682)
-          /// When the Map Idles and a _infoWidgetRoute exists, it gets displayed.
-          onCameraMove: (newPosition) {
-            _mapIdleSubscription?.cancel();
-            _mapIdleSubscription = Future.delayed(Duration(milliseconds: 150))
-                .asStream()
-                .listen((_) {
-              if (_infoWidgetRoute != null) {
-                Navigator.of(context, rootNavigator: true)
-                    .push(_infoWidgetRoute)
-                    .then<void>(
-                  (newValue) {
-                    _infoWidgetRoute = null;
-                  },
-                );
-              }
-            });
-          },
-        ),
+      appBar: AppBar(
+        title: Text('Your Map'),
+        actions: <Widget>[
+          if (widget.isSelecting)
+            IconButton(
+              icon: Icon(Icons.check),
+              onPressed: _pickedLocation == null
+                  ? null
+                  : () {
+                      Navigator.of(context).pop(_pickedLocation);
+                    },
+            ),
+        ],
       ),
-    );
-  }
-
-  /// now my _onTap Method. First it creates the Info Widget Route and then
-  /// animates the Camera twice:
-  /// First to a place near the marker, then to the marker.
-  /// This is done to ensure that onCameraMove is always called
-
-  _onTap(PointObject point) async {
-    final RenderBox renderBox = context.findRenderObject();
-    Rect _itemRect = renderBox.localToGlobal(Offset.zero) & renderBox.size;
-
-    _infoWidgetRoute = InfoWidgetRoute(
-      child: point.child,
-      buildContext: context,
-      textStyle: const TextStyle(
-        fontSize: 14,
-        color: Colors.black,
-      ),
-      mapsWidgetSize: _itemRect,
-    );
-
-    await _mapController.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
+      body: GoogleMap(
+        initialCameraPosition: CameraPosition(
           target: LatLng(
-            point.location.latitude - 0.0001,
-            point.location.longitude,
+            widget.initialLocation.latitude,
+            widget.initialLocation.longitude,
           ),
-          zoom: 15,
+          zoom: 16,
         ),
-      ),
-    );
-    await _mapController.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: LatLng(
-            point.location.latitude,
-            point.location.longitude,
-          ),
-          zoom: 15,
-        ),
+        onTap: widget.isSelecting ? _selectLocation : null,
+        markers: (_pickedLocation == null && widget.isSelecting)
+            ? null
+            : {
+                Marker(
+                  markerId: MarkerId('m1'),
+                  position: _pickedLocation ??
+                      LatLng(
+                        widget.initialLocation.latitude,
+                        widget.initialLocation.longitude,
+                      ),
+                ),
+              },
       ),
     );
   }

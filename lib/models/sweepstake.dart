@@ -1,7 +1,9 @@
+import 'dart:io';
+
 class Sweepstake {
   final String id;
   final String title;
-  final String imageUrl;
+  final File image;
   final double price;
   final String dateTime;
   final int randomNumber;
@@ -9,7 +11,7 @@ class Sweepstake {
   Sweepstake(
       {this.id,
       this.title,
-      this.imageUrl,
+      this.image,
       this.price,
       this.dateTime,
       this.randomNumber});

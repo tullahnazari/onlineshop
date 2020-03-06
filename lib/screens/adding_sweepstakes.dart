@@ -1,11 +1,20 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:sweepstakes/models/sweepstake.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
+import 'package:sweepstakes/screens/camera_screen.dart';
 import 'package:sweepstakes/widgets/app_drawer.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart' as syspaths;
 
 class AddingSweepstake extends StatefulWidget {
   static const routeName = 'add-sweepstake';
+  final Function onSelectImage;
+
+  AddingSweepstake(this.onSelectImage);
   @override
   _AddingSweepstakeState createState() => _AddingSweepstakeState();
 }
@@ -18,14 +27,14 @@ class _AddingSweepstakeState extends State<AddingSweepstake> {
     title: '',
     price: 0,
     dateTime: '',
-    imageUrl: '',
+    image: null,
   );
 
   var _initValues = {
     'title': '',
     'dateTime': '',
     'price': '',
-    'imageUrl': '',
+    'image': null,
   };
 
   var _isInIt = true;
@@ -58,9 +67,9 @@ class _AddingSweepstakeState extends State<AddingSweepstake> {
           'title': _editedProduct.title,
           'dateTime': _editedProduct.dateTime,
           'price': _editedProduct.price.toString(),
-          'imageUrl': '',
+          'image': _editedProduct.image.readAsStringSync(),
         };
-        _imageUrlController.text = _editedProduct.imageUrl;
+        _imageUrlController.text = _editedProduct.image.readAsStringSync();
       }
     }
     _isInIt = false;
@@ -77,6 +86,12 @@ class _AddingSweepstakeState extends State<AddingSweepstake> {
     _imageUrlController.dispose();
     _imageUrlFocusNode.dispose();
     super.dispose();
+  }
+
+  File _pickedImage;
+
+  void _selectImage(File pickedImage) {
+    _pickedImage = pickedImage;
   }
 
   void _updateImageUrl() {
@@ -175,7 +190,7 @@ class _AddingSweepstakeState extends State<AddingSweepstake> {
                             title: value,
                             price: _editedProduct.price,
                             dateTime: _editedProduct.dateTime,
-                            imageUrl: _editedProduct.imageUrl,
+                            image: _editedProduct.image,
                             id: _editedProduct.id,
                           );
                         },
@@ -207,7 +222,7 @@ class _AddingSweepstakeState extends State<AddingSweepstake> {
                             title: _editedProduct.title,
                             price: double.parse(value),
                             dateTime: _editedProduct.dateTime,
-                            imageUrl: _editedProduct.imageUrl,
+                            image: _editedProduct.image,
                             id: _editedProduct.id,
                           );
                         },
@@ -232,66 +247,54 @@ class _AddingSweepstakeState extends State<AddingSweepstake> {
                             title: _editedProduct.title,
                             price: _editedProduct.price,
                             dateTime: value,
-                            imageUrl: _editedProduct.imageUrl,
+                            image: _editedProduct.image,
                             id: _editedProduct.id,
                           );
                         },
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Container(
-                            width: 100,
-                            height: 100,
-                            margin: EdgeInsets.only(top: 8, right: 10),
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(width: 1, color: Colors.blueGrey),
-                            ),
-                            child: _imageUrlController.text.isEmpty
-                                ? Text('Enter a URL')
-                                : FittedBox(
-                                    child:
-                                        Image.network(_imageUrlController.text),
-                                    fit: BoxFit.cover,
-                                  ),
-                          ),
-                          Expanded(
-                            child: TextFormField(
-                              decoration:
-                                  InputDecoration(labelText: 'Image URL'),
-                              keyboardType: TextInputType.url,
-                              textInputAction: TextInputAction.done,
-                              controller: _imageUrlController,
-                              focusNode: _imageUrlFocusNode,
-                              onFieldSubmitted: (_) => {_saveForm()},
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'Please enter an image URL.';
-                                }
-                                if (!value.startsWith('http') &&
-                                    !value.startsWith('https')) {
-                                  return 'Please enter a valid URL';
-                                }
-                                if (!value.endsWith('.png') &&
-                                    !value.endsWith('.jpg')) {
-                                  return 'Please upload a png or jpg image';
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                _editedProduct = Sweepstake(
-                                  title: _editedProduct.title,
-                                  price: _editedProduct.price,
-                                  dateTime: _editedProduct.dateTime,
-                                  imageUrl: value,
-                                  id: _editedProduct.id,
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
+                      ImageInput(_selectImage),
+
+                      // Row(
+                      //   children: <Widget>[
+                      //     Container(
+                      //       width: 150,
+                      //       height: 100,
+                      //       decoration: BoxDecoration(
+                      //         border: Border.all(width: 1, color: Colors.grey),
+                      //       ),
+                      //       child: _storedImage != null
+                      //           ? Image.file(
+                      //               _storedImage,
+                      //               fit: BoxFit.cover,
+                      //               width: double.infinity,
+                      //             )
+                      //           : FlatButton.icon(
+                      //               icon: Icon(Icons.camera),
+                      //               label: Text('Take Picture'),
+                      //               textColor: Theme.of(context).primaryColor,
+                      //               onPressed: _takePicture,
+                      //             ),
+                      //     ),
+                      //     SizedBox(
+                      //       width: 10,
+                      //     ),
+                      //     Expanded(
+                      //       child: TextFormField(
+                      //         decoration:
+                      //             InputDecoration(labelText: 'Image URL'),
+                      //         onSaved: (imageFile) {
+                      //           _editedProduct = Sweepstake(
+                      //             title: _editedProduct.title,
+                      //             price: _editedProduct.price,
+                      //             dateTime: _editedProduct.dateTime,
+                      //             image: File(imageFile),
+                      //             id: _editedProduct.id,
+                      //           );
+                      //         },
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                     ],
                   ),
                 ),

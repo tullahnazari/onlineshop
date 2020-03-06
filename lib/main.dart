@@ -1,11 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sweepstakes/models/place.dart';
 import 'package:sweepstakes/models/result.dart';
 import 'package:sweepstakes/models/user_location.dart';
 import 'package:sweepstakes/providers/auth.dart';
+import 'package:sweepstakes/providers/great_places.dart';
 import 'package:sweepstakes/providers/location_service.dart';
 import 'package:sweepstakes/providers/results.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
+import 'package:sweepstakes/screens/add_place_screen.dart';
 import 'package:sweepstakes/screens/adding_sweepstakes.dart';
 import 'package:sweepstakes/screens/auth-screen.dart';
 import 'package:sweepstakes/screens/location_page.dart';
@@ -19,6 +24,11 @@ import 'package:sweepstakes/screens/your_sweepstake.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  File _pickedImage;
+  void _selectImage(File pickedImage) {
+    _pickedImage = pickedImage;
+  }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -42,6 +52,13 @@ class MyApp extends StatelessWidget {
             previousOrders == null ? [] : previousOrders.items,
           ),
         ),
+        ChangeNotifierProxyProvider<Auth, GreatPlaces>(
+          update: (ctx, auth, previousOrders) => GreatPlaces(
+            auth.token,
+            auth.userId,
+            previousOrders == null ? [] : previousOrders.items,
+          ),
+        ),
         ChangeNotifierProvider.value(
           value: ResultItem(),
         ),
@@ -50,6 +67,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider.value(
           value: LocationService(),
+        ),
+        ChangeNotifierProvider.value(
+          value: Place(),
         ),
       ],
       child: Consumer<Auth>(
@@ -76,11 +96,12 @@ class MyApp extends StatelessWidget {
           routes: {
             SweepstakesDetail.routeName: (ctx) => SweepstakesDetail(),
             ResultScreen.routeName: (ctx) => ResultScreen(),
-            AddingSweepstake.routeName: (ctx) => AddingSweepstake(),
+            AddingSweepstake.routeName: (ctx) => AddingSweepstake(_selectImage),
             SweepstakeManagement.routeName: (ctx) => SweepstakeManagement(),
             SweepstakesOverview.routeName: (ctx) => SweepstakesOverview(),
             YourSweepstake.routeName: (ctx) => YourSweepstake(),
             LocationPage.routeName: (ctx) => LocationPage(),
+            AddPlaceScreen.routeName: (ctx) => AddPlaceScreen(),
           },
         ),
       ),

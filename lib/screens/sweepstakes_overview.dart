@@ -115,7 +115,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                 itemBuilder: (ctx, i) => SweepstakeItems(
                   id: loadedSweepstake[i].id,
                   title: loadedSweepstake[i].title,
-                  imageUrl: loadedSweepstake[i].imageUrl,
+                  imageUrl: loadedSweepstake[i].image.readAsStringSync(),
                   price: loadedSweepstake[i].price,
                   dateTime: loadedSweepstake[i].dateTime,
                 ),

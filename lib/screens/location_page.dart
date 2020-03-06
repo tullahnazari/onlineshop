@@ -27,17 +27,17 @@ class _LocationPageState extends State<LocationPage> {
     });
   }
 
-  Future<void> _selectOnMap() async {
-    final selectedLocation = await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (ctx) => HomePage(),
-      ),
-    );
-    if (selectedLocation == null) {
-      return;
-    }
-    //...
-  }
+  // Future<void> _selectOnMap() async {
+  //   final selectedLocation = await Navigator.of(context).push(
+  //     MaterialPageRoute(
+  //       builder: (ctx) => HomePage(),
+  //     ),
+  //   );
+  //   if (selectedLocation == null) {
+  //     return;
+  //   }
+  //   //...
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -69,12 +69,12 @@ class _LocationPageState extends State<LocationPage> {
                 getCurrentLocation();
               },
             ),
-            RaisedButton(
-              child: Text('Select on a map'),
-              onPressed: () {
-                _selectOnMap();
-              },
-            ),
+            // RaisedButton(
+            //   child: Text('Select on a map'),
+            //   onPressed: () {
+            //     _selectOnMap();
+            //   },
+            // ),
           ],
         ),
       ),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
@@ -6,16 +8,16 @@ import 'package:sweepstakes/screens/adding_sweepstakes.dart';
 class UserSweepstakeItem extends StatelessWidget {
   final String id;
   final String title;
-  final String imageurl;
+  final File image;
 
-  UserSweepstakeItem(this.id, this.title, this.imageurl);
+  UserSweepstakeItem(this.id, this.title, this.image);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(title),
       leading: CircleAvatar(
-        backgroundImage: NetworkImage(imageurl),
+        backgroundImage: FileImage(image),
       ),
       trailing: Container(
         width: 100,

@@ -46,6 +46,7 @@ class Sweepstakes with ChangeNotifier {
 
   final String authToken;
   final String userId;
+  File pickedImage;
 
   Sweepstakes(this.authToken, this.userId, this._items);
 
@@ -77,7 +78,7 @@ class Sweepstakes with ChangeNotifier {
           title: prodData['title'],
           dateTime: prodData['dateTime'],
           price: prodData['price'],
-          imageUrl: prodData['imageUrl'],
+          image: prodData[pickedImage],
         ));
       });
       _items = loadedProducts;
@@ -104,7 +105,7 @@ class Sweepstakes with ChangeNotifier {
           title: prodData['title'],
           dateTime: prodData['dateTime'],
           price: prodData['price'],
-          imageUrl: prodData['imageUrl'],
+          image: prodData[pickedImage],
         ));
       });
       _items = loadedProducts;
@@ -123,7 +124,7 @@ class Sweepstakes with ChangeNotifier {
           body: json.encode({
             'title': newProduct.title,
             'dateTime': newProduct.dateTime,
-            'imageUrl': newProduct.imageUrl,
+            'image': newProduct.image,
             'price': newProduct.price,
           }));
       _items[prodIndex] = newProduct;
@@ -136,7 +137,7 @@ class Sweepstakes with ChangeNotifier {
   Future<void> addProduct(Sweepstake product) async {
     //send https request
     final url =
-        'https://bazaar-45301.firebaseio.com/sweepstakes/.json?auth=$authToken';
+        'https://bazaar-45301.firebaseio.com/sweepstakes.json?auth=$authToken';
     try {
       final response = await http.post(
         url,
@@ -144,7 +145,7 @@ class Sweepstakes with ChangeNotifier {
           'id': product.id,
           'title': product.title,
           'dateTime': product.dateTime,
-          'imageUrl': product.imageUrl,
+          'image': product.image,
           'price': product.price,
           'creatorId': userId
         }),
@@ -153,7 +154,7 @@ class Sweepstakes with ChangeNotifier {
         title: product.title,
         dateTime: product.dateTime,
         price: product.price,
-        imageUrl: product.imageUrl,
+        image: product.image,
         id: json.decode(response.body)['name'],
       );
       _items.add(newProduct);
