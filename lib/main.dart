@@ -53,10 +53,10 @@ class MyApp extends StatelessWidget {
           ),
         ),
         ChangeNotifierProxyProvider<Auth, GreatPlaces>(
-          update: (ctx, auth, previousOrders) => GreatPlaces(
+          update: (ctx, auth, previousPosts) => GreatPlaces(
             auth.token,
             auth.userId,
-            previousOrders == null ? [] : previousOrders.items,
+            previousPosts == null ? [] : previousPosts.items,
           ),
         ),
         ChangeNotifierProvider.value(
