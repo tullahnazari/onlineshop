@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 import '../models/place.dart';
 
 class GreatPlaces with ChangeNotifier {
+  bool error = false;
+  bool isDisposed = false;
   List<Place> _items = [];
 
   List<Place> get items {
@@ -54,17 +56,28 @@ class GreatPlaces with ChangeNotifier {
           'address': newPlace.location.address,
         }),
       );
+      // try {
       _items.add(newPlace);
+      //   error = false;
+      // } catch (e) {
+      //   error = true;
+      //   print(e.toString());
+      // }
+
+      //if (!isDisposed) {
       notifyListeners();
+      //}
     } catch (error) {
       throw (error);
     }
   }
 
   //TODO work on this as POST is working but not GET
-  Future<void> fetchAndSetPlaces() async {
+  Future<void> fetchAndSetPlaces([bool filterByUser = false]) async {
+    final filterString =
+        filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
     final url =
-        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken';
+        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&$filterString';
     try {
       final response = await http.get(url);
 
@@ -75,7 +88,7 @@ class GreatPlaces with ChangeNotifier {
       final List<Place> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(Place(
-            id: prodData['id'],
+            id: prodId,
             title: prodData['title'],
             image: File(prodData['image']),
             location: PlaceLocation(
@@ -84,11 +97,26 @@ class GreatPlaces with ChangeNotifier {
               address: prodData['address'],
             )));
       });
-      _items = loadedProducts;
-      notifyListeners();
+      try {
+        _items = loadedProducts;
+        error = false;
+      } catch (e) {
+        error = true;
+        print(e.toString());
+      }
+
+      if (!isDisposed) {
+        notifyListeners();
+      }
     } catch (error) {
       throw (error);
     }
+  }
+
+  @override
+  void dispose() {
+    isDisposed = true;
+    super.dispose();
   }
 
   Future<void> deleteProduct(String id) async {
