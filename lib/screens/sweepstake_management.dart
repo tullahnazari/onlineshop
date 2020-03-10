@@ -11,7 +11,8 @@ class SweepstakeManagement extends StatelessWidget {
   static const routeName = '/user-sweepstakes';
 
   Future<void> _refreshProducts(BuildContext context) async {
-    await Provider.of<GreatPlaces>(context, listen: false).fetchAndSetPlaces();
+    await Provider.of<GreatPlaces>(context, listen: false)
+        .fetchAndSetPlaces(true);
   }
 
   @override
@@ -30,7 +31,7 @@ class SweepstakeManagement extends StatelessWidget {
       ),
       drawer: AppDrawer(),
       body: FutureBuilder(
-        future: _refreshProducts(context),
+        // future: _refreshProducts(context),
         builder: (ctx, snapshot) => snapshot.connectionState ==
                 ConnectionState.waiting
             ? Center(
