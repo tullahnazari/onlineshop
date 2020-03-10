@@ -16,7 +16,6 @@ class SweepstakeManagement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final productsData = Provider.of<Sweepstakes>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Postings'),
@@ -32,34 +31,64 @@ class SweepstakeManagement extends StatelessWidget {
       drawer: AppDrawer(),
       body: FutureBuilder(
         future: _refreshProducts(context),
-        builder: (ctx, snapshot) =>
-            snapshot.connectionState == ConnectionState.waiting
-                ? Center(
-                    child: CircularProgressIndicator(
-                      backgroundColor: Theme.of(context).primaryColor,
-                    ),
-                  )
-                : RefreshIndicator(
-                    onRefresh: () => _refreshProducts(context),
-                    child: Consumer<Sweepstakes>(
-                      builder: (ctx, productsData, _) => Padding(
-                        padding: EdgeInsets.all(8),
-                        child: ListView.builder(
-                          itemCount: productsData.items.length,
-                          itemBuilder: (_, i) => Column(
-                            children: [
-                              UserSweepstakeItem(
-                                productsData.items[i].id,
-                                productsData.items[i].title,
-                                productsData.items[i].image,
+        builder: (ctx, snapshot) => snapshot.connectionState ==
+                ConnectionState.waiting
+            ? Center(
+                child: CircularProgressIndicator(
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
+              )
+            : RefreshIndicator(
+                onRefresh: () => _refreshProducts(context),
+                child: Consumer<GreatPlaces>(
+                  builder: (ctx, greatPlaces, _) => Padding(
+                    padding: EdgeInsets.all(8),
+                    child: ListView.builder(
+                      itemCount: greatPlaces.items.length,
+                      itemBuilder: (_, i) => ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: FileImage(
+                            greatPlaces.items[i].image,
+                          ),
+                        ),
+                        title: Text(greatPlaces.items[i].title),
+                        subtitle: Text(greatPlaces.items[i].location.address),
+                        // onTap: () {
+                        //   Navigator.of(context).pushNamed(
+                        //     PlaceDetailScreen.routeName,
+                        //     arguments: greatPlaces.items[i].id,
+                        //   );
+                        // },
+                        trailing: Container(
+                          width: 100,
+                          child: Row(
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(Icons.edit),
+                                // onPressed: () {
+                                //   Navigator.of(context).pushNamed(
+                                //       AddingSweepstake.routeName,
+                                //       arguments: id);
+                                // },
+                                color: Theme.of(context).primaryColor,
                               ),
-                              Divider(),
+                              IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () {
+                                  Provider.of<GreatPlaces>(context,
+                                          listen: false)
+                                      .deleteProduct(greatPlaces.items[1].id);
+                                },
+                                color: Theme.of(context).errorColor,
+                              ),
                             ],
                           ),
                         ),
                       ),
                     ),
                   ),
+                ),
+              ),
       ),
     );
   }
