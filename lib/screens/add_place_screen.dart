@@ -28,13 +28,13 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
     _pickedLocation = PlaceLocation(latitude: lat, longitude: lng);
   }
 
-  void _savePlace() {
+  Future<void> _savePlace() async {
     if (_titleController.text.isEmpty ||
         _pickedImage == null ||
         _pickedLocation == null) {
       return;
     }
-    Provider.of<GreatPlaces>(context, listen: false).addPlace(
+    await Provider.of<GreatPlaces>(context, listen: false).addPlace(
       _titleController.text,
       _pickedImage,
       _pickedLocation,

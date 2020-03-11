@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sweepstakes/models/place.dart';
 import 'package:sweepstakes/models/user_location.dart';
 import 'package:sweepstakes/providers/auth.dart';
+import 'package:sweepstakes/providers/great_places.dart';
 import 'package:sweepstakes/providers/location_service.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/providers/user_table_roles.dart';
@@ -38,7 +40,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<Sweepstakes>(context).fetchProducts(false).then((_) {
+      Provider.of<GreatPlaces>(context).fetchAndSetPlaces(false).then((_) {
         setState(() {
           _isLoading = false;
         });
@@ -50,9 +52,9 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
 
   @override
   Widget build(BuildContext context) {
-    final loadedSweepstakeData = Provider.of<Sweepstakes>(context);
-    final loadedSweepstake = loadedSweepstakeData.items;
-    final userProvider = Provider.of<Auth>(context);
+    final loadedPostingData = Provider.of<GreatPlaces>(context);
+    final loadedPosting = loadedPostingData.items;
+    //final userProvider = Provider.of<Auth>(context);
 
     return
         // StreamProvider<UserLocation>(
@@ -106,24 +108,50 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                 backgroundColor: Theme.of(context).primaryColor,
               ),
             )
-          : Padding(
-              padding:
-                  const EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 5),
-              child: GridView.builder(
-                padding: const EdgeInsets.all(15),
-                itemCount: loadedSweepstake.length,
-                itemBuilder: (ctx, i) => SweepstakeItems(
-                  id: loadedSweepstake[i].id,
-                  title: loadedSweepstake[i].title,
-                  imageUrl: loadedSweepstake[i].image.readAsStringSync(),
-                  price: loadedSweepstake[i].price,
-                  dateTime: loadedSweepstake[i].dateTime,
-                ),
-                scrollDirection: Axis.vertical,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1,
-                  // childAspectRatio: MediaQuery.of(context).size.width /
-                  //     (MediaQuery.of(context).size.height / 4),
+          : Consumer<GreatPlaces>(
+              builder: (ctx, greatPlaces, _) => Padding(
+                padding:
+                    const EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 5),
+                child: GridView.builder(
+                  padding: const EdgeInsets.all(15),
+                  itemCount: loadedPosting.length,
+                  itemBuilder: (ctx, i) => Card(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: FileImage(loadedPosting[i].image),
+                          fit: BoxFit.fill,
+                          alignment: Alignment.topCenter,
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            loadedPosting[i].title ?? '',
+                            style: TextStyle(
+                                fontSize: 24,
+                                backgroundColor: Theme.of(context).accentColor,
+                                color: Theme.of(context).primaryColor),
+                          ),
+                          Text(
+                            loadedPosting[i].location.address ?? '',
+                            style: TextStyle(
+                              fontSize: 24,
+                              backgroundColor: Theme.of(context).accentColor,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  scrollDirection: Axis.vertical,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 1,
+                    // childAspectRatio: MediaQuery.of(context).size.width /
+                    //     (MediaQuery.of(context).size.height / 4),
+                  ),
                 ),
               ),
             ),

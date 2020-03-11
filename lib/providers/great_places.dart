@@ -54,19 +54,20 @@ class GreatPlaces with ChangeNotifier {
           'loc_lat': newPlace.location.latitude,
           'loc_lng': newPlace.location.longitude,
           'address': newPlace.location.address,
+          'creatorId': userId,
         }),
       );
-      // try {
-      _items.add(newPlace);
-      //   error = false;
-      // } catch (e) {
-      //   error = true;
-      //   print(e.toString());
-      // }
+      try {
+        _items.add(newPlace);
+        error = false;
+      } catch (e) {
+        error = true;
+        print(e.toString());
+      }
 
-      //if (!isDisposed) {
-      notifyListeners();
-      //}
+      if (!isDisposed) {
+        notifyListeners();
+      }
     } catch (error) {
       throw (error);
     }
