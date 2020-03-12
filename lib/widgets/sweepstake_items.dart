@@ -18,11 +18,11 @@ class SweepstakeItems extends StatelessWidget {
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: FileImage(
-          image,
+          image ?? '',
         ),
       ),
-      title: Text(title),
-      subtitle: Text(address),
+      title: Text(title ?? ''),
+      subtitle: Text(address ?? ''),
       trailing: Container(
         width: 100,
         child: Row(
