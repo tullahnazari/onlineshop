@@ -12,7 +12,7 @@ class UserSweepstakeItem extends StatelessWidget {
   final File image;
   final String address;
 
-  UserSweepstakeItem(this.id, this.title, this.image, this.address);
+  UserSweepstakeItem({this.id, this.title, this.image, this.address});
 
   @override
   Widget build(BuildContext context) {

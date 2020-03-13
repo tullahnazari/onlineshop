@@ -3,16 +3,13 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sweepstakes/models/place.dart';
 import 'package:sweepstakes/models/user_location.dart';
 import 'package:sweepstakes/providers/auth.dart';
-import 'package:sweepstakes/providers/location_service.dart';
-import 'package:sweepstakes/providers/sweepstakes.dart';
-import 'package:sweepstakes/providers/user_table_roles.dart';
-import 'package:sweepstakes/screens/camera_screen.dart';
-import 'package:sweepstakes/screens/location_page.dart';
-import 'package:sweepstakes/screens/sweepstake_management.dart';
+import 'package:sweepstakes/providers/great_places.dart';
+
 import 'package:sweepstakes/widgets/app_drawer.dart';
-import 'package:sweepstakes/widgets/bottom_bar.dart';
+import 'package:sweepstakes/widgets/overview_posting.dart';
 import 'package:sweepstakes/widgets/sweepstake_items.dart';
 
 class SweepstakesOverview extends StatefulWidget {
@@ -26,58 +23,34 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   var _isLoading = false;
   var _isInit = true;
 
-  File _pickedImage;
-
-  void _selectImage(File pickedImage) {
-    _pickedImage = pickedImage;
-  }
-
   @override
-  void didChangeDependencies() {
+  void initState() {
     if (_isInit) {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<Sweepstakes>(context).fetchProducts(false).then((_) {
+      Provider.of<GreatPlaces>(context, listen: false)
+          .fetchAndSetPlaces()
+          .then((_) {
         setState(() {
           _isLoading = false;
         });
       });
     }
-    _isInit = false;
-    super.didChangeDependencies();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final loadedSweepstakeData = Provider.of<Sweepstakes>(context);
+    final loadedSweepstakeData = Provider.of<GreatPlaces>(context);
     final loadedSweepstake = loadedSweepstakeData.items;
     final userProvider = Provider.of<Auth>(context);
 
-    return
-        // StreamProvider<UserLocation>(
-        //   create: (context) => LocationService().locationStream,
-        //   child:
-        Scaffold(
+    return Scaffold(
       drawer: AppDrawer(),
       appBar: AppBar(
         actions: <Widget>[
-          RaisedButton(
-            child: Icon(Icons.search),
-            onPressed: (() {
-              Navigator.of(context).pushNamed(LocationPage.routeName);
-            }),
-          ),
-          RaisedButton(
-            child: Icon(Icons.camera),
-            onPressed: (() {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ImageInput(_selectImage)),
-              );
-            }),
-          ),
+          Icon(Icons.search),
           PopupMenuButton(
             icon: Icon(Icons.more_vert),
             itemBuilder: (_) => [
@@ -102,9 +75,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
       // bottomNavigationBar: BottomBar(),
       body: _isLoading
           ? Center(
-              child: CircularProgressIndicator(
-                backgroundColor: Theme.of(context).primaryColor,
-              ),
+              child: CircularProgressIndicator(),
             )
           : Padding(
               padding:
@@ -112,12 +83,11 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
               child: GridView.builder(
                 padding: const EdgeInsets.all(15),
                 itemCount: loadedSweepstake.length,
-                itemBuilder: (ctx, i) => SweepstakeItems(
+                itemBuilder: (ctx, i) => OverviewPosting(
                   id: loadedSweepstake[i].id,
                   title: loadedSweepstake[i].title,
-                  imageUrl: loadedSweepstake[i].image.readAsStringSync(),
-                  price: loadedSweepstake[i].price,
-                  dateTime: loadedSweepstake[i].dateTime,
+                  image: loadedSweepstake[i].image,
+                  address: loadedSweepstake[i].location.address,
                 ),
                 scrollDirection: Axis.vertical,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

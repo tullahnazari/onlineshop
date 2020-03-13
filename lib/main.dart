@@ -68,9 +68,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: LocationService(),
         ),
-        ChangeNotifierProvider.value(
-          value: Place(),
-        ),
+        // ChangeNotifierProvider.value(
+        //   value: Place(),
+        // ),
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(

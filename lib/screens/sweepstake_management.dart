@@ -5,6 +5,7 @@ import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/screens/add_place_screen.dart';
 import 'package:sweepstakes/screens/adding_sweepstakes.dart';
 import 'package:sweepstakes/widgets/app_drawer.dart';
+import 'package:sweepstakes/widgets/sweepstake_items.dart';
 import 'package:sweepstakes/widgets/user_sweepstakes_item.dart';
 
 class SweepstakeManagement extends StatelessWidget {
@@ -31,65 +32,68 @@ class SweepstakeManagement extends StatelessWidget {
       ),
       drawer: AppDrawer(),
       body: FutureBuilder(
-        // future: _refreshProducts(context),
-        builder: (ctx, snapshot) => snapshot.connectionState ==
-                ConnectionState.waiting
-            ? Center(
-                child: CircularProgressIndicator(
-                  backgroundColor: Theme.of(context).primaryColor,
-                ),
-              )
-            : RefreshIndicator(
-                onRefresh: () => _refreshProducts(context),
-                child: Consumer<GreatPlaces>(
-                  builder: (ctx, greatPlaces, _) => Padding(
-                    padding: EdgeInsets.all(8),
-                    child: ListView.builder(
-                      itemCount: greatPlaces.items.length,
-                      itemBuilder: (_, i) => ListTile(
-                        leading: CircleAvatar(
-                          backgroundImage: FileImage(
-                            greatPlaces.items[i].image,
-                          ),
-                        ),
-                        title: Text(greatPlaces.items[i].title),
-                        subtitle: Text(greatPlaces.items[i].location.address),
-                        // onTap: () {
-                        //   Navigator.of(context).pushNamed(
-                        //     PlaceDetailScreen.routeName,
-                        //     arguments: greatPlaces.items[i].id,
-                        //   );
-                        // },
-                        trailing: Container(
-                          width: 100,
-                          child: Row(
-                            children: <Widget>[
-                              IconButton(
-                                icon: Icon(Icons.edit),
-                                // onPressed: () {
-                                //   Navigator.of(context).pushNamed(
-                                //       AddingSweepstake.routeName,
-                                //       arguments: id);
-                                // },
-                                color: Theme.of(context).primaryColor,
+        future: _refreshProducts(context),
+        builder: (ctx, snapshot) =>
+            snapshot.connectionState == ConnectionState.waiting
+                ? Center(
+                    child: CircularProgressIndicator(
+                      backgroundColor: Theme.of(context).primaryColor,
+                    ),
+                  )
+                : RefreshIndicator(
+                    onRefresh: () => _refreshProducts(context),
+                    child: Consumer<GreatPlaces>(
+                      builder: (ctx, greatPlaces, _) => Padding(
+                        padding: EdgeInsets.all(8),
+                        child: ListView.builder(
+                          itemCount: greatPlaces.items.length,
+                          itemBuilder: (_, i) => Column(
+                            children: [
+                              SweepstakeItems(
+                                id: greatPlaces.items[i].id,
+                                title: greatPlaces.items[i].title,
+                                image: greatPlaces.items[i].image,
+                                address: greatPlaces.items[i].location.address,
                               ),
-                              IconButton(
-                                icon: Icon(Icons.delete),
-                                onPressed: () {
-                                  Provider.of<GreatPlaces>(context,
-                                          listen: false)
-                                      .deleteProduct(greatPlaces.items[1].id);
-                                },
-                                color: Theme.of(context).errorColor,
-                              ),
+                              Divider(),
                             ],
                           ),
                         ),
                       ),
+                      // onTap: () {
+                      //   Navigator.of(context).pushNamed(
+                      //     PlaceDetailScreen.routeName,
+                      //     arguments: greatPlaces.items[i].id,
+                      //   );
+                      // },
+
+                      // trailing: Container(
+                      //   width: 100,
+                      //   child: Row(
+                      //     children: <Widget>[
+                      //       IconButton(
+                      //         icon: Icon(Icons.edit),
+                      //         // onPressed: () {
+                      //         //   Navigator.of(context).pushNamed(
+                      //         //       AddingSweepstake.routeName,
+                      //         //       arguments: id);
+                      //         // },
+                      //         color: Theme.of(context).primaryColor,
+                      //       ),
+                      //       IconButton(
+                      //         icon: Icon(Icons.delete),
+                      //         onPressed: () {
+                      //           Provider.of<GreatPlaces>(context,
+                      //                   listen: false)
+                      //               .deleteProduct(greatPlaces.items[1].id);
+                      //         },
+                      //         color: Theme.of(context).errorColor,
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                     ),
                   ),
-                ),
-              ),
       ),
     );
   }

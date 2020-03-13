@@ -54,19 +54,12 @@ class GreatPlaces with ChangeNotifier {
           'loc_lat': newPlace.location.latitude,
           'loc_lng': newPlace.location.longitude,
           'address': newPlace.location.address,
+          'creatorId': userId,
         }),
       );
-      // try {
       _items.add(newPlace);
-      //   error = false;
-      // } catch (e) {
-      //   error = true;
-      //   print(e.toString());
-      // }
 
-      //if (!isDisposed) {
       notifyListeners();
-      //}
     } catch (error) {
       throw (error);
     }
@@ -97,26 +90,12 @@ class GreatPlaces with ChangeNotifier {
               address: prodData['address'],
             )));
       });
-      try {
-        _items = loadedProducts;
-        error = false;
-      } catch (e) {
-        error = true;
-        print(e.toString());
-      }
+      _items = loadedProducts;
 
-      if (!isDisposed) {
-        notifyListeners();
-      }
+      notifyListeners();
     } catch (error) {
       throw (error);
     }
-  }
-
-  @override
-  void dispose() {
-    isDisposed = true;
-    super.dispose();
   }
 
   Future<void> deleteProduct(String id) async {

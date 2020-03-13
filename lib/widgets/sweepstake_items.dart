@@ -1,44 +1,48 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sweepstakes/providers/great_places.dart';
 import 'package:sweepstakes/screens/sweepstakes_detail.dart';
 
 class SweepstakeItems extends StatelessWidget {
   final String id;
   final String title;
-  final String imageUrl;
-  final String dateTime;
-  final double price;
+  final File image;
+  final String address;
 
-  SweepstakeItems(
-      {this.id, this.title, this.imageUrl, this.dateTime, this.price});
+  SweepstakeItems({this.id, this.title, this.image, this.address});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(imageUrl),
-            fit: BoxFit.fill,
-            alignment: Alignment.topCenter,
-          ),
+    return ListTile(
+      leading: CircleAvatar(
+        backgroundImage: FileImage(
+          image ?? '',
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      ),
+      title: Text(title ?? ''),
+      subtitle: Text(address ?? ''),
+      trailing: Container(
+        width: 100,
+        child: Row(
           children: <Widget>[
-            Text(
-              title,
-              style: TextStyle(
-                  fontSize: 24,
-                  backgroundColor: Theme.of(context).accentColor,
-                  color: Theme.of(context).primaryColor),
-            ),
-            Text(
-              '\$$price',
-              style: TextStyle(
-                fontSize: 24,
-                backgroundColor: Theme.of(context).accentColor,
-                color: Theme.of(context).primaryColor,
-              ),
+            // IconButton(
+            //   icon: Icon(Icons.edit),
+            //   // onPressed: () {
+            //   //   Navigator.of(context).pushNamed(
+            //   //       AddingSweepstake.routeName,
+            //   //       arguments: id);
+            //   // },
+            //   color: Theme.of(context).primaryColor,
+            // ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                Provider.of<GreatPlaces>(context, listen: false)
+                    .deleteProduct(id);
+              },
+              color: Theme.of(context).errorColor,
             ),
           ],
         ),

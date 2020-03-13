@@ -26,4 +26,6 @@ class Place with ChangeNotifier {
     @required this.location,
     @required this.image,
   });
+
+  notifyListeners();
 }
