@@ -27,15 +27,15 @@ class SweepstakeItems extends StatelessWidget {
         width: 100,
         child: Row(
           children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.edit),
-              // onPressed: () {
-              //   Navigator.of(context).pushNamed(
-              //       AddingSweepstake.routeName,
-              //       arguments: id);
-              // },
-              color: Theme.of(context).primaryColor,
-            ),
+            // IconButton(
+            //   icon: Icon(Icons.edit),
+            //   // onPressed: () {
+            //   //   Navigator.of(context).pushNamed(
+            //   //       AddingSweepstake.routeName,
+            //   //       arguments: id);
+            //   // },
+            //   color: Theme.of(context).primaryColor,
+            // ),
             IconButton(
               icon: Icon(Icons.delete),
               onPressed: () {

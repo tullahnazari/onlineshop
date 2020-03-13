@@ -7,14 +7,9 @@ import 'package:sweepstakes/models/place.dart';
 import 'package:sweepstakes/models/user_location.dart';
 import 'package:sweepstakes/providers/auth.dart';
 import 'package:sweepstakes/providers/great_places.dart';
-import 'package:sweepstakes/providers/location_service.dart';
-import 'package:sweepstakes/providers/sweepstakes.dart';
-import 'package:sweepstakes/providers/user_table_roles.dart';
-import 'package:sweepstakes/screens/camera_screen.dart';
-import 'package:sweepstakes/screens/location_page.dart';
-import 'package:sweepstakes/screens/sweepstake_management.dart';
+
 import 'package:sweepstakes/widgets/app_drawer.dart';
-import 'package:sweepstakes/widgets/bottom_bar.dart';
+import 'package:sweepstakes/widgets/overview_posting.dart';
 import 'package:sweepstakes/widgets/sweepstake_items.dart';
 
 class SweepstakesOverview extends StatefulWidget {
@@ -28,58 +23,34 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   var _isLoading = false;
   var _isInit = true;
 
-  File _pickedImage;
-
-  void _selectImage(File pickedImage) {
-    _pickedImage = pickedImage;
-  }
-
   @override
-  void didChangeDependencies() {
+  void initState() {
     if (_isInit) {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<GreatPlaces>(context).fetchAndSetPlaces(false).then((_) {
+      Provider.of<GreatPlaces>(context, listen: false)
+          .fetchAndSetPlaces()
+          .then((_) {
         setState(() {
           _isLoading = false;
         });
       });
     }
-    _isInit = false;
-    super.didChangeDependencies();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final loadedPostingData = Provider.of<GreatPlaces>(context);
-    final loadedPosting = loadedPostingData.items;
-    //final userProvider = Provider.of<Auth>(context);
+    final loadedSweepstakeData = Provider.of<GreatPlaces>(context);
+    final loadedSweepstake = loadedSweepstakeData.items;
+    final userProvider = Provider.of<Auth>(context);
 
-    return
-        // StreamProvider<UserLocation>(
-        //   create: (context) => LocationService().locationStream,
-        //   child:
-        Scaffold(
+    return Scaffold(
       drawer: AppDrawer(),
       appBar: AppBar(
         actions: <Widget>[
-          RaisedButton(
-            child: Icon(Icons.search),
-            onPressed: (() {
-              Navigator.of(context).pushNamed(LocationPage.routeName);
-            }),
-          ),
-          RaisedButton(
-            child: Icon(Icons.camera),
-            onPressed: (() {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ImageInput(_selectImage)),
-              );
-            }),
-          ),
+          Icon(Icons.search),
           PopupMenuButton(
             icon: Icon(Icons.more_vert),
             itemBuilder: (_) => [
@@ -104,54 +75,25 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
       // bottomNavigationBar: BottomBar(),
       body: _isLoading
           ? Center(
-              child: CircularProgressIndicator(
-                backgroundColor: Theme.of(context).primaryColor,
-              ),
+              child: CircularProgressIndicator(),
             )
-          : Consumer<GreatPlaces>(
-              builder: (ctx, greatPlaces, _) => Padding(
-                padding:
-                    const EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 5),
-                child: GridView.builder(
-                  padding: const EdgeInsets.all(15),
-                  itemCount: loadedPosting.length,
-                  itemBuilder: (ctx, i) => Card(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: FileImage(loadedPosting[i].image),
-                          fit: BoxFit.fill,
-                          alignment: Alignment.topCenter,
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            loadedPosting[i].title ?? '',
-                            style: TextStyle(
-                                fontSize: 24,
-                                backgroundColor: Theme.of(context).accentColor,
-                                color: Theme.of(context).primaryColor),
-                          ),
-                          Text(
-                            loadedPosting[i].location.address ?? '',
-                            style: TextStyle(
-                              fontSize: 24,
-                              backgroundColor: Theme.of(context).accentColor,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  scrollDirection: Axis.vertical,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 1,
-                    // childAspectRatio: MediaQuery.of(context).size.width /
-                    //     (MediaQuery.of(context).size.height / 4),
-                  ),
+          : Padding(
+              padding:
+                  const EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 5),
+              child: GridView.builder(
+                padding: const EdgeInsets.all(15),
+                itemCount: loadedSweepstake.length,
+                itemBuilder: (ctx, i) => OverviewPosting(
+                  id: loadedSweepstake[i].id,
+                  title: loadedSweepstake[i].title,
+                  image: loadedSweepstake[i].image,
+                  address: loadedSweepstake[i].location.address,
+                ),
+                scrollDirection: Axis.vertical,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 1,
+                  // childAspectRatio: MediaQuery.of(context).size.width /
+                  //     (MediaQuery.of(context).size.height / 4),
                 ),
               ),
             ),
