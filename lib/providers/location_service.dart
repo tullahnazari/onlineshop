@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:location/location.dart';
 import 'package:sweepstakes/models/user_location.dart';
 
 class LocationService with ChangeNotifier {
+  Geoflutterfire geo = Geoflutterfire();
   UserLocation _currentLocation;
 
   var location = Location();
