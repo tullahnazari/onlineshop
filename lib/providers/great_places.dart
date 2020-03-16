@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:sweepstakes/helper/location_helper.dart';
 import 'package:http/http.dart' as http;
 import '../models/place.dart';
@@ -29,12 +30,14 @@ class GreatPlaces with ChangeNotifier {
     File pickedImage,
     PlaceLocation pickedLocation,
   ) async {
+    var stateAddress = await LocationHelper.getPlaceAddress(
+        pickedLocation.latitude, pickedLocation.longitude);
     final address = await LocationHelper.getPlaceAddress(
         pickedLocation.latitude, pickedLocation.longitude);
     final updatedLocation = PlaceLocation(
       latitude: pickedLocation.latitude,
       longitude: pickedLocation.longitude,
-      address: address,
+      address: stateAddress,
     );
     final url =
         'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken';
@@ -53,11 +56,44 @@ class GreatPlaces with ChangeNotifier {
           'image': newPlace.image.path,
           'loc_lat': newPlace.location.latitude,
           'loc_lng': newPlace.location.longitude,
-          'address': newPlace.location.address,
+          'address': stateAddress,
           'creatorId': userId,
         }),
       );
       _items.add(newPlace);
+
+      notifyListeners();
+    } catch (error) {
+      throw (error);
+    }
+  }
+
+  Future<void> fetchResultsByState(
+    String state,
+  ) async {
+    final filterString = 'orderBy="address"&equalTo="$state"';
+    final url =
+        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&$filterString';
+    try {
+      final response = await http.get(url);
+
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      if (extractedData == null) {
+        return;
+      }
+      final List<Place> loadedProducts = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(Place(
+            id: prodId,
+            title: prodData['title'],
+            image: File(prodData['image']),
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
+              address: prodData['address'],
+            )));
+      });
+      _items = loadedProducts;
 
       notifyListeners();
     } catch (error) {
