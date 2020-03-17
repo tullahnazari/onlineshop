@@ -69,7 +69,7 @@ class GreatPlaces with ChangeNotifier {
   }
 
   Future<void> fetchResultsByState(
-    String state,
+    Function state,
   ) async {
     final filterString = 'orderBy="address"&equalTo="$state"';
     final url =

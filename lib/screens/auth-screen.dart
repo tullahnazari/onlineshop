@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sweepstakes/providers/auth.dart';
 import 'package:sweepstakes/models/http_exception.dart';
 
@@ -11,12 +12,17 @@ enum AuthMode { Signup, Login }
 class AuthScreen extends StatelessWidget {
   static const routeName = '/auth';
 
+  // addStringToSF() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   prefs.setString('stateOfUser', "Minnesota");
+  // }
+
   @override
   Widget build(BuildContext context) {
     Widget _signInButton() {
       return OutlineButton(
         splashColor: Colors.grey,
-        onPressed: () {
+        onPressed: () async {
           // Provider.of<Auth>(context, listen: false).initiateSignIn("G");
         },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),

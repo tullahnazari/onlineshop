@@ -26,31 +26,39 @@ class AppDrawer extends StatelessWidget {
             },
           ),
           Divider(),
-          StreamBuilder<DocumentSnapshot>(
-            stream: Firestore.instance
-                .collection('users')
-                .document(userProvider.userId)
-                .snapshots(),
-            builder: (BuildContext context,
-                AsyncSnapshot<DocumentSnapshot> snapshot) {
-              if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              }
-              switch (snapshot.connectionState) {
-                case ConnectionState.waiting:
-                  return Text('Loading..');
-                default:
-                  return ListTile(
-                    leading: Icon(Icons.edit),
-                    title: Text('Manage Postings'),
-                    onTap: () {
-                      Navigator.of(context)
-                          .pushReplacementNamed(SweepstakeManagement.routeName);
-                    },
-                  );
-              }
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: Text('Manage Postings'),
+            onTap: () {
+              Navigator.of(context)
+                  .pushReplacementNamed(SweepstakeManagement.routeName);
             },
-          )
+          ),
+          // StreamBuilder<DocumentSnapshot>(
+          //   stream: Firestore.instance
+          //       .collection('users')
+          //       .document(userProvider.userId)
+          //       .snapshots(),
+          //   builder: (BuildContext context,
+          //       AsyncSnapshot<DocumentSnapshot> snapshot) {
+          //     if (snapshot.hasError) {
+          //       return Text('Error: ${snapshot.error}');
+          //     }
+          //     switch (snapshot.connectionState) {
+          //       case ConnectionState.waiting:
+          //         return Text('Loading..');
+          //       default:
+          //         return ListTile(
+          //           leading: Icon(Icons.edit),
+          //           title: Text('Manage Postings'),
+          //           onTap: () {
+          //             Navigator.of(context)
+          //                 .pushReplacementNamed(SweepstakeManagement.routeName);
+          //           },
+          //         );
+          //     }
+          //   },
+          // )
 
           // ListTile(
           //   leading: Icon(Icons.edit),

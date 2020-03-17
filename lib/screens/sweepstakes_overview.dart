@@ -2,7 +2,12 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geolocator/geolocator.dart' as geo;
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sweepstakes/helper/location_helper.dart';
 import 'package:sweepstakes/models/place.dart';
 import 'package:sweepstakes/models/user_location.dart';
 import 'package:sweepstakes/providers/auth.dart';
@@ -22,6 +27,7 @@ class SweepstakesOverview extends StatefulWidget {
 class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   var _isLoading = false;
   var _isInit = true;
+  Position currentLocation;
 
   @override
   void initState() {
@@ -30,7 +36,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
         _isLoading = true;
       });
       Provider.of<GreatPlaces>(context, listen: false)
-          .fetchAndSetPlaces()
+          .fetchResultsByState(getUserLocation)
           .then((_) {
         setState(() {
           _isLoading = false;
@@ -61,6 +67,13 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                       Navigator.of(context).pop();
                       Navigator.of(context).pushReplacementNamed('/');
                       Provider.of<Auth>(context, listen: false).logout();
+                    }),
+              ),
+              PopupMenuItem(
+                child: FlatButton(
+                    child: Text("state"),
+                    onPressed: () async {
+                      //await getLocation();
                     }),
               ),
             ],
@@ -98,5 +111,21 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
               ),
             ),
     );
+  }
+
+  Future<Position> locateUser() async {
+    return Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  }
+
+  Future<String> getUserLocation() async {
+    currentLocation = await locateUser();
+    var lat = currentLocation.latitude;
+    var long = currentLocation.longitude;
+    List<Placemark> placemark =
+        await Geolocator().placemarkFromCoordinates(lat, long);
+    String state = placemark.first.administrativeArea;
+    print(state);
+    return state;
   }
 }

@@ -36,10 +36,10 @@ class UserSweepstakeItem extends StatelessWidget {
             ),
             IconButton(
               icon: Icon(Icons.delete),
-              // onPressed: () {
-              //   Provider.of<GreatPlaces>(context, listen: false)
-              //       .deleteProduct(id);
-              // },
+              onPressed: () {
+                //   Provider.of<GreatPlaces>(context, listen: false)
+                //       .deleteProduct(id);
+              },
               color: Theme.of(context).errorColor,
             ),
           ],
