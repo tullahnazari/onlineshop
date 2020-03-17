@@ -29,28 +29,33 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   var _isInit = true;
   Position currentLocation;
 
-  @override
-  void initState() {
-    if (_isInit) {
-      setState(() {
-        _isLoading = true;
-      });
-      Provider.of<GreatPlaces>(context, listen: false)
-          .fetchResultsByState(getUserLocation)
-          .then((_) {
-        setState(() {
-          _isLoading = false;
-        });
-      });
-    }
-    super.initState();
+  // @override
+  // void initState() {
+  //   if (_isInit) {
+  //     setState(() {
+  //       _isLoading = true;
+  //     });
+  //     Provider.of<GreatPlaces>(context, listen: false)
+  //         .fetchResultsByState()
+  //         .then((_) {
+  //       setState(() {
+  //         _isLoading = false;
+  //       });
+  //     });
+  //   }
+  //   super.initState();
+  // }
+
+  Future<void> _refreshProducts(BuildContext context) async {
+    await Provider.of<GreatPlaces>(context, listen: false)
+        .fetchResultsByState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final loadedSweepstakeData = Provider.of<GreatPlaces>(context);
-    final loadedSweepstake = loadedSweepstakeData.items;
-    final userProvider = Provider.of<Auth>(context);
+    // final loadedSweepstakeData = Provider.of<GreatPlaces>(context);
+    // final loadedSweepstake = loadedSweepstakeData.items;
+    // final userProvider = Provider.of<Auth>(context);
 
     return Scaffold(
       drawer: AppDrawer(),
@@ -90,25 +95,41 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : Padding(
-              padding:
-                  const EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 5),
-              child: GridView.builder(
-                padding: const EdgeInsets.all(15),
-                itemCount: loadedSweepstake.length,
-                itemBuilder: (ctx, i) => OverviewPosting(
-                  id: loadedSweepstake[i].id,
-                  title: loadedSweepstake[i].title,
-                  image: loadedSweepstake[i].image,
-                  address: loadedSweepstake[i].location.address,
-                ),
-                scrollDirection: Axis.vertical,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1,
-                  // childAspectRatio: MediaQuery.of(context).size.width /
-                  //     (MediaQuery.of(context).size.height / 4),
-                ),
-              ),
+          : FutureBuilder(
+              future: _refreshProducts(context),
+              builder: (ctx, snapshot) => snapshot.connectionState ==
+                      ConnectionState.waiting
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: Theme.of(context).primaryColor,
+                      ),
+                    )
+                  : RefreshIndicator(
+                      onRefresh: () => _refreshProducts(context),
+                      child: Consumer<GreatPlaces>(
+                        builder: (ctx, greatPlaces, _) => Padding(
+                          padding: const EdgeInsets.only(
+                              top: 5, bottom: 5, left: 5, right: 5),
+                          child: GridView.builder(
+                            padding: const EdgeInsets.all(15),
+                            itemCount: greatPlaces.items.length,
+                            itemBuilder: (ctx, i) => OverviewPosting(
+                              id: greatPlaces.items[i].id,
+                              title: greatPlaces.items[i].title,
+                              image: greatPlaces.items[i].image,
+                              address: greatPlaces.items[i].location.address,
+                            ),
+                            scrollDirection: Axis.vertical,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 1,
+                              // childAspectRatio: MediaQuery.of(context).size.width /
+                              //     (MediaQuery.of(context).size.height / 4),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
             ),
     );
   }
