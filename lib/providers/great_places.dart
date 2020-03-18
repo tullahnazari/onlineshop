@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import '../models/place.dart';
 
 class GreatPlaces with ChangeNotifier {
+  GreatPlaces(this.authToken, this.userId, this._items);
   bool error = false;
   bool isDisposed = false;
   List<Place> _items = [];
@@ -18,8 +19,6 @@ class GreatPlaces with ChangeNotifier {
 
   final String authToken;
   final String userId;
-
-  GreatPlaces(this.authToken, this.userId, this._items);
 
   Place findById(String id) {
     return _items.firstWhere((place) => place.id == id);

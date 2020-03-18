@@ -101,39 +101,44 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
             )
           : FutureBuilder(
               future: _refreshProducts(context),
-              builder: (ctx, snapshot) => snapshot.connectionState ==
-                      ConnectionState.waiting
-                  ? Center(
-                      child: CircularProgressIndicator(
-                        backgroundColor: Theme.of(context).primaryColor,
-                      ),
-                    )
-                  : RefreshIndicator(
-                      onRefresh: () => _refreshProducts(context),
-                      child: Consumer<GreatPlaces>(
-                        builder: (ctx, greatPlaces, _) => Padding(
-                          padding: const EdgeInsets.only(
-                              top: 5, bottom: 5, left: 5, right: 5),
-                          child: GridView.builder(
-                            padding: const EdgeInsets.all(15),
-                            itemCount: greatPlaces.items.length,
-                            itemBuilder: (ctx, i) => OverviewPosting(
-                              id: greatPlaces.items[i].id,
-                              title: greatPlaces.items[i].title,
-                              image: greatPlaces.items[i].image,
-                              address: greatPlaces.items[i].location.address,
-                            ),
-                            scrollDirection: Axis.vertical,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 1,
-                              // childAspectRatio: MediaQuery.of(context).size.width /
-                              //     (MediaQuery.of(context).size.height / 4),
+              builder: (ctx, snapshot) =>
+                  snapshot.connectionState == ConnectionState.waiting
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            backgroundColor: Theme.of(context).primaryColor,
+                          ),
+                        )
+                      : RefreshIndicator(
+                          onRefresh: () => _refreshProducts(context),
+                          child: Consumer<GreatPlaces>(
+                            builder: (ctx, greatPlaces, _) => Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 5, bottom: 5, left: 5, right: 5),
+                              child: GridView.builder(
+                                padding: const EdgeInsets.all(10.0),
+                                itemCount: greatPlaces.items.length,
+                                itemBuilder: (ctx, i) =>
+                                    ChangeNotifierProvider.value(
+                                  // builder: (c) => products[i],
+                                  value: greatPlaces.items[i],
+                                  child: OverviewPosting(
+                                      // id: greatPlaces.items[i].id,
+                                      // title: greatPlaces.items[i].title,
+                                      // image: greatPlaces.items[i].image,
+                                      // address: greatPlaces.items[i].location.address,
+                                      ),
+                                ),
+                                scrollDirection: Axis.vertical,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 1,
+                                  // childAspectRatio: MediaQuery.of(context).size.width /
+                                  //     (MediaQuery.of(context).size.height / 4),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
             ),
     );
   }
