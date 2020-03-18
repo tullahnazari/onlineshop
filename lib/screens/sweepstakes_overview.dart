@@ -45,10 +45,14 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   //   }
   //   super.initState();
   // }
-
+  var value;
   Future<void> _refreshProducts(BuildContext context) async {
-    await Provider.of<GreatPlaces>(context, listen: false)
-        .fetchResultsByState();
+    await getUserLocation().then((value) async {
+      await Provider.of<GreatPlaces>(context, listen: false)
+          .fetchResultsByState(value);
+    });
+    // await Provider.of<GreatPlaces>(context, listen: false)
+    //     .fetchResultsByState(value));
   }
 
   @override
@@ -139,14 +143,13 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
   }
 
-  Future<String> getUserLocation() async {
+  getUserLocation() async {
     currentLocation = await locateUser();
     var lat = currentLocation.latitude;
     var long = currentLocation.longitude;
     List<Placemark> placemark =
         await Geolocator().placemarkFromCoordinates(lat, long);
     String state = placemark.first.administrativeArea;
-    print(state);
     return state;
   }
 }

@@ -70,11 +70,11 @@ class GreatPlaces with ChangeNotifier {
   }
 
   Future<void> fetchResultsByState(
-      //String state,
-      ) async {
+    String state,
+  ) async {
     //final filterString = 'orderBy="address"&equalTo="$state"';
     final url =
-        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="state"&equalTo="Minnesota"';
+        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="state"&equalTo="$state"';
     try {
       final response = await http.get(url);
 
