@@ -58,6 +58,7 @@ class GreatPlaces with ChangeNotifier {
           'loc_lng': newPlace.location.longitude,
           'address': stateAddress,
           'creatorId': userId,
+          'state': stateAddress
         }),
       );
       _items.add(newPlace);
@@ -71,9 +72,9 @@ class GreatPlaces with ChangeNotifier {
   Future<void> fetchResultsByState(
     String state,
   ) async {
-    final filterString = 'orderBy="address"&equalTo="$state"';
+    //final filterString = 'orderBy="address"&equalTo="$state"';
     final url =
-        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&$filterString';
+        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="state"&equalTo="$state"';
     try {
       final response = await http.get(url);
 

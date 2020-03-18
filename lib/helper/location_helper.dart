@@ -21,7 +21,7 @@ class LocationHelper {
     var addresses =
         await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var state = addresses.first.adminArea;
-    print(state);
+    //print(state);
     return state;
 
     // return json.decode(response.body)['results']['types']
@@ -37,18 +37,5 @@ class LocationHelper {
     // String address = addressComponents
     //     .firstWhere((entry) => entry['types'].contains('country'))['long_name'];
     // return json.decode(body)['$country'];
-  }
-
-  static Future<String> getUserState(double lat, double lng) async {
-    final url =
-        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=$GOOGLE_API_KEY';
-    final response = await http.get(url);
-    final coordinates = new Coordinates(lat, lng);
-    var addresses =
-        await Geocoder.local.findAddressesFromCoordinates(coordinates);
-    var first = addresses.first;
-    print(
-        ' ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare}');
-    return first.addressLine;
   }
 }
