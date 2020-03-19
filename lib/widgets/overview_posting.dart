@@ -16,6 +16,7 @@ class OverviewPosting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final place = Provider.of<Place>(context, listen: false);
+    String price = place.price.toString();
     return Padding(
       padding: const EdgeInsets.all(2.0),
       child: GridTile(
@@ -29,7 +30,7 @@ class OverviewPosting extends StatelessWidget {
           child: GridTileBar(
             backgroundColor: Colors.black45,
             title: Text(place.title ?? ''),
-            subtitle: Text(place.location.address ?? ''),
+            subtitle: Text('\$$price' ?? ''),
           ),
         ),
         child: Container(

@@ -3,7 +3,10 @@ import 'package:clippy_flutter/diagonal.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flushbar/flushbar_route.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:sweepstakes/helper/calls_messaging_service.dart';
+import 'package:sweepstakes/helper/service_locater.dart';
 import 'package:sweepstakes/models/place.dart';
 import 'package:sweepstakes/models/result.dart';
 import 'package:sweepstakes/models/sweepstake.dart';
@@ -17,6 +20,8 @@ import 'package:firebase_admob/firebase_admob.dart';
 class SweepstakesDetail extends StatelessWidget {
   static const routeName = '/sweepstakedetail';
 
+  final CallsAndMessagesService _service = locator<CallsAndMessagesService>();
+
   @override
   Widget build(BuildContext context) {
     final posting = Provider.of<Place>(context, listen: false);
@@ -26,6 +31,7 @@ class SweepstakesDetail extends StatelessWidget {
       context,
       listen: false,
     ).findById(productId);
+    String price = loadedPosting.price.toString();
 
     // final coursePrice = Container(
     //   padding: const EdgeInsets.all(7.0),
@@ -97,31 +103,86 @@ class SweepstakesDetail extends StatelessWidget {
       loadedPosting.title,
       style: TextStyle(fontSize: 18.0),
     );
-    final backButton = InkWell(
-      //highlightColor: Colors.black,
-      onTap: () {
-        Navigator.pop(context);
-      },
-      child: Icon(
-        Icons.arrow_back,
-        color: Colors.black,
-      ),
+    // final backButton = InkWell(
+    //   //highlightColor: Colors.black,
+    //   onTap: () {
+    //     Navigator.pop(context);
+    //   },
+    //   child: Icon(
+    //     Icons.arrow_back,
+    //     color: Colors.black,
+    //   ),
+    // );
+    final description = Column(
+      children: <Widget>[
+        Text(
+          loadedPosting.description,
+          textAlign: TextAlign.left,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 3,
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          '\$$price' ?? '',
+          style:
+              TextStyle(color: Colors.black, fontFamily: 'Lato', fontSize: 30),
+        ),
+      ],
     );
-    final description = Text(
-      loadedPosting.description,
-      textAlign: TextAlign.left,
-      overflow: TextOverflow.ellipsis,
-      maxLines: 3,
+    // final priceText = Text(
+    //   '\$$price' ?? '',
+    //   style: TextStyle(
+    //       color: Theme.of(context).accentColor,
+    //       fontFamily: 'Lato',
+    //       fontSize: 22),
+    // );
+    final readButton = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        InkWell(
+          //highlightColor: Colors.black,
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: IconButton(
+              iconSize: 50,
+              // Use the FaIcon Widget + FontAwesomeIcons class for the IconData
+              icon: FaIcon(FontAwesomeIcons.arrowCircleLeft),
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+        ),
+        SizedBox(
+          width: 30,
+        ),
+        InkWell(
+          //highlightColor: Colors.black,
+          onTap: () {
+            _service.sendEmail(loadedPosting.email);
+          },
+          child: Icon(
+            Icons.email,
+            size: 75,
+            color: Colors.black,
+          ),
+        ),
+        InkWell(
+          //highlightColor: Colors.black,
+          onTap: () {
+            _service.call(loadedPosting.phone);
+          },
+          child: IconButton(
+              iconSize: 50,
+              // Use the FaIcon Widget + FontAwesomeIcons class for the IconData
+              icon: FaIcon(FontAwesomeIcons.phone),
+              onPressed: () {
+                print("Pressed");
+              }),
+        ),
+      ],
     );
-    final readButton = Container(
-        padding: EdgeInsets.symmetric(vertical: 16.0),
-        width: MediaQuery.of(context).size.width,
-        child: RaisedButton(
-          onPressed: () => {},
-          color: Color.fromRGBO(58, 66, 86, 1.0),
-          child:
-              Text("TAKE THIS LESSON", style: TextStyle(color: Colors.white)),
-        ));
     final bottomContent = Container(
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.all(40.0),
@@ -129,9 +190,8 @@ class SweepstakesDetail extends StatelessWidget {
         child: Column(
           children: <Widget>[
             bottomContentText,
+            description,
             readButton,
-            backButton,
-            description
           ],
         ),
       ),

@@ -29,6 +29,9 @@ class GreatPlaces with ChangeNotifier {
     File pickedImage,
     PlaceLocation pickedLocation,
     String pickedDescription,
+    String pickedEmail,
+    String pickedPhone,
+    double pickedPrice,
   ) async {
     var stateAddress = await LocationHelper.getPlaceAddress(
         pickedLocation.latitude, pickedLocation.longitude);
@@ -48,6 +51,9 @@ class GreatPlaces with ChangeNotifier {
         title: pickedTitle,
         description: pickedDescription,
         location: updatedLocation,
+        email: pickedEmail,
+        phone: pickedPhone,
+        price: pickedPrice,
       );
       await http.post(
         url,
@@ -60,7 +66,10 @@ class GreatPlaces with ChangeNotifier {
           'address': stateAddress,
           'creatorId': userId,
           'state': stateAddress,
-          'description': newPlace.description
+          'description': newPlace.description,
+          'email': newPlace.email,
+          'phone': newPlace.phone,
+          'price': newPlace.price,
         }),
       );
       _items.add(newPlace);
@@ -88,15 +97,19 @@ class GreatPlaces with ChangeNotifier {
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(
           Place(
-              id: prodId,
-              title: prodData['title'],
-              image: File(prodData['image']),
-              location: PlaceLocation(
-                latitude: prodData['loc_lat'],
-                longitude: prodData['loc_lng'],
-                address: prodData['address'],
-              ),
-              description: prodData['description']),
+            id: prodId,
+            title: prodData['title'],
+            image: File(prodData['image']),
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
+              address: prodData['address'],
+            ),
+            description: prodData['description'],
+            email: prodData['email'],
+            phone: prodData['phone'],
+            price: prodData['price'],
+          ),
         );
       });
       _items = loadedProducts;

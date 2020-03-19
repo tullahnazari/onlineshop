@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sweepstakes/helper/service_locater.dart';
 import 'package:sweepstakes/models/place.dart';
 import 'package:sweepstakes/models/result.dart';
 import 'package:sweepstakes/models/user_location.dart';
@@ -21,7 +22,10 @@ import 'package:sweepstakes/screens/sweepstakes_detail.dart';
 import 'package:sweepstakes/screens/sweepstakes_overview.dart';
 import 'package:sweepstakes/screens/your_sweepstake.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  setupLocator();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   File _pickedImage;
