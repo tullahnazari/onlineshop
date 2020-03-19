@@ -19,12 +19,14 @@ class Place with ChangeNotifier {
   final String title;
   final PlaceLocation location;
   final File image;
+  final String description;
 
   Place({
     @required this.id,
     @required this.title,
     @required this.location,
     @required this.image,
+    @required this.description,
   });
 
   notifyListeners();

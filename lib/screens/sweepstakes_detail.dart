@@ -27,89 +27,91 @@ class SweepstakesDetail extends StatelessWidget {
       listen: false,
     ).findById(productId);
 
-    final coursePrice = Container(
-      padding: const EdgeInsets.all(7.0),
-      decoration: new BoxDecoration(
-          border: new Border.all(color: Colors.white),
-          borderRadius: BorderRadius.circular(5.0)),
-      child: new Text(
-        "\$" + loadedPosting.title,
-        style: TextStyle(color: Colors.white),
-      ),
-    );
+    // final coursePrice = Container(
+    //   padding: const EdgeInsets.all(7.0),
+    //   decoration: new BoxDecoration(
+    //       border: new Border.all(color: Colors.white),
+    //       borderRadius: BorderRadius.circular(5.0)),
+    //   child: new Text(
+    //     "\$" + loadedPosting.title,
+    //     style: TextStyle(color: Colors.white),
+    //   ),
+    // );
 
-    final topContentText = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        SizedBox(height: 120.0),
-        Icon(
-          Icons.directions_car,
-          color: Colors.white,
-          size: 40.0,
-        ),
-        Container(
-          width: 90.0,
-          child: new Divider(color: Colors.green),
-        ),
-        SizedBox(height: 10.0),
-        Text(
-          loadedPosting.title,
-          style: TextStyle(color: Colors.white, fontSize: 45.0),
-        ),
-        SizedBox(height: 30.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Expanded(
-                flex: 6,
-                child: Padding(
-                    padding: EdgeInsets.only(left: 10.0),
-                    child: Text(
-                      loadedPosting.location.address,
-                      style: TextStyle(color: Colors.white),
-                    ))),
-            Expanded(flex: 1, child: coursePrice)
-          ],
-        ),
-      ],
-    );
+    // final topContentText = Column(
+    //   crossAxisAlignment: CrossAxisAlignment.start,
+    //   children: <Widget>[
+    //     SizedBox(height: 120.0),
+    //     Container(
+    //       width: 90.0,
+    //       child: new Divider(color: Colors.green),
+    //     ),
+    //     SizedBox(height: 10.0),
+    //     Text(
+    //       loadedPosting.title,
+    //       style: TextStyle(color: Colors.white, fontSize: 45.0),
+    //     ),
+    //     SizedBox(height: 30.0),
+    //     Row(
+    //       mainAxisAlignment: MainAxisAlignment.start,
+    //       children: <Widget>[
+    //         Expanded(
+    //             flex: 6,
+    //             child: Padding(
+    //                 padding: EdgeInsets.only(left: 10.0),
+    //                 child: Text(
+    //                   loadedPosting.location.address,
+    //                   style: TextStyle(color: Colors.white),
+    //                 ))),
+    //         Expanded(flex: 1, child: coursePrice)
+    //       ],
+    //     ),
+    //   ],
+    // );
 
     final topContent = Stack(
       children: <Widget>[
         Container(
             padding: EdgeInsets.only(left: 10.0),
-            height: MediaQuery.of(context).size.height * 0.5,
+            height: MediaQuery.of(context).size.height * 0.65,
             decoration: new BoxDecoration(
+              borderRadius: BorderRadius.circular(25),
               image: new DecorationImage(
                 image: FileImage(loadedPosting.image),
                 fit: BoxFit.cover,
               ),
             )),
         Container(
-          height: MediaQuery.of(context).size.height * 0.5,
+          height: MediaQuery.of(context).size.height * 0.65,
           padding: EdgeInsets.all(40.0),
           width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, .9)),
+          //decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, .9)),
           child: Center(
-            child: topContentText,
-          ),
+              //child: topContentText,
+              ),
         ),
-        Positioned(
-          left: 8.0,
-          top: 60.0,
-          child: InkWell(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Icon(Icons.arrow_back, color: Colors.white),
-          ),
-        )
       ],
     );
 
     final bottomContentText = Text(
       loadedPosting.title,
       style: TextStyle(fontSize: 18.0),
+    );
+    final backButton = InkWell(
+      //highlightColor: Colors.black,
+      onTap: () {
+        Navigator.pop(context);
+      },
+      child: Icon(
+        Icons.arrow_back,
+        color: Colors.black,
+      ),
+    );
+    final description = Text(
+      loadedPosting.description,
+      textAlign: TextAlign.left,
+      overflow: TextOverflow.ellipsis,
+      maxLines: 3,
     );
     final readButton = Container(
         padding: EdgeInsets.symmetric(vertical: 16.0),
@@ -125,7 +127,12 @@ class SweepstakesDetail extends StatelessWidget {
       padding: EdgeInsets.all(40.0),
       child: Center(
         child: Column(
-          children: <Widget>[bottomContentText, readButton],
+          children: <Widget>[
+            bottomContentText,
+            readButton,
+            backButton,
+            description
+          ],
         ),
       ),
     );

@@ -28,6 +28,7 @@ class GreatPlaces with ChangeNotifier {
     String pickedTitle,
     File pickedImage,
     PlaceLocation pickedLocation,
+    String pickedDescription,
   ) async {
     var stateAddress = await LocationHelper.getPlaceAddress(
         pickedLocation.latitude, pickedLocation.longitude);
@@ -45,6 +46,7 @@ class GreatPlaces with ChangeNotifier {
         id: DateTime.now().toString(),
         image: pickedImage,
         title: pickedTitle,
+        description: pickedDescription,
         location: updatedLocation,
       );
       await http.post(
@@ -57,7 +59,8 @@ class GreatPlaces with ChangeNotifier {
           'loc_lng': newPlace.location.longitude,
           'address': stateAddress,
           'creatorId': userId,
-          'state': stateAddress
+          'state': stateAddress,
+          'description': newPlace.description
         }),
       );
       _items.add(newPlace);
@@ -83,15 +86,18 @@ class GreatPlaces with ChangeNotifier {
       }
       final List<Place> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
-        loadedProducts.add(Place(
-            id: prodId,
-            title: prodData['title'],
-            image: File(prodData['image']),
-            location: PlaceLocation(
-              latitude: prodData['loc_lat'],
-              longitude: prodData['loc_lng'],
-              address: prodData['address'],
-            )));
+        loadedProducts.add(
+          Place(
+              id: prodId,
+              title: prodData['title'],
+              image: File(prodData['image']),
+              location: PlaceLocation(
+                latitude: prodData['loc_lat'],
+                longitude: prodData['loc_lng'],
+                address: prodData['address'],
+              ),
+              description: prodData['description']),
+        );
       });
       _items = loadedProducts;
 
