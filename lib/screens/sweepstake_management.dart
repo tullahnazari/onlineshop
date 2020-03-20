@@ -1,4 +1,6 @@
+import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sweepstakes/providers/great_places.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
@@ -22,15 +24,27 @@ class SweepstakeManagement extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Your Postings'),
         actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {
-              Navigator.of(context).pushNamed(AddPlaceScreen.routeName);
-            },
-          ),
+          // IconButton(
+          //   icon: const Icon(Icons.add),
+          //   onPressed: () {
+          //     Navigator.of(context).pushNamed(AddPlaceScreen.routeName);
+          //   },
+          // ),
         ],
       ),
       drawer: AppDrawer(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: FloatingActionButton(
+        tooltip: 'Add A Posting',
+        backgroundColor: Theme.of(context).primaryColor,
+        onPressed: () {
+          Navigator.of(context).pushNamed(AddPlaceScreen.routeName);
+        },
+        child: Icon(
+          FontAwesomeIcons.plusCircle,
+          color: Theme.of(context).accentColor,
+        ),
+      ),
       body: FutureBuilder(
         future: _refreshProducts(context),
         builder: (ctx, snapshot) =>
