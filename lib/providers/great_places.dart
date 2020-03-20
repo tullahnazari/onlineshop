@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import '../models/place.dart';
 
 class GreatPlaces with ChangeNotifier {
+  GreatPlaces(this.authToken, this.userId, this._items);
   bool error = false;
   bool isDisposed = false;
   List<Place> _items = [];
@@ -19,8 +20,6 @@ class GreatPlaces with ChangeNotifier {
   final String authToken;
   final String userId;
 
-  GreatPlaces(this.authToken, this.userId, this._items);
-
   Place findById(String id) {
     return _items.firstWhere((place) => place.id == id);
   }
@@ -29,6 +28,10 @@ class GreatPlaces with ChangeNotifier {
     String pickedTitle,
     File pickedImage,
     PlaceLocation pickedLocation,
+    String pickedDescription,
+    String pickedEmail,
+    String pickedPhone,
+    double pickedPrice,
   ) async {
     var stateAddress = await LocationHelper.getPlaceAddress(
         pickedLocation.latitude, pickedLocation.longitude);
@@ -46,7 +49,11 @@ class GreatPlaces with ChangeNotifier {
         id: DateTime.now().toString(),
         image: pickedImage,
         title: pickedTitle,
+        description: pickedDescription,
         location: updatedLocation,
+        email: pickedEmail,
+        phone: pickedPhone,
+        price: pickedPrice,
       );
       await http.post(
         url,
@@ -58,7 +65,11 @@ class GreatPlaces with ChangeNotifier {
           'loc_lng': newPlace.location.longitude,
           'address': stateAddress,
           'creatorId': userId,
-          'state': stateAddress
+          'state': stateAddress,
+          'description': newPlace.description,
+          'email': newPlace.email,
+          'phone': newPlace.phone,
+          'price': newPlace.price,
         }),
       );
       _items.add(newPlace);
@@ -84,7 +95,8 @@ class GreatPlaces with ChangeNotifier {
       }
       final List<Place> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
-        loadedProducts.add(Place(
+        loadedProducts.add(
+          Place(
             id: prodId,
             title: prodData['title'],
             image: File(prodData['image']),
@@ -92,7 +104,13 @@ class GreatPlaces with ChangeNotifier {
               latitude: prodData['loc_lat'],
               longitude: prodData['loc_lng'],
               address: prodData['address'],
-            )));
+            ),
+            description: prodData['description'],
+            email: prodData['email'],
+            phone: prodData['phone'],
+            price: prodData['price'],
+          ),
+        );
       });
       _items = loadedProducts;
 

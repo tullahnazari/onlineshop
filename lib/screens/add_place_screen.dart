@@ -16,7 +16,16 @@ class AddPlaceScreen extends StatefulWidget {
 }
 
 class _AddPlaceScreenState extends State<AddPlaceScreen> {
+  double price;
+  final _priceController = TextEditingController();
+  String emailText;
+  final _emailController = TextEditingController();
+  String phoneText;
+  final _phoneController = TextEditingController();
+  String descriptionText;
+  String titleText;
   final _titleController = TextEditingController();
+  final _descriptionController = TextEditingController();
   File _pickedImage;
   PlaceLocation _pickedLocation;
 
@@ -29,7 +38,11 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
   }
 
   Future<void> _savePlace() async {
-    if (_titleController.text.isEmpty ||
+    if (_descriptionController.text.isEmpty ||
+        _priceController.text.isEmpty ||
+        _titleController.text.isEmpty ||
+        _emailController.text.isEmpty ||
+        _phoneController.text.isEmpty ||
         _pickedImage == null ||
         _pickedLocation == null) {
       return;
@@ -38,7 +51,12 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
       _titleController.text,
       _pickedImage,
       _pickedLocation,
+      _descriptionController.text,
+      _emailController.text,
+      _phoneController.text,
+      double.parse(_priceController.text),
     );
+
     Navigator.of(context).pop();
   }
 
@@ -58,8 +76,50 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                 child: Column(
                   children: <Widget>[
                     TextField(
-                      decoration: InputDecoration(labelText: 'Title'),
+                      decoration: InputDecoration.collapsed(hintText: 'Title'),
                       controller: _titleController,
+                      onEditingComplete: () {
+                        titleText = _titleController.text;
+
+                        ///print(databaseText);
+                      },
+                    ),
+                    TextField(
+                      decoration:
+                          InputDecoration.collapsed(hintText: 'Description'),
+                      controller: _descriptionController,
+                      onEditingComplete: () {
+                        descriptionText = _descriptionController.text;
+
+                        ///print(databaseText);
+                      },
+                    ),
+                    TextField(
+                      decoration: InputDecoration.collapsed(hintText: 'Price'),
+                      controller: _priceController,
+                      onEditingComplete: () {
+                        price = double.parse(_priceController.text);
+
+                        ///print(databaseText);
+                      },
+                    ),
+                    TextField(
+                      decoration: InputDecoration.collapsed(hintText: 'Email'),
+                      controller: _emailController,
+                      onEditingComplete: () {
+                        emailText = _emailController.text;
+
+                        ///print(databaseText);
+                      },
+                    ),
+                    TextField(
+                      decoration: InputDecoration.collapsed(hintText: 'Phone'),
+                      controller: _phoneController,
+                      onEditingComplete: () {
+                        phoneText = _phoneController.text;
+
+                        ///print(databaseText);
+                      },
                     ),
                     SizedBox(
                       height: 10,
