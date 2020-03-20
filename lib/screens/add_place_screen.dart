@@ -75,9 +75,22 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                 padding: EdgeInsets.all(10),
                 child: Column(
                   children: <Widget>[
-                    TextField(
-                      decoration: InputDecoration.collapsed(hintText: 'Title'),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        hintText: 'Title: ',
+                        fillColor: Colors.white,
+                        border: InputBorder.none,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                          borderSide:
+                              BorderSide(color: Theme.of(context).primaryColor),
+                        ),
+                        filled: true,
+                        contentPadding: EdgeInsets.only(
+                            bottom: 10.0, left: 10.0, right: 10.0),
+                      ),
                       controller: _titleController,
+                      keyboardType: TextInputType.text,
                       onEditingComplete: () {
                         titleText = _titleController.text;
 
@@ -85,9 +98,22 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                       },
                     ),
                     TextField(
-                      decoration:
-                          InputDecoration.collapsed(hintText: 'Description'),
+                      maxLines: 3,
+                      decoration: InputDecoration(
+                        hintText: 'Description: ',
+                        fillColor: Colors.white,
+                        border: InputBorder.none,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                          borderSide:
+                              BorderSide(color: Theme.of(context).primaryColor),
+                        ),
+                        filled: true,
+                        contentPadding: EdgeInsets.only(
+                            bottom: 10.0, left: 10.0, right: 10.0),
+                      ),
                       controller: _descriptionController,
+                      keyboardType: TextInputType.multiline,
                       onEditingComplete: () {
                         descriptionText = _descriptionController.text;
 
@@ -95,8 +121,21 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                       },
                     ),
                     TextField(
-                      decoration: InputDecoration.collapsed(hintText: 'Price'),
+                      decoration: InputDecoration(
+                        hintText: 'Price: ',
+                        fillColor: Colors.white,
+                        border: InputBorder.none,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                          borderSide:
+                              BorderSide(color: Theme.of(context).primaryColor),
+                        ),
+                        filled: true,
+                        contentPadding: EdgeInsets.only(
+                            bottom: 10.0, left: 10.0, right: 10.0),
+                      ),
                       controller: _priceController,
+                      keyboardType: TextInputType.number,
                       onEditingComplete: () {
                         price = double.parse(_priceController.text);
 
@@ -104,8 +143,21 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                       },
                     ),
                     TextField(
-                      decoration: InputDecoration.collapsed(hintText: 'Email'),
+                      decoration: InputDecoration(
+                        hintText: 'Email: ',
+                        fillColor: Colors.white,
+                        border: InputBorder.none,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                          borderSide:
+                              BorderSide(color: Theme.of(context).primaryColor),
+                        ),
+                        filled: true,
+                        contentPadding: EdgeInsets.only(
+                            bottom: 10.0, left: 10.0, right: 10.0),
+                      ),
                       controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
                       onEditingComplete: () {
                         emailText = _emailController.text;
 
@@ -113,8 +165,21 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                       },
                     ),
                     TextField(
-                      decoration: InputDecoration.collapsed(hintText: 'Phone'),
+                      decoration: InputDecoration(
+                        hintText: 'Phone: ',
+                        fillColor: Colors.white,
+                        border: InputBorder.none,
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                          borderSide:
+                              BorderSide(color: Theme.of(context).primaryColor),
+                        ),
+                        filled: true,
+                        contentPadding: EdgeInsets.only(
+                            bottom: 10.0, left: 10.0, right: 10.0),
+                      ),
                       controller: _phoneController,
+                      keyboardType: TextInputType.phone,
                       onEditingComplete: () {
                         phoneText = _phoneController.text;
 

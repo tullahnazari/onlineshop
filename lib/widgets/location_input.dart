@@ -85,14 +85,14 @@ class _LocationInputState extends State<LocationInput> {
               textColor: Theme.of(context).primaryColor,
               onPressed: _getCurrentUserLocation,
             ),
-            FlatButton.icon(
-              icon: Icon(
-                Icons.map,
-              ),
-              label: Text('Select on Map'),
-              textColor: Theme.of(context).primaryColor,
-              onPressed: _selectOnMap,
-            ),
+            // FlatButton.icon(
+            //   icon: Icon(
+            //     Icons.map,
+            //   ),
+            //   label: Text('Select on Map'),
+            //   textColor: Theme.of(context).primaryColor,
+            //   onPressed: _selectOnMap,
+            // ),
           ],
         ),
       ],
