@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geolocator/geolocator.dart' as geo;
@@ -12,6 +13,7 @@ import 'package:sweepstakes/models/place.dart';
 import 'package:sweepstakes/models/user_location.dart';
 import 'package:sweepstakes/providers/auth.dart';
 import 'package:sweepstakes/providers/great_places.dart';
+import 'package:sweepstakes/screens/add_place_screen.dart';
 
 import 'package:sweepstakes/widgets/app_drawer.dart';
 import 'package:sweepstakes/widgets/overview_posting.dart';
@@ -60,7 +62,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
     // final loadedSweepstakeData = Provider.of<GreatPlaces>(context);
     // final loadedSweepstake = loadedSweepstakeData.items;
     // final userProvider = Provider.of<Auth>(context);
-
+    final productCount = Provider.of<GreatPlaces>(context, listen: false);
     return Scaffold(
       drawer: AppDrawer(),
       appBar: AppBar(
@@ -82,7 +84,18 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                 child: FlatButton(
                     child: Text("state"),
                     onPressed: () async {
-                      //await getLocation();
+                      var order = await productCount.getCount();
+                      if (order > 9) {
+                        Flushbar(
+                          title: "Ohhh Shucks...",
+                          message:
+                              "You can only post 10 items at a time, please delete unused posts ",
+                          duration: Duration(seconds: 5),
+                        )..show(context);
+                      } else {
+                        Navigator.of(context)
+                            .pushNamed(AddPlaceScreen.routeName);
+                      }
                     }),
               ),
             ],
