@@ -92,6 +92,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
           'Near you',
           style: TextStyle(
               color: Theme.of(context).accentColor, fontFamily: 'Lato'),
+          textAlign: TextAlign.center,
         ),
       ),
       // bottomNavigationBar: BottomBar(),

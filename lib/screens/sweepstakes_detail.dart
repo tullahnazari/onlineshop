@@ -1,5 +1,6 @@
 import 'package:ads/admob.dart';
 import 'package:clippy_flutter/diagonal.dart';
+import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flushbar/flushbar_route.dart';
 import 'package:flutter/material.dart';
@@ -81,10 +82,16 @@ class SweepstakesDetail extends StatelessWidget {
             padding: EdgeInsets.only(left: 10.0),
             height: MediaQuery.of(context).size.height * 0.65,
             decoration: new BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
+              boxShadow: [
+                new BoxShadow(
+                  color: Theme.of(context).primaryColor,
+                  offset: new Offset(0.0, 8.0),
+                )
+              ],
+              borderRadius: BorderRadius.circular(20),
               image: new DecorationImage(
                 image: FileImage(loadedPosting.image),
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
               ),
             )),
         Container(
@@ -101,7 +108,10 @@ class SweepstakesDetail extends StatelessWidget {
 
     final bottomContentText = Text(
       loadedPosting.title,
-      style: TextStyle(fontSize: 18.0),
+      style: TextStyle(
+          fontSize: 34.0,
+          color: Theme.of(context).primaryColor,
+          fontFamily: 'Lato'),
     );
     // final backButton = InkWell(
     //   //highlightColor: Colors.black,
@@ -120,14 +130,21 @@ class SweepstakesDetail extends StatelessWidget {
           textAlign: TextAlign.left,
           overflow: TextOverflow.ellipsis,
           maxLines: 3,
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Lato',
+            fontSize: 20,
+          ),
         ),
         SizedBox(
           height: 10,
         ),
         Text(
           '\$$price' ?? '',
-          style:
-              TextStyle(color: Colors.black, fontFamily: 'Lato', fontSize: 30),
+          style: TextStyle(
+              color: Theme.of(context).primaryColor,
+              fontFamily: 'Lato',
+              fontSize: 40),
         ),
       ],
     );
@@ -184,23 +201,50 @@ class SweepstakesDetail extends StatelessWidget {
       ],
     );
     final bottomContent = Container(
+      // height: 400,
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.all(40.0),
+      padding: EdgeInsets.all(10.0),
       child: Center(
         child: Column(
           children: <Widget>[
             bottomContentText,
             description,
-            readButton,
+            //readButton,
           ],
         ),
       ),
     );
 
     return Scaffold(
-      body: Column(
-        children: <Widget>[topContent, bottomContent],
-      ),
-    );
+        body: Column(
+          children: <Widget>[topContent, bottomContent],
+        ),
+        bottomNavigationBar: FancyBottomNavigation(
+          tabs: [
+            TabData(
+                iconData: Icons.keyboard_arrow_left,
+                title: "Back",
+                onclick: () {
+                  Navigator.pop(context);
+                }),
+            TabData(
+                iconData: Icons.message,
+                title: "Email",
+                onclick: () {
+                  _service.sendEmail(loadedPosting.email);
+                }),
+            TabData(
+                iconData: Icons.call,
+                title: "Call/Text",
+                onclick: () {
+                  _service.call(loadedPosting.phone);
+                })
+          ],
+          onTabChangedListener: (position) {
+            // setState(() {
+            //   currentPage = position;
+            // });
+          },
+        ));
   }
 }
