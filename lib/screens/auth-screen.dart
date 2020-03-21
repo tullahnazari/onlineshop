@@ -124,15 +124,15 @@ class AuthScreen extends StatelessWidget {
             ),
 
             AuthCard(),
-            SizedBox(
-              height: 10,
-            ),
-            _signInWithFacebook(),
-            SizedBox(
-              height: 10,
-            ),
+            // SizedBox(
+            //   height: 10,
+            // ),
+            // _signInWithFacebook(),
+            // SizedBox(
+            //   height: 10,
+            // ),
 
-            _signInButton(),
+            // _signInButton(),
           ],
         ),
       ),
