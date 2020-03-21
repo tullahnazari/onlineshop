@@ -19,21 +19,45 @@ class AppDrawer extends StatelessWidget {
           ),
           Divider(),
           ListTile(
-            leading: Icon(Icons.shop),
+            leading: Icon(
+              Icons.shop,
+              size: 30,
+            ),
             title: Text('Posting'),
+            subtitle: Text('See Products or Service near you'),
             onTap: () {
               Navigator.of(context).pushReplacementNamed('/');
             },
           ),
           Divider(),
           ListTile(
-            leading: Icon(Icons.edit),
+            leading: Icon(
+              Icons.edit,
+              size: 30,
+            ),
             title: Text('Manage Postings'),
+            subtitle: Text('Add a Service or Product'),
             onTap: () {
               Navigator.of(context)
                   .pushReplacementNamed(SweepstakeManagement.routeName);
             },
           ),
+          SizedBox(
+            height: 500,
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.person,
+              size: 30,
+            ),
+            title: Text('Log out'),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).pushReplacementNamed('/');
+              Provider.of<Auth>(context, listen: false).logout();
+            },
+          ),
+
           // StreamBuilder<DocumentSnapshot>(
           //   stream: Firestore.instance
           //       .collection('users')
