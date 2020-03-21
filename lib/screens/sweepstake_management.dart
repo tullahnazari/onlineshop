@@ -1,4 +1,5 @@
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,10 @@ class SweepstakeManagement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int count = 0;
+    final products = Provider.of<GreatPlaces>(context, listen: false);
+    final productCount = Provider.of<GreatPlaces>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Postings'),
@@ -37,8 +42,18 @@ class SweepstakeManagement extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         tooltip: 'Add A Posting',
         backgroundColor: Theme.of(context).primaryColor,
-        onPressed: () {
-          Navigator.of(context).pushNamed(AddPlaceScreen.routeName);
+        onPressed: () async {
+          var order = await productCount.getCount();
+          if (order > 9) {
+            Flushbar(
+              title: "Ohhh Shucks...",
+              message:
+                  "You can only post 10 items at a time, please delete unused posts ",
+              duration: Duration(seconds: 5),
+            )..show(context);
+          } else {
+            Navigator.of(context).pushNamed(AddPlaceScreen.routeName);
+          }
         },
         child: Icon(
           FontAwesomeIcons.plusCircle,
