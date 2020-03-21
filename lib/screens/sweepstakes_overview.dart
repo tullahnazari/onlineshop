@@ -30,59 +30,62 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   var _isLoading = false;
   var _isInit = true;
   Position currentLocation;
-
-  // @override
-  // void initState() {
-  //   if (_isInit) {
-  //     setState(() {
-  //       _isLoading = true;
-  //     });
-  //     Provider.of<GreatPlaces>(context, listen: false)
-  //         .fetchResultsByState()
-  //         .then((_) {
-  //       setState(() {
-  //         _isLoading = false;
-  //       });
-  //     });
-  //   }
-  //   super.initState();
-  // }
   var value;
-  Future<void> _refreshProducts(BuildContext context) async {
-    await getUserLocation().then((value) async {
-      await Provider.of<GreatPlaces>(context, listen: false)
-          .fetchResultsByState(value);
-    });
-    // await Provider.of<GreatPlaces>(context, listen: false)
-    //     .fetchResultsByState(value));
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      getUserLocation().then((value) async {
+        await Provider.of<GreatPlaces>(context, listen: false)
+            .fetchResultsByState(value);
+      });
+      setState(() {
+        _isLoading = false;
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
   }
+
+  // var value;
+  // Future<void> _refreshProducts(BuildContext context) async {
+  //   await getUserLocation().then((value) async {
+  //     await Provider.of<GreatPlaces>(context, listen: false)
+  //         .fetchResultsByState(value);
+  //   });
+  // await Provider.of<GreatPlaces>(context, listen: false)
+  //     .fetchResultsByState(value));
+  //}
 
   @override
   Widget build(BuildContext context) {
     // final loadedSweepstakeData = Provider.of<GreatPlaces>(context);
     // final loadedSweepstake = loadedSweepstakeData.items;
     // final userProvider = Provider.of<Auth>(context);
-    final productCount = Provider.of<GreatPlaces>(context, listen: false);
+    //final productCount = Provider.of<GreatPlaces>(context, listen: false);
     return Scaffold(
       drawer: AppDrawer(),
       appBar: AppBar(
-        actions: <Widget>[
-          Icon(Icons.search),
-          PopupMenuButton(
-            icon: Icon(Icons.more_vert),
-            itemBuilder: (_) => [
-              PopupMenuItem(
-                child: FlatButton(
-                    child: Text("Logout"),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pushReplacementNamed('/');
-                      Provider.of<Auth>(context, listen: false).logout();
-                    }),
-              ),
-            ],
-          ),
-        ],
+        // actions: <Widget>[
+        //   Icon(Icons.search),
+        //   PopupMenuButton(
+        //     icon: Icon(Icons.more_vert),
+        //     itemBuilder: (_) => [
+        //       PopupMenuItem(
+        //         child: FlatButton(
+        //             child: Text("Logout"),
+        //             onPressed: () {
+        //               Navigator.of(context).pop();
+        //               Navigator.of(context).pushReplacementNamed('/');
+        //               Provider.of<Auth>(context, listen: false).logout();
+        //             }),
+        //       ),
+        //     ],
+        //   ),
+        // ],
         title: Text(
           'Near you',
           style: TextStyle(
@@ -96,52 +99,52 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
               child: CircularProgressIndicator(),
             )
           : FutureBuilder(
-              future: _refreshProducts(context),
-              builder: (ctx, snapshot) =>
-                  snapshot.connectionState == ConnectionState.waiting
-                      ? Center(
-                          child: CircularProgressIndicator(
-                            backgroundColor: Theme.of(context).primaryColor,
+              //future: _refreshProducts(context),
+              builder: (ctx, snapshot) => snapshot.connectionState ==
+                      ConnectionState.waiting
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: Theme.of(context).primaryColor,
+                      ),
+                    )
+                  :
+                  // RefreshIndicator(
+                  //     onRefresh: () => _refreshProducts(context),
+                  //child:
+                  Consumer<GreatPlaces>(
+                      builder: (ctx, greatPlaces, _) => Padding(
+                        padding: const EdgeInsets.only(
+                            top: 5, bottom: 5, left: 5, right: 5),
+                        child: GridView.builder(
+                          padding: const EdgeInsets.all(10.0),
+                          itemCount: greatPlaces.items.length,
+                          itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
+                            // builder: (c) => products[i],
+                            value: greatPlaces.items[i],
+                            child: OverviewPosting(
+                                // id: greatPlaces.items[i].id,
+                                // title: greatPlaces.items[i].title,
+                                // image: greatPlaces.items[i].image,
+                                // address: greatPlaces.items[i].location.address,
+                                ),
                           ),
-                        )
-                      : RefreshIndicator(
-                          onRefresh: () => _refreshProducts(context),
-                          child: Consumer<GreatPlaces>(
-                            builder: (ctx, greatPlaces, _) => Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 5, bottom: 5, left: 5, right: 5),
-                              child: GridView.builder(
-                                padding: const EdgeInsets.all(10.0),
-                                itemCount: greatPlaces.items.length,
-                                itemBuilder: (ctx, i) =>
-                                    ChangeNotifierProvider.value(
-                                  // builder: (c) => products[i],
-                                  value: greatPlaces.items[i],
-                                  child: OverviewPosting(
-                                      // id: greatPlaces.items[i].id,
-                                      // title: greatPlaces.items[i].title,
-                                      // image: greatPlaces.items[i].image,
-                                      // address: greatPlaces.items[i].location.address,
-                                      ),
-                                ),
-                                scrollDirection: Axis.vertical,
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 1,
-                                  // childAspectRatio: MediaQuery.of(context).size.width /
-                                  //     (MediaQuery.of(context).size.height / 4),
-                                ),
-                              ),
-                            ),
+                          scrollDirection: Axis.vertical,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 1,
+                            // childAspectRatio: MediaQuery.of(context).size.width /
+                            //     (MediaQuery.of(context).size.height / 4),
                           ),
                         ),
+                      ),
+                    ),
             ),
     );
   }
 
   Future<Position> locateUser() async {
     return Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.lowest);
   }
 
   getUserLocation() async {
