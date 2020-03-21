@@ -80,24 +80,6 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                       Provider.of<Auth>(context, listen: false).logout();
                     }),
               ),
-              PopupMenuItem(
-                child: FlatButton(
-                    child: Text("state"),
-                    onPressed: () async {
-                      var order = await productCount.getCount();
-                      if (order > 9) {
-                        Flushbar(
-                          title: "Ohhh Shucks...",
-                          message:
-                              "You can only post 10 items at a time, please delete unused posts ",
-                          duration: Duration(seconds: 5),
-                        )..show(context);
-                      } else {
-                        Navigator.of(context)
-                            .pushNamed(AddPlaceScreen.routeName);
-                      }
-                    }),
-              ),
             ],
           ),
         ],

@@ -46,10 +46,10 @@ class SweepstakeManagement extends StatelessWidget {
           var order = await productCount.getCount();
           if (order > 9) {
             Flushbar(
-              title: "Hey Ninja",
+              title: "Ohhh Shucks...",
               message:
-                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-              duration: Duration(seconds: 3),
+                  "You can only post 10 items at a time, please delete unused posts ",
+              duration: Duration(seconds: 5),
             )..show(context);
           } else {
             Navigator.of(context).pushNamed(AddPlaceScreen.routeName);
