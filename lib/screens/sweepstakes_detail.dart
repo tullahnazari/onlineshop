@@ -14,7 +14,6 @@ import 'package:sweepstakes/models/sweepstake.dart';
 import 'package:sweepstakes/providers/great_places.dart';
 import 'package:sweepstakes/providers/results.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
-import 'package:sweepstakes/screens/results_screen.dart';
 import 'package:sweepstakes/widgets/animation.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 
