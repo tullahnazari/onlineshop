@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sweepstakes/screens/camera_screen.dart';
@@ -45,7 +46,13 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
         _phoneController.text.isEmpty ||
         _pickedImage == null ||
         _pickedLocation == null) {
-      return;
+      return Flushbar(
+        title: "Hey, are you missing something?",
+        message:
+            "Please fill out all sections of the post in order to add posting",
+        backgroundColor: Colors.redAccent,
+        duration: Duration(seconds: 5),
+      )..show(context);
     }
     await Provider.of<GreatPlaces>(context, listen: false).addPlace(
       _titleController.text,
@@ -64,7 +71,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add a New Place'),
+        title: Text('Add a New Product or Service'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -75,16 +82,23 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                 padding: EdgeInsets.all(10),
                 child: Column(
                   children: <Widget>[
+                    ImageInput(_selectImage),
+                    SizedBox(
+                      height: 10,
+                    ),
                     TextFormField(
                       decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.greenAccent, width: 5.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.black, width: 3.0),
+                        ),
                         hintText: 'Title: ',
                         fillColor: Colors.white,
                         border: InputBorder.none,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                          borderSide:
-                              BorderSide(color: Theme.of(context).primaryColor),
-                        ),
                         filled: true,
                         contentPadding: EdgeInsets.only(
                             bottom: 10.0, left: 10.0, right: 10.0),
@@ -100,14 +114,17 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                     TextField(
                       maxLines: 3,
                       decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.greenAccent, width: 3.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.black, width: 3.0),
+                        ),
                         hintText: 'Description: ',
                         fillColor: Colors.white,
                         border: InputBorder.none,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                          borderSide:
-                              BorderSide(color: Theme.of(context).primaryColor),
-                        ),
                         filled: true,
                         contentPadding: EdgeInsets.only(
                             bottom: 10.0, left: 10.0, right: 10.0),
@@ -122,14 +139,17 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                     ),
                     TextField(
                       decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.greenAccent, width: 3.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.black, width: 3.0),
+                        ),
                         hintText: 'Price: ',
                         fillColor: Colors.white,
                         border: InputBorder.none,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                          borderSide:
-                              BorderSide(color: Theme.of(context).primaryColor),
-                        ),
                         filled: true,
                         contentPadding: EdgeInsets.only(
                             bottom: 10.0, left: 10.0, right: 10.0),
@@ -144,14 +164,17 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                     ),
                     TextField(
                       decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.greenAccent, width: 3.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.black, width: 3.0),
+                        ),
                         hintText: 'Email: ',
                         fillColor: Colors.white,
                         border: InputBorder.none,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                          borderSide:
-                              BorderSide(color: Theme.of(context).primaryColor),
-                        ),
                         filled: true,
                         contentPadding: EdgeInsets.only(
                             bottom: 10.0, left: 10.0, right: 10.0),
@@ -166,14 +189,17 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                     ),
                     TextField(
                       decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.greenAccent, width: 3.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.black, width: 3.0),
+                        ),
                         hintText: 'Phone: ',
                         fillColor: Colors.white,
                         border: InputBorder.none,
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                          borderSide:
-                              BorderSide(color: Theme.of(context).primaryColor),
-                        ),
                         filled: true,
                         contentPadding: EdgeInsets.only(
                             bottom: 10.0, left: 10.0, right: 10.0),
@@ -189,24 +215,33 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                     SizedBox(
                       height: 10,
                     ),
-                    ImageInput(_selectImage),
-                    SizedBox(
-                      height: 10,
-                    ),
+                    // ImageInput(_selectImage),
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
                     LocationInput(_selectPlace),
                   ],
                 ),
               ),
             ),
           ),
+          // Container(
+          //   decoration: BoxDecoration(
+          //     border: Border.all(width: 3, color: Colors.black),
+          //   ),
+          //   child:
           RaisedButton.icon(
+            shape: RoundedRectangleBorder(
+              side: BorderSide(color: Colors.black, width: 3),
+            ),
             icon: Icon(Icons.add),
-            label: Text('Add Place'),
+            label: Text('Add Posting'),
             onPressed: _savePlace,
-            elevation: 0,
+            elevation: 10,
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             color: Theme.of(context).accentColor,
           ),
+          // ),
         ],
       ),
     );

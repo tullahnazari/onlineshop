@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sweepstakes/providers/great_places.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
-import 'package:sweepstakes/screens/adding_sweepstakes.dart';
 
 class UserSweepstakeItem extends StatelessWidget {
   final String id;
@@ -28,10 +27,7 @@ class UserSweepstakeItem extends StatelessWidget {
           children: <Widget>[
             IconButton(
               icon: Icon(Icons.edit),
-              onPressed: () {
-                Navigator.of(context)
-                    .pushNamed(AddingSweepstake.routeName, arguments: id);
-              },
+              onPressed: () {},
               color: Theme.of(context).primaryColor,
             ),
             IconButton(

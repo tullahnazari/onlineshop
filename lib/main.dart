@@ -12,7 +12,7 @@ import 'package:sweepstakes/providers/location_service.dart';
 import 'package:sweepstakes/providers/results.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/screens/add_place_screen.dart';
-import 'package:sweepstakes/screens/adding_sweepstakes.dart';
+
 import 'package:sweepstakes/screens/auth-screen.dart';
 import 'package:sweepstakes/screens/location_page.dart';
 import 'package:sweepstakes/screens/results_screen.dart';
@@ -20,7 +20,6 @@ import 'package:sweepstakes/screens/spash_screen.dart';
 import 'package:sweepstakes/screens/sweepstake_management.dart';
 import 'package:sweepstakes/screens/sweepstakes_detail.dart';
 import 'package:sweepstakes/screens/sweepstakes_overview.dart';
-import 'package:sweepstakes/screens/your_sweepstake.dart';
 
 void main() {
   setupLocator();
@@ -100,10 +99,8 @@ class MyApp extends StatelessWidget {
           routes: {
             SweepstakesDetail.routeName: (ctx) => SweepstakesDetail(),
             ResultScreen.routeName: (ctx) => ResultScreen(),
-            AddingSweepstake.routeName: (ctx) => AddingSweepstake(_selectImage),
             SweepstakeManagement.routeName: (ctx) => SweepstakeManagement(),
             SweepstakesOverview.routeName: (ctx) => SweepstakesOverview(),
-            YourSweepstake.routeName: (ctx) => YourSweepstake(),
             LocationPage.routeName: (ctx) => LocationPage(),
             AddPlaceScreen.routeName: (ctx) => AddPlaceScreen(),
           },

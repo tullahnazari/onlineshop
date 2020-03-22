@@ -22,7 +22,12 @@ class OverviewPosting extends StatelessWidget {
       padding: const EdgeInsets.all(2.0),
       child: GridTile(
         footer: GestureDetector(
-          onTap: () {},
+          onTap: () {
+            Navigator.of(context).pushNamed(
+              SweepstakesDetail.routeName,
+              arguments: place.id,
+            );
+          },
           child: GridTileBar(
             backgroundColor: Colors.black45,
             title: Text(
@@ -50,7 +55,7 @@ class OverviewPosting extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border.all(
               color: Colors.black,
-              width: 5,
+              width: 3,
             ),
             image: DecorationImage(
               colorFilter: ColorFilter.mode(

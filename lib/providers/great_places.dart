@@ -90,7 +90,7 @@ class GreatPlaces with ChangeNotifier {
 
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       if (extractedData == null) {
-        return 'No Postings to show, please add some by going to my Postings from the left navigation';
+        return;
       }
       final List<Place> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
@@ -111,7 +111,7 @@ class GreatPlaces with ChangeNotifier {
           ),
         );
       });
-      _items = loadedProducts;
+      _items = loadedProducts.reversed.toList();
 
       notifyListeners();
     } catch (error) {

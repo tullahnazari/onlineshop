@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:sweepstakes/providers/great_places.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/screens/add_place_screen.dart';
-import 'package:sweepstakes/screens/adding_sweepstakes.dart';
 import 'package:sweepstakes/widgets/app_drawer.dart';
 import 'package:sweepstakes/widgets/sweepstake_items.dart';
 import 'package:sweepstakes/widgets/user_sweepstakes_item.dart';
