@@ -146,6 +146,20 @@ class SweepstakesDetail extends StatelessWidget {
               fontFamily: 'Lato',
               fontSize: 40),
         ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            IconButton(
+                iconSize: 30,
+                color: Colors.red,
+                // Use the FaIcon Widget + FontAwesomeIcons class for the IconData
+                icon: Icon(Icons.report),
+                onPressed: () {
+                  String affordableAppsEmail = 'affordableapps4u@gmail.com';
+                  _service.sendEmail(affordableAppsEmail);
+                }),
+          ],
+        ),
       ],
     );
     // final priceText = Text(

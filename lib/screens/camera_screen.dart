@@ -38,40 +38,41 @@ class _ImageInputState extends State<ImageInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.all(10),
-          width: 150,
-          height: 100,
-          decoration: BoxDecoration(
-            border: Border.all(width: 1, color: Colors.white),
-          ),
-          child: _storedImage != null
-              ? Image.file(
-                  _storedImage,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                )
-              : Text(
-                  'Please Take Picture',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Theme.of(context).primaryColor),
-                ),
-          alignment: Alignment.center,
-        ),
-        Expanded(
-          child: FlatButton.icon(
-            icon: Icon(Icons.camera),
-            label: Text(
-              'Take Picture',
-              style: TextStyle(fontSize: 16),
+    return Container(
+      padding: EdgeInsets.all(10),
+      width: double.infinity,
+      height: 100,
+      decoration: BoxDecoration(
+        border: Border.all(width: 3, color: Colors.black),
+      ),
+      child: _storedImage != null
+          ? Image.file(
+              _storedImage,
+              fit: BoxFit.cover,
+              width: double.infinity,
+            )
+          : RaisedButton(
+              onPressed: () {
+                _takePicture();
+              },
+              child: Text(
+                'Please Take Picture',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Theme.of(context).primaryColor),
+              ),
             ),
-            textColor: Theme.of(context).primaryColor,
-            onPressed: _takePicture,
-          ),
-        ),
-      ],
+      alignment: Alignment.center,
     );
+    // Expanded(
+    //   child: FlatButton.icon(
+    //     icon: Icon(Icons.camera),
+    //     label: Text(
+    //       'Take Picture',
+    //       style: TextStyle(fontSize: 16),
+    //     ),
+    //     textColor: Theme.of(context).primaryColor,
+    //     onPressed: _takePicture,
+    //   ),
+    // )
   }
 }

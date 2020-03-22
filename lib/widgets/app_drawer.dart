@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:sweepstakes/providers/auth.dart';
 
 import 'package:sweepstakes/screens/sweepstake_management.dart';
-import 'package:sweepstakes/screens/your_sweepstake.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -14,7 +13,7 @@ class AppDrawer extends StatelessWidget {
       child: Column(
         children: <Widget>[
           AppBar(
-            title: Text('Hello, Tullah'),
+            title: Text('Welcome to HB'),
             automaticallyImplyLeading: false,
           ),
           Divider(),
@@ -120,9 +119,7 @@ class AppDrawer extends StatelessWidget {
     return ListTile(
       leading: Icon(Icons.edit),
       title: Text('Your Sweepstakes'),
-      onTap: () {
-        Navigator.of(context).pushReplacementNamed(YourSweepstake.routeName);
-      },
+      onTap: () {},
     );
   }
 }

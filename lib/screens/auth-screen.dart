@@ -101,9 +101,12 @@ class AuthScreen extends StatelessWidget {
         height: deviceSize.height,
         width: deviceSize.width,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            SizedBox(
+              height: 90,
+            ),
             // Container(
             //   padding: EdgeInsets.all(16),
             //   height: 300,
@@ -124,9 +127,19 @@ class AuthScreen extends StatelessWidget {
             ),
 
             AuthCard(),
-            // SizedBox(
-            //   height: 10,
-            // ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              alignment: Alignment.center,
+              child: Text(
+                'We do not collect nor sell any of our user data.',
+                style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'Lato',
+                    color: Theme.of(context).primaryColor),
+              ),
+            )
             // _signInWithFacebook(),
             // SizedBox(
             //   height: 10,

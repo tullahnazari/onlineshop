@@ -61,11 +61,14 @@ class _LocationInputState extends State<LocationInput> {
           width: double.infinity,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            border: Border.all(width: 1, color: Colors.grey),
+            border: Border.all(width: 3, color: Colors.black),
           ),
           child: _previewImageUrl == null
               ? Text(
-                  'No Location Chosen',
+                  "Please click Current Location below. We will not share your location with anyone but need it for searching locally",
+                  textDirection: TextDirection.ltr,
+                  style: new TextStyle(fontSize: 10.0, color: Colors.black),
+                  maxLines: 2,
                   textAlign: TextAlign.center,
                 )
               : Image.network(
