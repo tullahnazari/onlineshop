@@ -56,9 +56,7 @@ class AuthScreen extends StatelessWidget {
     Widget _signInWithFacebook() {
       return OutlineButton(
         splashColor: Colors.grey,
-        onPressed: () {
-          Provider.of<Auth>(context, listen: false).initiateSignIn("FB");
-        },
+        onPressed: () {},
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
         highlightElevation: 0,
         borderSide: BorderSide(color: Colors.grey),
@@ -105,7 +103,7 @@ class AuthScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             SizedBox(
-              height: 90,
+              height: 80,
             ),
             // Container(
             //   padding: EdgeInsets.all(16),
@@ -122,9 +120,9 @@ class AuthScreen extends StatelessWidget {
             // ),
 
             appName(),
-            Padding(
-              padding: EdgeInsets.only(bottom: 33.0),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.only(bottom: 10.0),
+            // ),
 
             AuthCard(),
             SizedBox(
@@ -347,8 +345,8 @@ class appName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image(
-      image: AssetImage("assets/images/hb.png"),
-      height: 150.0,
+      image: AssetImage("assets/images/H Logotransparent.png"),
+      height: 210.0,
     );
   }
 }

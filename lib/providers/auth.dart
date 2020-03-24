@@ -40,7 +40,7 @@ class Auth with ChangeNotifier {
 
   //reusable in two endpoints with parameters
   Future<void> _authenticate(
-      String email, String password, String urlSegment, bool signup) async {
+      String email, String password, String urlSegment) async {
     final url =
         'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=AIzaSyCmLH-IxHIPUR0XsPJ5U_R_bE1MbTOwH0I';
     try {
@@ -68,9 +68,6 @@ class Auth with ChangeNotifier {
           ),
         ),
       );
-      if (signup == true) {
-        await UserTableRoles(uid: _userId).updateUserData(isAdmin, email);
-      }
       notifyListeners();
     } catch (error) {
       throw error;
@@ -78,78 +75,78 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> signup(String email, String password) async {
-    return _authenticate(email, password, 'signUp', true);
+    return await _authenticate(email, password, 'signUp');
   }
 
   Future<void> login(String email, String password) async {
-    return _authenticate(email, password, 'signInWithPassword', false);
+    return await _authenticate(email, password, 'signInWithPassword');
   }
 
-  void initiateSignIn(String type) {
-    _handleSignIn(type).then((result) {
-      if (result == 1) {
-        // setState(() {
-        loggedIn = true;
-        // });
-      } else {}
-    });
-  }
+  // void initiateSignIn(String type) {
+  //   _handleSignIn(type).then((result) {
+  //     if (result == 1) {
+  //       // setState(() {
+  //       loggedIn = true;
+  //       // });
+  //     } else {}
+  //   });
+  // }
 
-  Future<int> _handleSignIn(String type) async {
-    switch (type) {
-      case "FB":
-        FacebookLoginResult facebookLoginResult = await _handleFBSignIn();
-        final accessToken = facebookLoginResult.accessToken.token;
-        if (facebookLoginResult.status == FacebookLoginStatus.loggedIn) {
-          final facebookAuthCred =
-              FacebookAuthProvider.getCredential(accessToken: accessToken);
-          final user =
-              await firebaseAuth.signInWithCredential(facebookAuthCred);
-          print("User : " + user.additionalUserInfo.username);
-          return 1;
-        } else
-          return 0;
-        break;
-      case "G":
-        try {
-          GoogleSignInAccount googleSignInAccount = await _handleGoogleSignIn();
-          final googleAuth = await googleSignInAccount.authentication;
-          final googleAuthCred = GoogleAuthProvider.getCredential(
-              idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
-          final user = await firebaseAuth.signInWithCredential(googleAuthCred);
-          print("User : " + user.additionalUserInfo.username);
-          return 1;
-        } catch (error) {
-          return 0;
-        }
-    }
-    return 0;
-  }
+  // Future<int> _handleSignIn(String type) async {
+  //   switch (type) {
+  //     case "FB":
+  //       FacebookLoginResult facebookLoginResult = await _handleFBSignIn();
+  //       final accessToken = facebookLoginResult.accessToken.token;
+  //       if (facebookLoginResult.status == FacebookLoginStatus.loggedIn) {
+  //         final facebookAuthCred =
+  //             FacebookAuthProvider.getCredential(accessToken: accessToken);
+  //         final user =
+  //             await firebaseAuth.signInWithCredential(facebookAuthCred);
+  //         print("User : " + user.additionalUserInfo.username);
+  //         return 1;
+  //       } else
+  //         return 0;
+  //       break;
+  //     case "G":
+  //       try {
+  //         GoogleSignInAccount googleSignInAccount = await _handleGoogleSignIn();
+  //         final googleAuth = await googleSignInAccount.authentication;
+  //         final googleAuthCred = GoogleAuthProvider.getCredential(
+  //             idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+  //         final user = await firebaseAuth.signInWithCredential(googleAuthCred);
+  //         print("User : " + user.additionalUserInfo.username);
+  //         return 1;
+  //       } catch (error) {
+  //         return 0;
+  //       }
+  //   }
+  //   return 0;
+  // }
 
-  Future<FacebookLoginResult> _handleFBSignIn() async {
-    FacebookLogin facebookLogin = FacebookLogin();
-    FacebookLoginResult facebookLoginResult =
-        await facebookLogin.logIn(['email']);
-    switch (facebookLoginResult.status) {
-      case FacebookLoginStatus.cancelledByUser:
-        print("Cancelled");
-        break;
-      case FacebookLoginStatus.error:
-        print("error");
-        break;
-      case FacebookLoginStatus.loggedIn:
-        print("Logged In");
-        break;
-    }
-    return facebookLoginResult;
-  }
+  // Future<FacebookLoginResult> _handleFBSignIn() async {
+  //   FacebookLogin facebookLogin = FacebookLogin();
+  //   FacebookLoginResult facebookLoginResult =
+  //       await facebookLogin.logIn(['email']);
+  //   switch (facebookLoginResult.status) {
+  //     case FacebookLoginStatus.cancelledByUser:
+  //       print("Cancelled");
+  //       break;
+  //     case FacebookLoginStatus.error:
+  //       print("error");
+  //       break;
+  //     case FacebookLoginStatus.loggedIn:
+  //       print("Logged In");
+  //       break;
+  //   }
+  //   return facebookLoginResult;
+  // }
 
-  Future<GoogleSignInAccount> _handleGoogleSignIn() async {
-    GoogleSignIn googleSignIn = GoogleSignIn(
-        scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly']);
-    GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-    return googleSignInAccount;
-  }
+  // Future<GoogleSignInAccount> _handleGoogleSignIn() async {
+  //   GoogleSignIn googleSignIn = GoogleSignIn(
+  //       scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly']);
+  //   GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+  //   return googleSignInAccount;
+  // }
 
   Future<bool> tryAutoLogin() async {
     final prefs = await SharedPreferences.getInstance();
