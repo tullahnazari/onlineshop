@@ -2,8 +2,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sweepstakes/helper/location_helper.dart';
+import 'package:sweepstakes/models/place.dart';
 import 'package:sweepstakes/providers/auth.dart';
 import 'package:sweepstakes/models/http_exception.dart';
 
@@ -11,6 +14,7 @@ enum AuthMode { Signup, Login }
 
 class AuthScreen extends StatelessWidget {
   static const routeName = '/auth';
+  PlaceLocation pickedLocation;
 
   // addStringToSF() async {
   //   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -137,11 +141,22 @@ class AuthScreen extends StatelessWidget {
                     fontFamily: 'Lato',
                     color: Theme.of(context).primaryColor),
               ),
-            )
+            ),
             // _signInWithFacebook(),
             // SizedBox(
             //   height: 10,
             // ),
+            RaisedButton(
+              child: Text("press"),
+              onPressed: () async {
+                Position position = await Geolocator()
+                    .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+                var stateAddress = await LocationHelper.getPlaceAddress(
+                    position.latitude, position.longitude);
+                return stateAddress;
+              },
+            ),
 
             // _signInButton(),
           ],

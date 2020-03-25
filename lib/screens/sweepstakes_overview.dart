@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,7 +15,7 @@ import 'package:sweepstakes/models/user_location.dart';
 import 'package:sweepstakes/providers/auth.dart';
 import 'package:sweepstakes/providers/great_places.dart';
 import 'package:sweepstakes/screens/add_place_screen.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:sweepstakes/widgets/app_drawer.dart';
 import 'package:sweepstakes/widgets/overview_posting.dart';
 import 'package:sweepstakes/widgets/sweepstake_items.dart';
@@ -147,13 +148,30 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.lowest);
   }
 
+  // getUserLocation() async {
+  //   currentLocation = await locateUser();
+  //   var lat = currentLocation.latitude;
+  //   var long = currentLocation.longitude;
+  //   List<Placemark> placemark =
+  //       await Geolocator().placemarkFromCoordinates(lat, long);
+  //   String state = placemark.first.administrativeArea;
+  //   return state;
+  // }
+
   getUserLocation() async {
     currentLocation = await locateUser();
     var lat = currentLocation.latitude;
-    var long = currentLocation.longitude;
-    List<Placemark> placemark =
-        await Geolocator().placemarkFromCoordinates(lat, long);
-    String state = placemark.first.administrativeArea;
-    return state;
+    var lng = currentLocation.longitude;
+    final url =
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=$GOOGLE_API_KEY';
+    final response = await http.get(url);
+    var addressBody = response.body;
+    List<dynamic> addressComponents =
+        json.decode(addressBody)['results'][0]['address_components'];
+
+    String address = addressComponents.firstWhere((entry) =>
+        entry['types'].contains('administrative_area_level_1'))['long_name'];
+    print(address);
+    return address;
   }
 }
