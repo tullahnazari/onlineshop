@@ -31,7 +31,7 @@ class GreatPlaces with ChangeNotifier {
     String pickedDescription,
     String pickedEmail,
     String pickedPhone,
-    double pickedPrice,
+    String pickedPrice,
   ) async {
     var stateAddress = await LocationHelper.getPlaceAddress(
         pickedLocation.latitude, pickedLocation.longitude);
