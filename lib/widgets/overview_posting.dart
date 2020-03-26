@@ -32,11 +32,11 @@ class OverviewPosting extends StatelessWidget {
             backgroundColor: Colors.black45,
             title: Text(
               place.title ?? '',
-              style: TextStyle(fontSize: 24),
+              style: TextStyle(fontSize: 22),
             ),
             subtitle: Text(
               '\$$price' ?? '',
-              style: TextStyle(fontSize: 24),
+              style: TextStyle(fontSize: 22),
             ),
             trailing: IconButton(
               iconSize: 50,

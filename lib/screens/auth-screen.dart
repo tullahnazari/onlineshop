@@ -129,35 +129,24 @@ class AuthScreen extends StatelessWidget {
             // ),
 
             AuthCard(),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              alignment: Alignment.center,
-              child: Text(
-                'We do not collect nor sell any of our user data.',
-                style: TextStyle(
-                    fontSize: 16,
-                    fontFamily: 'Lato',
-                    color: Theme.of(context).primaryColor),
-              ),
-            ),
+            // SizedBox(
+            //   height: 10,
+            // ),
+            // Container(
+            //   alignment: Alignment.center,
+            //   child: Text(
+            //     'We do not collect nor sell any of our user data.',
+            //     textAlign: TextAlign.center,
+            //     style: TextStyle(
+            //         fontSize: 16,
+            //         fontFamily: 'Lato',
+            //         color: Theme.of(context).primaryColor),
+            //   ),
+            // ),
             // _signInWithFacebook(),
             // SizedBox(
             //   height: 10,
             // ),
-            RaisedButton(
-              child: Text("press"),
-              onPressed: () async {
-                Position position = await Geolocator()
-                    .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-
-                var stateAddress = await LocationHelper.getPlaceAddress(
-                    position.latitude, position.longitude);
-                return stateAddress;
-              },
-            ),
-
             // _signInButton(),
           ],
         ),
