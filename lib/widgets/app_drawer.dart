@@ -23,7 +23,7 @@ class AppDrawer extends StatelessWidget {
               size: 30,
             ),
             title: Text('Posting'),
-            subtitle: Text('See Products or Service near you'),
+            subtitle: Text('See Goods/Services near you'),
             onTap: () {
               Navigator.of(context).pushReplacementNamed('/');
             },
@@ -35,16 +35,17 @@ class AppDrawer extends StatelessWidget {
               size: 30,
             ),
             title: Text('Manage Postings'),
-            subtitle: Text('Add a Service or Product'),
+            subtitle: Text('Add Goods/Services'),
             onTap: () {
               Navigator.of(context)
                   .pushReplacementNamed(SweepstakeManagement.routeName);
             },
           ),
           SizedBox(
-            height: 500,
+            height: 400,
           ),
           ListTile(
+            contentPadding: EdgeInsets.all(8),
             leading: Icon(
               Icons.person,
               size: 30,

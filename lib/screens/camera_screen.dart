@@ -43,7 +43,7 @@ class _ImageInputState extends State<ImageInput> {
       width: double.infinity,
       height: 100,
       decoration: BoxDecoration(
-        border: Border.all(width: 3, color: Colors.black),
+        border: Border.all(width: 1, color: Colors.black),
       ),
       child: _storedImage != null
           ? Image.file(
@@ -55,6 +55,11 @@ class _ImageInputState extends State<ImageInput> {
               onPressed: () {
                 _takePicture();
               },
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(18.0),
+                side: BorderSide(color: Theme.of(context).primaryColor),
+              ),
+              elevation: 10,
               child: Text(
                 'Please Take Picture',
                 textAlign: TextAlign.center,

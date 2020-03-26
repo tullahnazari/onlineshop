@@ -61,7 +61,7 @@ class _LocationInputState extends State<LocationInput> {
           width: double.infinity,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            border: Border.all(width: 3, color: Colors.black),
+            border: Border.all(width: 1, color: Colors.black),
           ),
           child: _previewImageUrl == null
               ? Text(

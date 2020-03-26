@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:moneytextformfield/moneytextformfield.dart';
 import 'package:provider/provider.dart';
 import 'package:sweepstakes/screens/camera_screen.dart';
 import 'package:sweepstakes/widgets/location_input.dart';
@@ -90,11 +92,11 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Colors.greenAccent, width: 5.0),
+                              BorderSide(color: Colors.greenAccent, width: 1.0),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Colors.black, width: 3.0),
+                              BorderSide(color: Colors.black, width: 1.0),
                         ),
                         hintText: 'Title: ',
                         fillColor: Colors.white,
@@ -116,11 +118,11 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Colors.greenAccent, width: 3.0),
+                              BorderSide(color: Colors.greenAccent, width: 1.0),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Colors.black, width: 3.0),
+                              BorderSide(color: Colors.black, width: 1.0),
                         ),
                         hintText: 'Description: ',
                         fillColor: Colors.white,
@@ -141,36 +143,68 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Colors.greenAccent, width: 3.0),
+                              BorderSide(color: Colors.greenAccent, width: 1.0),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Colors.black, width: 3.0),
+                              BorderSide(color: Colors.black, width: 1.0),
                         ),
-                        hintText: 'Price: ',
+                        hintText: 'Amount:',
                         fillColor: Colors.white,
-                        border: InputBorder.none,
-                        filled: true,
-                        contentPadding: EdgeInsets.only(
-                            bottom: 10.0, left: 10.0, right: 10.0),
                       ),
                       controller: _priceController,
-                      keyboardType: TextInputType.number,
-                      onEditingComplete: () {
-                        price = double.parse(_priceController.text);
-
-                        ///print(databaseText);
-                      },
+                      textInputAction: TextInputAction.done,
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
                     ),
+                    // MoneyTextFormField(
+                    //     settings: MoneyTextFormFieldSettings(
+                    //         controller: _priceController,
+                    //         appearanceSettings:
+                    //             AppearanceSettings(hintText: 'Price'),
+                    //         moneyFormatSettings: MoneyFormatSettings(
+                    //             displayFormat:
+                    //                 MoneyDisplayFormat.),
+                    //         onChanged: () {
+                    //           price = double.parse(_priceController.text);
+                    //         })),
+                    //       TextField(
+                    //         decoration: InputDecoration(
+                    //           focusedBorder: OutlineInputBorder(
+                    //             borderSide:
+                    //                 BorderSide(color: Colors.greenAccent, width: 3.0),
+                    //           ),
+                    //           enabledBorder: OutlineInputBorder(
+                    //             borderSide:
+                    //                 BorderSide(color: Colors.black, width: 3.0),
+                    //           ),
+                    //           hintText: 'Price: ',
+                    //           fillColor: Colors.white,
+                    //           settings: MoneyTextFormFieldSettings(
+                    //   controller: mycontroller
+                    // )
+                    //           border: InputBorder.none,
+                    //           filled: true,
+                    //           contentPadding: EdgeInsets.only(
+                    //               bottom: 10.0, left: 10.0, right: 10.0),
+                    //         ),
+                    //         controller: _priceController,
+                    //         keyboardType: TextInputType.number,
+                    //         onEditingComplete: () {
+                    //           price = double.parse(_priceController.text);
+
+                    //           ///print(databaseText);
+                    //         },
+                    //       ),
                     TextField(
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Colors.greenAccent, width: 3.0),
+                              BorderSide(color: Colors.greenAccent, width: 1.0),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Colors.black, width: 3.0),
+                              BorderSide(color: Colors.black, width: 1.0),
                         ),
                         hintText: 'Email: ',
                         fillColor: Colors.white,
@@ -191,11 +225,11 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Colors.greenAccent, width: 3.0),
+                              BorderSide(color: Colors.greenAccent, width: 1.0),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Colors.black, width: 3.0),
+                              BorderSide(color: Colors.black, width: 1.0),
                         ),
                         hintText: 'Phone: ',
                         fillColor: Colors.white,
@@ -230,16 +264,23 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
           //     border: Border.all(width: 3, color: Colors.black),
           //   ),
           //   child:
-          RaisedButton.icon(
-            shape: RoundedRectangleBorder(
-              side: BorderSide(color: Colors.black, width: 3),
+          Container(
+            height: 55,
+            child: RaisedButton.icon(
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(18.0),
+                side: BorderSide(color: Theme.of(context).primaryColor),
+              ),
+              icon: Icon(Icons.add, color: Theme.of(context).accentColor),
+              label: Text(
+                'Add Posting',
+                style: TextStyle(color: Theme.of(context).accentColor),
+              ),
+              onPressed: _savePlace,
+              elevation: 10,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              color: Theme.of(context).primaryColor,
             ),
-            icon: Icon(Icons.add),
-            label: Text('Add Posting'),
-            onPressed: _savePlace,
-            elevation: 10,
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            color: Theme.of(context).accentColor,
           ),
           // ),
         ],
