@@ -19,7 +19,7 @@ class AddPlaceScreen extends StatefulWidget {
 }
 
 class _AddPlaceScreenState extends State<AddPlaceScreen> {
-  double price;
+  String price;
   final _priceController = TextEditingController();
   String emailText;
   final _emailController = TextEditingController();
@@ -63,7 +63,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
       _descriptionController.text,
       _emailController.text,
       _phoneController.text,
-      double.parse(_priceController.text),
+      _priceController.text,
     );
 
     Navigator.of(context).pop();
@@ -139,24 +139,24 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                         ///print(databaseText);
                       },
                     ),
-                    TextField(
-                      decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.greenAccent, width: 1.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.black, width: 1.0),
-                        ),
-                        hintText: 'Amount:',
-                        fillColor: Colors.white,
-                      ),
-                      controller: _priceController,
-                      textInputAction: TextInputAction.done,
-                      keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
-                    ),
+                    // TextField(
+                    //   decoration: InputDecoration(
+                    //     focusedBorder: OutlineInputBorder(
+                    //       borderSide:
+                    //           BorderSide(color: Colors.greenAccent, width: 1.0),
+                    //     ),
+                    //     enabledBorder: OutlineInputBorder(
+                    //       borderSide:
+                    //           BorderSide(color: Colors.black, width: 1.0),
+                    //     ),
+                    //     hintText: 'Amount:',
+                    //     fillColor: Colors.white,
+                    //   ),
+                    //   controller: _priceController,
+                    //   textInputAction: TextInputAction.done,
+                    //   keyboardType:
+                    //       TextInputType.numberWithOptions(decimal: true),
+                    // ),
                     // MoneyTextFormField(
                     //     settings: MoneyTextFormFieldSettings(
                     //         controller: _priceController,
@@ -168,34 +168,30 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                     //         onChanged: () {
                     //           price = double.parse(_priceController.text);
                     //         })),
-                    //       TextField(
-                    //         decoration: InputDecoration(
-                    //           focusedBorder: OutlineInputBorder(
-                    //             borderSide:
-                    //                 BorderSide(color: Colors.greenAccent, width: 3.0),
-                    //           ),
-                    //           enabledBorder: OutlineInputBorder(
-                    //             borderSide:
-                    //                 BorderSide(color: Colors.black, width: 3.0),
-                    //           ),
-                    //           hintText: 'Price: ',
-                    //           fillColor: Colors.white,
-                    //           settings: MoneyTextFormFieldSettings(
-                    //   controller: mycontroller
-                    // )
-                    //           border: InputBorder.none,
-                    //           filled: true,
-                    //           contentPadding: EdgeInsets.only(
-                    //               bottom: 10.0, left: 10.0, right: 10.0),
-                    //         ),
-                    //         controller: _priceController,
-                    //         keyboardType: TextInputType.number,
-                    //         onEditingComplete: () {
-                    //           price = double.parse(_priceController.text);
+                    TextField(
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.greenAccent, width: 1.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.black, width: 1.0),
+                        ),
+                        hintText: 'Price: ',
+                        fillColor: Colors.white,
+                        filled: true,
+                        contentPadding: EdgeInsets.only(
+                            bottom: 10.0, left: 10.0, right: 10.0),
+                      ),
+                      controller: _priceController,
+                      keyboardType: TextInputType.number,
+                      onEditingComplete: () {
+                        price = _priceController.text;
 
-                    //           ///print(databaseText);
-                    //         },
-                    //       ),
+                        ///print(databaseText);
+                      },
+                    ),
                     TextField(
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(

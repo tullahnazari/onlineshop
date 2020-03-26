@@ -23,30 +23,30 @@ class SweepstakeItems extends StatelessWidget {
       ),
       title: Text(title ?? ''),
       subtitle: Text(address ?? ''),
-      trailing: Container(
-        width: 100,
-        child: Row(
-          children: <Widget>[
-            // IconButton(
-            //   icon: Icon(Icons.edit),
-            //   // onPressed: () {
-            //   //   Navigator.of(context).pushNamed(
-            //   //       AddingSweepstake.routeName,
-            //   //       arguments: id);
-            //   // },
-            //   color: Theme.of(context).primaryColor,
-            // ),
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () {
-                Provider.of<GreatPlaces>(context, listen: false)
-                    .deleteProduct(id);
-              },
-              color: Theme.of(context).errorColor,
-            ),
-          ],
-        ),
+      trailing:
+          // Container(
+          //   width: 100,
+          //   child: Row(
+          //     children: <Widget>[
+          // IconButton(
+          //   icon: Icon(Icons.edit),
+          //   // onPressed: () {
+          //   //   Navigator.of(context).pushNamed(
+          //   //       AddingSweepstake.routeName,
+          //   //       arguments: id);
+          //   // },
+          //   color: Theme.of(context).primaryColor,
+          // ),
+          IconButton(
+        icon: Icon(Icons.delete),
+        onPressed: () {
+          Provider.of<GreatPlaces>(context, listen: false).deleteProduct(id);
+        },
+        color: Theme.of(context).errorColor,
       ),
+      //    ],
+      //  ),
+      //   ),
     );
     // return GridTile(
     //   child: Image.network(imageUrl),

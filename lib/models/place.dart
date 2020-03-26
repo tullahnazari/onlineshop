@@ -22,7 +22,7 @@ class Place with ChangeNotifier {
   final String description;
   final String email;
   final String phone;
-  final double price;
+  final String price;
 
   Place({
     @required this.id,
