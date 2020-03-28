@@ -11,7 +11,7 @@ description: A new Flutter project.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -59,7 +59,7 @@ dev_dependencies:
 
 flutter_icons: 
   android: true
-  image_path: "assets/images/H Logowithbackground.png"
+  image_path: "assets/images/HLogowithbackground.png"
   adaptive_icon_background: "#191919"
 
 
@@ -75,11 +75,10 @@ flutter:
   uses-material-design: true
 
   assets:
-   - assets/images/hb.png
    - assets/images/google_logo.png
    - assets/images/fblogo.png
-   - assets/images/H Logotransparent.png
-   - assets/images/H Logowithbackground.png
+   - assets/images/HLogotransparent.png
+   - assets/images/HLogowithbackground.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

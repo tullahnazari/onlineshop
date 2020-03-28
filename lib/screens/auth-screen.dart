@@ -123,7 +123,10 @@ class AuthScreen extends StatelessWidget {
             //   ),
             // ),
 
-            appName(),
+            Image(
+              image: AssetImage("assets/images/HLogotransparent.png"),
+              height: 210.0,
+            ),
             // Padding(
             //   padding: EdgeInsets.only(bottom: 10.0),
             // ),
@@ -341,16 +344,6 @@ class _AuthCardState extends State<AuthCard> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class appName extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Image(
-      image: AssetImage("assets/images/H Logotransparent.png"),
-      height: 210.0,
     );
   }
 }
