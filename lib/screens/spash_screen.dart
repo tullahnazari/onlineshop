@@ -4,7 +4,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image(
-      image: AssetImage('assets/images/hb.png'),
+      image: AssetImage('assets/images/HLogowithbackground.png'),
     );
   }
 }
