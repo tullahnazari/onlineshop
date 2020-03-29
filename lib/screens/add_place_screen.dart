@@ -6,7 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:moneytextformfield/moneytextformfield.dart';
 import 'package:provider/provider.dart';
 import 'package:sweepstakes/screens/camera_screen.dart';
+import 'package:sweepstakes/widgets/add_picture.dart';
 import 'package:sweepstakes/widgets/location_input.dart';
+import 'package:sweepstakes/widgets/upload_from_gallery.dart';
 
 import '../providers/great_places.dart';
 import '../models/place.dart';
@@ -84,7 +86,17 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                 padding: EdgeInsets.all(10),
                 child: Column(
                   children: <Widget>[
-                    ImageInput(_selectImage),
+                    RaisedButton(
+                      child: Text('Upload Picture'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => ImageCapture(),
+                          ),
+                        );
+                      },
+                    ),
                     SizedBox(
                       height: 10,
                     ),
