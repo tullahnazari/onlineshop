@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:moneytextformfield/moneytextformfield.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:sweepstakes/screens/camera_screen.dart';
 import 'package:sweepstakes/widgets/add_picture.dart';
@@ -71,6 +73,34 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
     Navigator.of(context).pop();
   }
 
+  _getImageList() async {
+    var resultList = await MultiImagePicker.pickImages(
+      maxImages: 10,
+      enableCamera: true,
+    );
+
+    // The data selected here comes back in the list
+    print(resultList);
+    for (var asset in resultList) {
+      postImage(asset).then((downloadUrl) {
+        // Get the download URL
+        print(downloadUrl.toString());
+      }).catchError((err) {
+        print(err);
+      });
+    }
+  }
+
+  Future<dynamic> postImage(Asset asset) async {
+    ByteData byteData = await asset.requestOriginal();
+    List<int> imageData = byteData.buffer.asUint8List();
+    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    StorageReference reference = FirebaseStorage.instance.ref().child(fileName);
+    StorageUploadTask uploadTask = reference.putData(imageData);
+    StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
+    return storageTaskSnapshot.ref.getDownloadURL();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,15 +117,8 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                 child: Column(
                   children: <Widget>[
                     RaisedButton(
-                      child: Text('Upload Picture'),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => ImageCapture(),
-                          ),
-                        );
-                      },
+                      child: Text('Upload'),
+                      onPressed: _getImageList,
                     ),
                     SizedBox(
                       height: 10,
