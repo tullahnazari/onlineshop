@@ -26,7 +26,7 @@ class GreatPlaces with ChangeNotifier {
 
   Future<void> addPlace(
     String pickedTitle,
-    File pickedImage,
+    List pickedImage,
     PlaceLocation pickedLocation,
     String pickedDescription,
     String pickedEmail,

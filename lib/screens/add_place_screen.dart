@@ -35,9 +35,10 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
   final _descriptionController = TextEditingController();
   File _pickedImage;
   PlaceLocation _pickedLocation;
+  List<String> imageList = [];
 
-  void _selectImage(File pickedImage) {
-    _pickedImage = pickedImage;
+  void _selectImage(List pickedImage) {
+    imageList = pickedImage;
   }
 
   void _selectPlace(double lat, double lng) {
@@ -50,7 +51,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
         _titleController.text.isEmpty ||
         _emailController.text.isEmpty ||
         _phoneController.text.isEmpty ||
-        _pickedImage == null ||
+        imageList == null ||
         _pickedLocation == null) {
       return Flushbar(
         title: "Hey, are you missing something?",
@@ -62,7 +63,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
     }
     await Provider.of<GreatPlaces>(context, listen: false).addPlace(
       _titleController.text,
-      _pickedImage,
+      imageList,
       _pickedLocation,
       _descriptionController.text,
       _emailController.text,
@@ -83,8 +84,15 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
     print(resultList);
     for (var asset in resultList) {
       postImage(asset).then((downloadUrl) {
+        //setState(() {
+        //imageList.add(downloadUrl.toString());
+        //_selectImage(downloadUrl);
+
+        var test = imageList.add(downloadUrl.toString());
+
+        // });
         // Get the download URL
-        print(downloadUrl.toString());
+        //print(downloadUrl.toString());
       }).catchError((err) {
         print(err);
       });

@@ -89,7 +89,7 @@ class SweepstakesDetail extends StatelessWidget {
               ],
               borderRadius: BorderRadius.circular(20),
               image: new DecorationImage(
-                image: FileImage(loadedPosting.image),
+                // image: (loadedPosting.image),
                 fit: BoxFit.fill,
               ),
             )),
