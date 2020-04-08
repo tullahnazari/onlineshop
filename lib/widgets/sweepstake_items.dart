@@ -8,7 +8,7 @@ import 'package:sweepstakes/screens/sweepstakes_detail.dart';
 class SweepstakeItems extends StatelessWidget {
   final String id;
   final String title;
-  final File image;
+  final List image;
   final String address;
 
   SweepstakeItems({this.id, this.title, this.image, this.address});
@@ -17,7 +17,7 @@ class SweepstakeItems extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: CircleAvatar(
-        backgroundImage: FileImage(
+        backgroundImage: NetworkImage(
           image ?? '',
         ),
       ),

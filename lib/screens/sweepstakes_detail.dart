@@ -241,7 +241,7 @@ class SweepstakesDetail extends StatelessWidget {
                   Navigator.pop(context);
                 }),
             TabData(
-                iconData: Icons.message,
+                iconData: Icons.email,
                 title: "Email",
                 onclick: () {
                   _service.sendEmail(loadedPosting.email);

@@ -98,7 +98,7 @@ class GreatPlaces with ChangeNotifier {
           Place(
             id: prodId,
             title: prodData['title'],
-            //image: File(prodData['image']),
+            image: prodData['image'],
             location: PlaceLocation(
               latitude: prodData['loc_lat'],
               longitude: prodData['loc_lng'],

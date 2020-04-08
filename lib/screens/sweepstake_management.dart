@@ -80,7 +80,7 @@ class SweepstakeManagement extends StatelessWidget {
                               SweepstakeItems(
                                 id: greatPlaces.items[i].id,
                                 title: greatPlaces.items[i].title,
-                                // image: greatPlaces.items[i].image,
+                                image: greatPlaces.items[i].image,
                                 address: greatPlaces.items[i].location.address,
                               ),
                               Divider(),
