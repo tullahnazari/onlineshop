@@ -1,12 +1,16 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:moneytextformfield/moneytextformfield.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:sweepstakes/screens/camera_screen.dart';
+import 'package:sweepstakes/widgets/add_picture.dart';
 import 'package:sweepstakes/widgets/location_input.dart';
+import 'package:sweepstakes/widgets/upload_from_gallery.dart';
 
 import '../providers/great_places.dart';
 import '../models/place.dart';
@@ -31,9 +35,10 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
   final _descriptionController = TextEditingController();
   File _pickedImage;
   PlaceLocation _pickedLocation;
+  List<String> imageList = [];
 
-  void _selectImage(File pickedImage) {
-    _pickedImage = pickedImage;
+  void _selectImage(List pickedImage) {
+    imageList = pickedImage;
   }
 
   void _selectPlace(double lat, double lng) {
@@ -46,7 +51,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
         _titleController.text.isEmpty ||
         _emailController.text.isEmpty ||
         _phoneController.text.isEmpty ||
-        _pickedImage == null ||
+        imageList == null ||
         _pickedLocation == null) {
       return Flushbar(
         title: "Hey, are you missing something?",
@@ -58,7 +63,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
     }
     await Provider.of<GreatPlaces>(context, listen: false).addPlace(
       _titleController.text,
-      _pickedImage,
+      imageList,
       _pickedLocation,
       _descriptionController.text,
       _emailController.text,
@@ -67,6 +72,41 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
     );
 
     Navigator.of(context).pop();
+  }
+
+  _getImageList() async {
+    var resultList = await MultiImagePicker.pickImages(
+      maxImages: 10,
+      enableCamera: true,
+    );
+
+    // The data selected here comes back in the list
+    print(resultList);
+    for (var asset in resultList) {
+      postImage(asset).then((downloadUrl) {
+        //setState(() {
+        //imageList.add(downloadUrl.toString());
+        //_selectImage(downloadUrl);
+
+        var test = imageList.add(downloadUrl.toString());
+
+        // });
+        // Get the download URL
+        //print(downloadUrl.toString());
+      }).catchError((err) {
+        print(err);
+      });
+    }
+  }
+
+  Future<dynamic> postImage(Asset asset) async {
+    ByteData byteData = await asset.requestOriginal();
+    List<int> imageData = byteData.buffer.asUint8List();
+    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    StorageReference reference = FirebaseStorage.instance.ref().child(fileName);
+    StorageUploadTask uploadTask = reference.putData(imageData);
+    StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
+    return storageTaskSnapshot.ref.getDownloadURL();
   }
 
   @override
@@ -84,7 +124,10 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                 padding: EdgeInsets.all(10),
                 child: Column(
                   children: <Widget>[
-                    ImageInput(_selectImage),
+                    RaisedButton(
+                      child: Text('Upload'),
+                      onPressed: _getImageList,
+                    ),
                     SizedBox(
                       height: 10,
                     ),

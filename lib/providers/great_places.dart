@@ -26,7 +26,7 @@ class GreatPlaces with ChangeNotifier {
 
   Future<void> addPlace(
     String pickedTitle,
-    File pickedImage,
+    List pickedImage,
     PlaceLocation pickedLocation,
     String pickedDescription,
     String pickedEmail,
@@ -60,7 +60,7 @@ class GreatPlaces with ChangeNotifier {
         body: json.encode({
           'id': newPlace.id,
           'title': newPlace.title,
-          'image': newPlace.image.path,
+          'image': newPlace.image,
           'loc_lat': newPlace.location.latitude,
           'loc_lng': newPlace.location.longitude,
           'address': stateAddress,
@@ -98,7 +98,7 @@ class GreatPlaces with ChangeNotifier {
           Place(
             id: prodId,
             title: prodData['title'],
-            image: File(prodData['image']),
+            image: prodData['image'],
             location: PlaceLocation(
               latitude: prodData['loc_lat'],
               longitude: prodData['loc_lng'],
@@ -133,7 +133,7 @@ class GreatPlaces with ChangeNotifier {
         loadedProducts.add(Place(
             id: prodId,
             title: prodData['title'],
-            image: File(prodData['image']),
+            //image: File(prodData['image']),
             location: PlaceLocation(
               latitude: prodData['loc_lat'],
               longitude: prodData['loc_lng'],
@@ -171,7 +171,7 @@ class GreatPlaces with ChangeNotifier {
         loadedProducts.add(Place(
             id: prodId,
             title: prodData['title'],
-            image: File(prodData['image']),
+            //image: File(prodData['image']),
             location: PlaceLocation(
               latitude: prodData['loc_lat'],
               longitude: prodData['loc_lng'],
@@ -211,7 +211,7 @@ class GreatPlaces with ChangeNotifier {
       await http.patch(url,
           body: json.encode({
             'title': newPlace.title,
-            'image': newPlace.image.path,
+            // 'image': newPlace.image.path,
             'address': newPlace.location.address,
           }));
       _items[prodIndex] = newPlace;
