@@ -1,4 +1,5 @@
 import 'package:ads/admob.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:clippy_flutter/diagonal.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flushbar/flushbar.dart';
@@ -75,35 +76,57 @@ class SweepstakesDetail extends StatelessWidget {
     //   ],
     // );
 
-    final topContent = Stack(
-      children: <Widget>[
-        Container(
-            padding: EdgeInsets.only(left: 10.0),
-            height: MediaQuery.of(context).size.height * 0.65,
-            decoration: new BoxDecoration(
-              boxShadow: [
-                new BoxShadow(
-                  color: Theme.of(context).primaryColor,
-                  offset: new Offset(0.0, 8.0),
-                )
-              ],
-              borderRadius: BorderRadius.circular(20),
-              image: new DecorationImage(
-                // image: (loadedPosting.image),
-                fit: BoxFit.fill,
+    final CarouselSlider autoPlayDemo = CarouselSlider(
+      viewportFraction: 0.9,
+      aspectRatio: 2.0,
+      autoPlay: true,
+      enlargeCenterPage: true,
+      items: loadedPosting.image.map(
+        (url) {
+          return Container(
+            margin: EdgeInsets.all(5.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              child: Image.network(
+                url,
+                fit: BoxFit.cover,
+                width: 1000.0,
               ),
-            )),
-        Container(
-          height: MediaQuery.of(context).size.height * 0.65,
-          padding: EdgeInsets.all(40.0),
-          width: MediaQuery.of(context).size.width,
-          //decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, .9)),
-          child: Center(
-              //child: topContentText,
-              ),
-        ),
-      ],
+            ),
+          );
+        },
+      ).toList(),
     );
+
+    // final topContent = Stack(
+    //   children: <Widget>[
+    //     Container(
+    //         padding: EdgeInsets.only(left: 10.0),
+    //         height: MediaQuery.of(context).size.height * 0.65,
+    //         decoration: new BoxDecoration(
+    //           boxShadow: [
+    //             new BoxShadow(
+    //               color: Theme.of(context).primaryColor,
+    //               offset: new Offset(0.0, 8.0),
+    //             )
+    //           ],
+    //           borderRadius: BorderRadius.circular(20),
+    //           image: new DecorationImage(
+    //             // image: (loadedPosting.image),
+    //             fit: BoxFit.fill,
+    //           ),
+    //         )),
+    //     Container(
+    //       height: MediaQuery.of(context).size.height * 0.65,
+    //       padding: EdgeInsets.all(40.0),
+    //       width: MediaQuery.of(context).size.width,
+    //       //decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, .9)),
+    //       child: Center(
+    //           //child: topContentText,
+    //           ),
+    //     ),
+    //   ],
+    // );
 
     final bottomContentText = Text(
       loadedPosting.title,
@@ -230,7 +253,7 @@ class SweepstakesDetail extends StatelessWidget {
 
     return Scaffold(
         body: Column(
-          children: <Widget>[topContent, bottomContent],
+          children: <Widget>[autoPlayDemo, bottomContent],
         ),
         bottomNavigationBar: FancyBottomNavigation(
           tabs: [
