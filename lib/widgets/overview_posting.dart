@@ -20,45 +20,65 @@ class OverviewPosting extends StatelessWidget {
     String price = place.price.toString();
     return Padding(
       padding: const EdgeInsets.all(2.0),
-      child: GridTile(
-        footer: GestureDetector(
-          onTap: () {
-            Navigator.of(context).pushNamed(
-              SweepstakesDetail.routeName,
-              arguments: id,
-            );
-          },
-          child: GridTileBar(
-            backgroundColor: Colors.black45,
-            title: Text(
-              title ?? '',
-              style: TextStyle(fontSize: 22),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.of(context).pushNamed(
+            SweepstakesDetail.routeName,
+            arguments: id,
+          );
+        },
+        child: GridTile(
+          footer: Material(
+            color: Colors.transparent,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(4)),
             ),
-            subtitle: Text(
-              '\$$price' ?? '',
-              style: TextStyle(fontSize: 22),
-            ),
-            trailing: IconButton(
-              iconSize: 50,
-              // Use the FaIcon Widget + FontAwesomeIcons class for the IconData
-              icon: FaIcon(FontAwesomeIcons.arrowCircleRight),
-              onPressed: () {
-                Navigator.of(context).pushNamed(
-                  SweepstakesDetail.routeName,
-                  arguments: id,
-                );
-              },
+            clipBehavior: Clip.antiAlias,
+            child: GridTileBar(
+              backgroundColor: Colors.black45,
+              title: Text(
+                title,
+                style: TextStyle(
+                  fontFamily: 'Lato',
+                  fontSize: 20,
+                ),
+              ),
+              subtitle: Text(
+                price,
+                style: TextStyle(
+                  fontFamily: 'Lato',
+                  fontSize: 20,
+                ),
+              ),
+
+              // child: GridTileBar(
+              //   backgroundColor: Colors.black45,
+              //   title: Text(
+              //     title ?? '',
+              //     style: TextStyle(fontSize: 22),
+              //   ),
+              //   subtitle: Text(
+              //     '\$$price' ?? '',
+              //     style: TextStyle(fontSize: 22),
+              //   ),
+              //   trailing: IconButton(
+              //     iconSize: 50,
+              //     // Use the FaIcon Widget + FontAwesomeIcons class for the IconData
+              //     icon: FaIcon(FontAwesomeIcons.arrowCircleRight),
+              //     onPressed: () {
+              //       Navigator.of(context).pushNamed(
+              //         SweepstakesDetail.routeName,
+              //         arguments: id,
+              //       );
+              //     },
+              //   ),
+              // ),
             ),
           ),
-        ),
-        child: Container(
-          child: Image.network(image.first),
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.black,
-              width: 3,
-            ),
-            //image: image.first,
+          child: Image.network(
+            image.first,
+            width: double.infinity,
+            fit: BoxFit.cover,
           ),
         ),
       ),

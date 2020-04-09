@@ -52,14 +52,11 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
     super.didChangeDependencies();
   }
 
-  var values;
   Future<void> _refreshProducts(BuildContext context) async {
     await getUserLocation().then((value) async {
       await Provider.of<GreatPlaces>(context, listen: false)
           .fetchResultsByState(value);
     });
-    await Provider.of<GreatPlaces>(context, listen: false)
-        .fetchResultsByState(values);
   }
 
   @override
@@ -98,7 +95,9 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
       // bottomNavigationBar: BottomBar(),
       body: _isLoading
           ? Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                backgroundColor: Theme.of(context).primaryColor,
+              ),
             )
           : FutureBuilder(
               future: _refreshProducts(context),
@@ -114,8 +113,9 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                       child: Consumer<GreatPlaces>(
                         builder: (ctx, greatPlaces, _) => Padding(
                           padding: const EdgeInsets.only(
-                              top: 5, bottom: 5, left: 5, right: 5),
+                              top: 2, bottom: 2, left: 2, right: 2),
                           child: GridView.builder(
+                            padding: const EdgeInsets.all(8),
                             //padding: const EdgeInsets.all(10.0),
                             itemCount: greatPlaces.items.length,
                             itemBuilder: (ctx, i) =>
@@ -133,6 +133,9 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 1,
+                              mainAxisSpacing: 8,
+                              crossAxisSpacing: 8,
+                              childAspectRatio: 1,
                               // childAspectRatio: MediaQuery.of(context).size.width /
                               //     (MediaQuery.of(context).size.height / 4),
                             ),
