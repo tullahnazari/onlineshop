@@ -1,6 +1,7 @@
 import 'package:ads/admob.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:clippy_flutter/diagonal.dart';
+import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flushbar/flushbar_route.dart';
@@ -25,6 +26,8 @@ class SweepstakesDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     final posting = Provider.of<Place>(context, listen: false);
     final productId =
         ModalRoute.of(context).settings.arguments as String; // is the id!
@@ -77,8 +80,9 @@ class SweepstakesDetail extends StatelessWidget {
     // );
 
     final CarouselSlider autoPlayDemo = CarouselSlider(
+      height: height * .75,
       viewportFraction: 0.9,
-      aspectRatio: 2.0,
+      aspectRatio: 50 / 45,
       autoPlay: true,
       enlargeCenterPage: true,
       items: loadedPosting.image.map(
@@ -151,7 +155,7 @@ class SweepstakesDetail extends StatelessWidget {
           loadedPosting.description,
           textAlign: TextAlign.left,
           overflow: TextOverflow.ellipsis,
-          maxLines: 3,
+          maxLines: 10,
           style: TextStyle(
             color: Colors.black,
             fontFamily: 'Lato',
@@ -168,20 +172,20 @@ class SweepstakesDetail extends StatelessWidget {
               fontFamily: 'Lato',
               fontSize: 40),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            IconButton(
-                iconSize: 30,
-                color: Colors.red,
-                // Use the FaIcon Widget + FontAwesomeIcons class for the IconData
-                icon: Icon(Icons.report),
-                onPressed: () {
-                  String affordableAppsEmail = 'affordableapps4u@gmail.com';
-                  _service.sendEmail(affordableAppsEmail);
-                }),
-          ],
-        ),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.end,
+        //   children: <Widget>[
+        //     IconButton(
+        //         iconSize: 30,
+        //         color: Colors.red,
+        //         // Use the FaIcon Widget + FontAwesomeIcons class for the IconData
+        //         icon: Icon(Icons.report),
+        //         onPressed: () {
+        //           String affordableAppsEmail = 'affordableapps4u@gmail.com';
+        //           _service.sendEmail(affordableAppsEmail);
+        //         }),
+        //   ],
+        // ),
       ],
     );
     // final priceText = Text(
@@ -252,35 +256,75 @@ class SweepstakesDetail extends StatelessWidget {
     );
 
     return Scaffold(
-        body: Column(
-          children: <Widget>[autoPlayDemo, bottomContent],
+      floatingActionButton: FabCircularMenu(
+        // ringDiameter: width * 1.25,
+        // ringWidth: width * 1.25,
+        fabElevation: 30,
+        fabSize: 100,
+        children: <Widget>[
+          IconButton(
+              icon: Icon(
+                Icons.message,
+              ),
+              onPressed: () {
+                print('Home');
+              }),
+          IconButton(
+              icon: Icon(
+                Icons.call,
+              ),
+              onPressed: () {
+                print('Home');
+              }),
+          IconButton(
+            icon: Icon(Icons.email),
+            onPressed: () {
+              print('Favorite');
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.report),
+            onPressed: () {
+              String affordableAppsEmail = 'affordableapps4u@gmail.com';
+              _service.sendEmail(affordableAppsEmail);
+            },
+          ),
+        ],
+      ),
+
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[SizedBox(height: 50), autoPlayDemo, bottomContent],
         ),
-        bottomNavigationBar: FancyBottomNavigation(
-          tabs: [
-            TabData(
-                iconData: Icons.keyboard_arrow_left,
-                title: "Back",
-                onclick: () {
-                  Navigator.pop(context);
-                }),
-            TabData(
-                iconData: Icons.email,
-                title: "Email",
-                onclick: () {
-                  _service.sendEmail(loadedPosting.email);
-                }),
-            TabData(
-                iconData: Icons.call,
-                title: "Call/Text",
-                onclick: () {
-                  _service.call(loadedPosting.phone);
-                })
-          ],
-          onTabChangedListener: (position) {
-            // setState(() {
-            //   currentPage = position;
-            // });
-          },
-        ));
+      ),
+
+      // bottomNavigationBar: FancyBottomNavigation(
+      //   tabs: [
+      //     TabData(
+      //         iconData: Icons.keyboard_arrow_left,
+      //         title: "Back",
+      //         onclick: () {
+      //           Navigator.pop(context);
+      //         }),
+      //     TabData(
+      //         iconData: Icons.email,
+      //         title: "Email",
+      //         onclick: () {
+      //           _service.sendEmail(loadedPosting.email);
+      //         }),
+      //     TabData(
+      //         iconData: Icons.call,
+      //         title: "Call/Text",
+      //         onclick: () {
+      //           _service.call(loadedPosting.phone);
+      //         })
+      //   ],
+      //   onTabChangedListener: (position) {
+      //     // setState(() {
+      //     //   currentPage = position;
+      //     // });
+      //   },
+      // )
+    );
   }
 }
