@@ -29,10 +29,13 @@ class OverviewPosting extends StatelessWidget {
         },
         child: GridTile(
           footer: Material(
-            color: Colors.transparent,
             shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(4)),
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(8),
+                top: Radius.circular(8),
+              ),
             ),
+            color: Colors.transparent,
             clipBehavior: Clip.antiAlias,
             child: GridTileBar(
               backgroundColor: Colors.black45,

@@ -260,7 +260,7 @@ class SweepstakesDetail extends StatelessWidget {
         // ringDiameter: width * 1.25,
         // ringWidth: width * 1.25,
         fabElevation: 30,
-        fabSize: 100,
+        fabSize: 85,
         children: <Widget>[
           IconButton(
               icon: Icon(

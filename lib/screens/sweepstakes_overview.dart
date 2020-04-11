@@ -103,49 +103,51 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
               )
             : FutureBuilder(
                 future: _refreshProducts(context),
-                builder: (ctx, snapshot) =>
-                    snapshot.connectionState == ConnectionState.waiting
-                        ? Center(
-                            child: CircularProgressIndicator(
-                              backgroundColor: Theme.of(context).primaryColor,
-                            ),
-                          )
-                        : RefreshIndicator(
-                            onRefresh: () => _refreshProducts(context),
-                            child: Consumer<GreatPlaces>(
-                              builder: (ctx, greatPlaces, _) => Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 2, bottom: 2, left: 2, right: 2),
-                                child: GridView.builder(
-                                  padding: const EdgeInsets.all(8),
-                                  //padding: const EdgeInsets.all(10.0),
-                                  itemCount: greatPlaces.items.length,
-                                  itemBuilder: (ctx, i) =>
-                                      ChangeNotifierProvider.value(
-                                    // builder: (c) => products[i],
-                                    value: greatPlaces.items[i],
-                                    child: OverviewPosting(
-                                      id: greatPlaces.items[i].id,
-                                      title: greatPlaces.items[i].title,
-                                      image: greatPlaces.items[i].image,
-                                      address:
-                                          greatPlaces.items[i].location.address,
-                                    ),
-                                  ),
-                                  scrollDirection: Axis.vertical,
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 1,
-                                    mainAxisSpacing: 8,
-                                    crossAxisSpacing: 8,
-                                    childAspectRatio: 1,
-                                    // childAspectRatio: MediaQuery.of(context).size.width /
-                                    //     (MediaQuery.of(context).size.height / 4),
-                                  ),
+                builder: (ctx, snapshot) => snapshot.connectionState ==
+                        ConnectionState.waiting
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Theme.of(context).primaryColor,
+                        ),
+                      )
+                    : RefreshIndicator(
+                        onRefresh: () => _refreshProducts(context),
+                        child: Consumer<GreatPlaces>(
+                          builder: (ctx, greatPlaces, _) => Padding(
+                            padding: const EdgeInsets.only(
+                                top: 2, bottom: 2, left: 2, right: 2),
+                            child: GridView.builder(
+                              padding: const EdgeInsets.all(8),
+                              //padding: const EdgeInsets.all(10.0),
+                              itemCount: greatPlaces.items.length,
+                              itemBuilder: (ctx, i) =>
+                                  ChangeNotifierProvider.value(
+                                // builder: (c) => products[i],
+                                value: greatPlaces.items[i],
+                                child: OverviewPosting(
+                                  id: greatPlaces.items[i].id,
+                                  title: greatPlaces.items[i].title,
+                                  image: greatPlaces.items[i].image,
+                                  address:
+                                      greatPlaces.items[i].location.address,
                                 ),
+                              ),
+                              scrollDirection: Axis.vertical,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 1,
+                                mainAxisSpacing: 8,
+                                crossAxisSpacing: 8,
+                                //childAspectRatio: 1,
+                                childAspectRatio: MediaQuery.of(context)
+                                        .size
+                                        .width /
+                                    (MediaQuery.of(context).size.height * .50),
                               ),
                             ),
                           ),
+                        ),
+                      ),
               ),
       ),
     );
