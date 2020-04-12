@@ -1,13 +1,18 @@
+import 'dart:io';
+
 import 'package:ads/admob.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:clippy_flutter/diagonal.dart';
+import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flushbar/flushbar_route.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sweepstakes/helper/calls_messaging_service.dart';
+import 'package:sweepstakes/helper/location_helper.dart';
 import 'package:sweepstakes/helper/service_locater.dart';
 import 'package:sweepstakes/models/place.dart';
 import 'package:sweepstakes/models/result.dart';
@@ -17,6 +22,7 @@ import 'package:sweepstakes/providers/results.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/widgets/animation.dart';
 import 'package:firebase_admob/firebase_admob.dart';
+import 'package:sweepstakes/widgets/location_input.dart';
 
 class SweepstakesDetail extends StatelessWidget {
   static const routeName = '/sweepstakedetail';
@@ -25,6 +31,8 @@ class SweepstakesDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     final posting = Provider.of<Place>(context, listen: false);
     final productId =
         ModalRoute.of(context).settings.arguments as String; // is the id!
@@ -33,6 +41,59 @@ class SweepstakesDetail extends StatelessWidget {
       listen: false,
     ).findById(productId);
     String price = loadedPosting.price.toString();
+
+    _showPreview(double lat, double lng) {
+      LocationHelper.generateLocationPreviewImage(
+        latitude: lat,
+        longitude: lng,
+      );
+      //return staticMapImageUrl;
+    }
+
+    String generateLocationPreviewImage({
+      double latitude,
+      double longitude,
+    }) {
+      return 'https://maps.googleapis.com/maps/api/staticmap?center=$latitude,$longitude&zoom=12&size=600x300&maptype=roadmap&key=$GOOGLE_API_KEY';
+    }
+
+    Widget _detectWidget() {
+      if (Platform.isAndroid) {
+        // Return here any Widget you want to display in Android Device.
+        return IconButton(
+            color: Theme.of(context).primaryColor,
+            iconSize: 50,
+            icon: Icon(
+              Icons.arrow_back,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            });
+      } else if (Platform.isIOS) {
+        // Return here any Widget you want to display in iOS Device.
+        return IconButton(
+            color: Theme.of(context).primaryColor,
+            iconSize: 50,
+            icon: Icon(
+              Icons.arrow_back_ios,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            });
+      }
+    }
+
+    // GoogleMap(
+    //   mapType: MapType.normal,
+    //   myLocationEnabled: true,
+    //   myLocationButtonEnabled: true,
+    //   // initialCameraPosition: initialMapLocation,
+    //   // onMapCreated: (GoogleMapController controller) {
+    //   //   _controller.complete(controller);
+    //   // },
+    //   onCameraMove: null,
+    //   circles: circles,
+    // );
 
     // final coursePrice = Container(
     //   padding: const EdgeInsets.all(7.0),
@@ -77,8 +138,9 @@ class SweepstakesDetail extends StatelessWidget {
     // );
 
     final CarouselSlider autoPlayDemo = CarouselSlider(
+      height: height * .85,
       viewportFraction: 0.9,
-      aspectRatio: 2.0,
+      aspectRatio: 50 / 45,
       autoPlay: true,
       enlargeCenterPage: true,
       items: loadedPosting.image.map(
@@ -149,9 +211,9 @@ class SweepstakesDetail extends StatelessWidget {
       children: <Widget>[
         Text(
           loadedPosting.description,
-          textAlign: TextAlign.left,
+          textAlign: TextAlign.center,
           overflow: TextOverflow.ellipsis,
-          maxLines: 3,
+          maxLines: 10,
           style: TextStyle(
             color: Colors.black,
             fontFamily: 'Lato',
@@ -166,22 +228,41 @@ class SweepstakesDetail extends StatelessWidget {
           style: TextStyle(
               color: Theme.of(context).primaryColor,
               fontFamily: 'Lato',
-              fontSize: 40),
+              fontSize: 30),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            IconButton(
-                iconSize: 30,
-                color: Colors.red,
-                // Use the FaIcon Widget + FontAwesomeIcons class for the IconData
-                icon: Icon(Icons.report),
-                onPressed: () {
-                  String affordableAppsEmail = 'affordableapps4u@gmail.com';
-                  _service.sendEmail(affordableAppsEmail);
-                }),
-          ],
+        SizedBox(
+          height: 40,
         ),
+        Container(
+          width: double.infinity,
+          height: 200,
+          //width: 300,
+          child: Image.network(
+            generateLocationPreviewImage(
+                latitude: loadedPosting.location.latitude,
+                longitude: loadedPosting.location.longitude),
+            fit: BoxFit.cover,
+            width: double.infinity,
+          ),
+        ),
+        Text('For confideniality, Map has a radius'),
+        SizedBox(
+          height: 20,
+        ),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.end,
+        //   children: <Widget>[
+        //     IconButton(
+        //         iconSize: 30,
+        //         color: Colors.red,
+        //         // Use the FaIcon Widget + FontAwesomeIcons class for the IconData
+        //         icon: Icon(Icons.report),
+        //         onPressed: () {
+        //           String affordableAppsEmail = 'affordableapps4u@gmail.com';
+        //           _service.sendEmail(affordableAppsEmail);
+        //         }),
+        //   ],
+        // ),
       ],
     );
     // final priceText = Text(
@@ -252,35 +333,76 @@ class SweepstakesDetail extends StatelessWidget {
     );
 
     return Scaffold(
-        body: Column(
-          children: <Widget>[autoPlayDemo, bottomContent],
+      floatingActionButton: FabCircularMenu(
+        fabOpenColor: Theme.of(context).accentColor,
+        ringDiameter: width * 1.0,
+        // ringWidth: width * 1.25,
+        fabElevation: 30,
+        fabSize: 85,
+        children: <Widget>[
+          _detectWidget(),
+          IconButton(
+              color: Theme.of(context).primaryColor,
+              iconSize: 50,
+              icon: Icon(
+                Icons.message,
+              ),
+              onPressed: () {
+                _service.sendSms(loadedPosting.phone);
+              }),
+          IconButton(
+              color: Theme.of(context).primaryColor,
+              iconSize: 50,
+              icon: Icon(
+                Icons.call,
+              ),
+              onPressed: () {
+                _service.call(loadedPosting.phone);
+              }),
+          IconButton(
+            color: Theme.of(context).primaryColor,
+            iconSize: 50,
+            icon: Icon(Icons.email),
+            onPressed: () {
+              _service.sendEmail(loadedPosting.email);
+            },
+          ),
+        ],
+      ),
+
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[SizedBox(height: 50), autoPlayDemo, bottomContent],
         ),
-        bottomNavigationBar: FancyBottomNavigation(
-          tabs: [
-            TabData(
-                iconData: Icons.keyboard_arrow_left,
-                title: "Back",
-                onclick: () {
-                  Navigator.pop(context);
-                }),
-            TabData(
-                iconData: Icons.email,
-                title: "Email",
-                onclick: () {
-                  _service.sendEmail(loadedPosting.email);
-                }),
-            TabData(
-                iconData: Icons.call,
-                title: "Call/Text",
-                onclick: () {
-                  _service.call(loadedPosting.phone);
-                })
-          ],
-          onTabChangedListener: (position) {
-            // setState(() {
-            //   currentPage = position;
-            // });
-          },
-        ));
+      ),
+
+      // bottomNavigationBar: FancyBottomNavigation(
+      //   tabs: [
+      //     TabData(
+      //         iconData: Icons.keyboard_arrow_left,
+      //         title: "Back",
+      //         onclick: () {
+      //           Navigator.pop(context);
+      //         }),
+      //     TabData(
+      //         iconData: Icons.email,
+      //         title: "Email",
+      //         onclick: () {
+      //           _service.sendEmail(loadedPosting.email);
+      //         }),
+      //     TabData(
+      //         iconData: Icons.call,
+      //         title: "Call/Text",
+      //         onclick: () {
+      //           _service.call(loadedPosting.phone);
+      //         })
+      //   ],
+      //   onTabChangedListener: (position) {
+      //     // setState(() {
+      //     //   currentPage = position;
+      //     // });
+      //   },
+      // )
+    );
   }
 }

@@ -53,6 +53,7 @@ dependencies:
   image_cropper: ^1.2.1
   multi_image_picker: ^4.6.5+rc.1
   carousel_slider: ^1.4.1
+  fab_circular_menu: ^1.0.0
 
 
 

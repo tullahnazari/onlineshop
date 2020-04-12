@@ -78,7 +78,7 @@ class MyApp extends StatelessWidget {
         builder: (ctx, auth, _) => MaterialApp(
           title: 'Halal Bazaar',
           theme: ThemeData(
-            primaryColor: Colors.blueGrey,
+            primaryColor: Colors.teal,
             accentColor: Colors.white,
             fontFamily: 'Lato',
           ),

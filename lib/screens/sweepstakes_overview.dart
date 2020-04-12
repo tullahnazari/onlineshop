@@ -52,95 +52,104 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
     super.didChangeDependencies();
   }
 
-  var values;
   Future<void> _refreshProducts(BuildContext context) async {
     await getUserLocation().then((value) async {
       await Provider.of<GreatPlaces>(context, listen: false)
           .fetchResultsByState(value);
     });
-    await Provider.of<GreatPlaces>(context, listen: false)
-        .fetchResultsByState(values);
   }
 
   @override
   Widget build(BuildContext context) {
-    // final loadedSweepstakeData = Provider.of<GreatPlaces>(context);
-    // final loadedSweepstake = loadedSweepstakeData.items;
-    // final userProvider = Provider.of<Auth>(context);
-    //final productCount = Provider.of<GreatPlaces>(context, listen: false);
-    return Scaffold(
-      drawer: AppDrawer(),
-      appBar: AppBar(
-        // actions: <Widget>[
-        //   Icon(Icons.search),
-        //   PopupMenuButton(
-        //     icon: Icon(Icons.more_vert),
-        //     itemBuilder: (_) => [
-        //       PopupMenuItem(
-        //         child: FlatButton(
-        //             child: Text("Logout"),
-        //             onPressed: () {
-        //               Navigator.of(context).pop();
-        //               Navigator.of(context).pushReplacementNamed('/');
-        //               Provider.of<Auth>(context, listen: false).logout();
-        //             }),
-        //       ),
-        //     ],
-        //   ),
-        // ],
-        title: Text(
-          'Near you',
-          style: TextStyle(
-              color: Theme.of(context).accentColor, fontFamily: 'Lato'),
-          textAlign: TextAlign.center,
+    return WillPopScope(
+      onWillPop: () async => false,
+      // final loadedSweepstakeData = Provider.of<GreatPlaces>(context);
+      // final loadedSweepstake = loadedSweepstakeData.items;
+      // final userProvider = Provider.of<Auth>(context);
+      //final productCount = Provider.of<GreatPlaces>(context, listen: false);
+      child: Scaffold(
+        drawer: AppDrawer(),
+        appBar: AppBar(
+          // actions: <Widget>[
+          //   Icon(Icons.search),
+          //   PopupMenuButton(
+          //     icon: Icon(Icons.more_vert),
+          //     itemBuilder: (_) => [
+          //       PopupMenuItem(
+          //         child: FlatButton(
+          //             child: Text("Logout"),
+          //             onPressed: () {
+          //               Navigator.of(context).pop();
+          //               Navigator.of(context).pushReplacementNamed('/');
+          //               Provider.of<Auth>(context, listen: false).logout();
+          //             }),
+          //       ),
+          //     ],
+          //   ),
+          // ],
+          title: Text(
+            'Near you',
+            style: TextStyle(
+                color: Theme.of(context).accentColor, fontFamily: 'Lato'),
+            textAlign: TextAlign.center,
+          ),
         ),
-      ),
-      // bottomNavigationBar: BottomBar(),
-      body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : FutureBuilder(
-              future: _refreshProducts(context),
-              builder: (ctx, snapshot) => snapshot.connectionState ==
-                      ConnectionState.waiting
-                  ? Center(
-                      child: CircularProgressIndicator(
-                        backgroundColor: Theme.of(context).primaryColor,
-                      ),
-                    )
-                  : RefreshIndicator(
-                      onRefresh: () => _refreshProducts(context),
-                      child: Consumer<GreatPlaces>(
-                        builder: (ctx, greatPlaces, _) => Padding(
-                          padding: const EdgeInsets.only(
-                              top: 5, bottom: 5, left: 5, right: 5),
-                          child: GridView.builder(
-                            //padding: const EdgeInsets.all(10.0),
-                            itemCount: greatPlaces.items.length,
-                            itemBuilder: (ctx, i) =>
-                                ChangeNotifierProvider.value(
-                              // builder: (c) => products[i],
-                              value: greatPlaces.items[i],
-                              child: OverviewPosting(
-                                id: greatPlaces.items[i].id,
-                                title: greatPlaces.items[i].title,
-                                image: greatPlaces.items[i].image,
-                                address: greatPlaces.items[i].location.address,
+        // bottomNavigationBar: BottomBar(),
+        body: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
+              )
+            : FutureBuilder(
+                future: _refreshProducts(context),
+                builder: (ctx, snapshot) => snapshot.connectionState ==
+                        ConnectionState.waiting
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Theme.of(context).primaryColor,
+                        ),
+                      )
+                    : RefreshIndicator(
+                        onRefresh: () => _refreshProducts(context),
+                        child: Consumer<GreatPlaces>(
+                          builder: (ctx, greatPlaces, _) => Padding(
+                            padding: const EdgeInsets.only(
+                                top: 2, bottom: 2, left: 2, right: 2),
+                            child: GridView.builder(
+                              padding: const EdgeInsets.all(8),
+                              //padding: const EdgeInsets.all(10.0),
+                              itemCount: greatPlaces.items.length,
+                              itemBuilder: (ctx, i) =>
+                                  ChangeNotifierProvider.value(
+                                // builder: (c) => products[i],
+                                value: greatPlaces.items[i],
+                                child: OverviewPosting(
+                                  id: greatPlaces.items[i].id,
+                                  title: greatPlaces.items[i].title,
+                                  image: greatPlaces.items[i].image,
+                                  address:
+                                      greatPlaces.items[i].location.address,
+                                ),
                               ),
-                            ),
-                            scrollDirection: Axis.vertical,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 1,
-                              // childAspectRatio: MediaQuery.of(context).size.width /
-                              //     (MediaQuery.of(context).size.height / 4),
+                              scrollDirection: Axis.vertical,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 1,
+                                mainAxisSpacing: 8,
+                                crossAxisSpacing: 8,
+                                //childAspectRatio: 1,
+                                childAspectRatio: MediaQuery.of(context)
+                                        .size
+                                        .width /
+                                    (MediaQuery.of(context).size.height * .50),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-            ),
+              ),
+      ),
     );
   }
 

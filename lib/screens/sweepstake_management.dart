@@ -23,105 +23,107 @@ class SweepstakeManagement extends StatelessWidget {
     int count = 0;
     final products = Provider.of<GreatPlaces>(context, listen: false);
     final productCount = Provider.of<GreatPlaces>(context, listen: false);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Your Postings'),
-        actions: <Widget>[
-          // IconButton(
-          //   icon: const Icon(Icons.add),
-          //   onPressed: () {
-          //     Navigator.of(context).pushNamed(AddPlaceScreen.routeName);
-          //   },
-          // ),
-        ],
-      ),
-      drawer: AppDrawer(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
-        tooltip: 'Add A Posting',
-        backgroundColor: Theme.of(context).primaryColor,
-        onPressed: () async {
-          var order = await productCount.getCount();
-          if (order > 9) {
-            Flushbar(
-              title: "Ohhh Shucks...",
-              message:
-                  "You can only post 10 items at a time, please delete unused posts ",
-              duration: Duration(seconds: 5),
-            )..show(context);
-          } else {
-            Navigator.of(context).pushNamed(AddPlaceScreen.routeName);
-          }
-        },
-        child: Icon(
-          FontAwesomeIcons.plusCircle,
-          color: Theme.of(context).accentColor,
+    return new WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Your Postings'),
+          actions: <Widget>[
+            // IconButton(
+            //   icon: const Icon(Icons.add),
+            //   onPressed: () {
+            //     Navigator.of(context).pushNamed(AddPlaceScreen.routeName);
+            //   },
+            // ),
+          ],
         ),
-      ),
-      body: FutureBuilder(
-        future: _refreshProducts(context),
-        builder: (ctx, snapshot) =>
-            snapshot.connectionState == ConnectionState.waiting
-                ? Center(
-                    child: CircularProgressIndicator(
-                      backgroundColor: Theme.of(context).primaryColor,
-                    ),
-                  )
-                : RefreshIndicator(
-                    onRefresh: () => _refreshProducts(context),
-                    child: Consumer<GreatPlaces>(
-                      builder: (ctx, greatPlaces, _) => Padding(
-                        padding: EdgeInsets.all(8),
-                        child: ListView.builder(
-                          itemCount: greatPlaces.items.length,
-                          itemBuilder: (_, i) => Column(
-                            children: [
-                              SweepstakeItems(
-                                id: greatPlaces.items[i].id,
-                                title: greatPlaces.items[i].title,
-                                image: greatPlaces.items[i].image,
-                                address: greatPlaces.items[i].location.address,
-                              ),
-                              Divider(),
-                            ],
-                          ),
+        drawer: AppDrawer(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: FloatingActionButton(
+          tooltip: 'Add A Posting',
+          backgroundColor: Theme.of(context).primaryColor,
+          onPressed: () async {
+            var order = await productCount.getCount();
+            if (order > 9) {
+              Flushbar(
+                title: "Ohhh Shucks...",
+                message:
+                    "You can only post 10 items at a time, please delete unused posts ",
+                duration: Duration(seconds: 5),
+              )..show(context);
+            } else {
+              Navigator.of(context).pushNamed(AddPlaceScreen.routeName);
+            }
+          },
+          child: Icon(
+            FontAwesomeIcons.plusCircle,
+            color: Theme.of(context).accentColor,
+          ),
+        ),
+        body: FutureBuilder(
+          future: _refreshProducts(context),
+          builder: (ctx, snapshot) => snapshot.connectionState ==
+                  ConnectionState.waiting
+              ? Center(
+                  child: CircularProgressIndicator(
+                    backgroundColor: Theme.of(context).primaryColor,
+                  ),
+                )
+              : RefreshIndicator(
+                  onRefresh: () => _refreshProducts(context),
+                  child: Consumer<GreatPlaces>(
+                    builder: (ctx, greatPlaces, _) => Padding(
+                      padding: EdgeInsets.all(8),
+                      child: ListView.builder(
+                        itemCount: greatPlaces.items.length,
+                        itemBuilder: (_, i) => Column(
+                          children: [
+                            SweepstakeItems(
+                              id: greatPlaces.items[i].id,
+                              title: greatPlaces.items[i].title,
+                              image: greatPlaces.items[i].image,
+                              address: greatPlaces.items[i].location.address,
+                            ),
+                            Divider(),
+                          ],
                         ),
                       ),
-                      // onTap: () {
-                      //   Navigator.of(context).pushNamed(
-                      //     PlaceDetailScreen.routeName,
-                      //     arguments: greatPlaces.items[i].id,
-                      //   );
-                      // },
-
-                      // trailing: Container(
-                      //   width: 100,
-                      //   child: Row(
-                      //     children: <Widget>[
-                      //       IconButton(
-                      //         icon: Icon(Icons.edit),
-                      //         // onPressed: () {
-                      //         //   Navigator.of(context).pushNamed(
-                      //         //       AddingSweepstake.routeName,
-                      //         //       arguments: id);
-                      //         // },
-                      //         color: Theme.of(context).primaryColor,
-                      //       ),
-                      //       IconButton(
-                      //         icon: Icon(Icons.delete),
-                      //         onPressed: () {
-                      //           Provider.of<GreatPlaces>(context,
-                      //                   listen: false)
-                      //               .deleteProduct(greatPlaces.items[1].id);
-                      //         },
-                      //         color: Theme.of(context).errorColor,
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
                     ),
+                    // onTap: () {
+                    //   Navigator.of(context).pushNamed(
+                    //     PlaceDetailScreen.routeName,
+                    //     arguments: greatPlaces.items[i].id,
+                    //   );
+                    // },
+
+                    // trailing: Container(
+                    //   width: 100,
+                    //   child: Row(
+                    //     children: <Widget>[
+                    //       IconButton(
+                    //         icon: Icon(Icons.edit),
+                    //         // onPressed: () {
+                    //         //   Navigator.of(context).pushNamed(
+                    //         //       AddingSweepstake.routeName,
+                    //         //       arguments: id);
+                    //         // },
+                    //         color: Theme.of(context).primaryColor,
+                    //       ),
+                    //       IconButton(
+                    //         icon: Icon(Icons.delete),
+                    //         onPressed: () {
+                    //           Provider.of<GreatPlaces>(context,
+                    //                   listen: false)
+                    //               .deleteProduct(greatPlaces.items[1].id);
+                    //         },
+                    //         color: Theme.of(context).errorColor,
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                   ),
+                ),
+        ),
       ),
     );
   }
