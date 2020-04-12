@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sweepstakes/helper/calls_messaging_service.dart';
+import 'package:sweepstakes/helper/service_locater.dart';
 import 'package:sweepstakes/providers/auth.dart';
 
 import 'package:sweepstakes/screens/sweepstake_management.dart';
 
 class AppDrawer extends StatelessWidget {
+  final CallsAndMessagesService _service = locator<CallsAndMessagesService>();
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<Auth>(context);
@@ -43,6 +46,18 @@ class AppDrawer extends StatelessWidget {
           ),
           SizedBox(
             height: 400,
+          ),
+          ListTile(
+            contentPadding: EdgeInsets.all(8),
+            leading: Icon(
+              Icons.contact_mail,
+              size: 30,
+            ),
+            title: Text('Contact HB'),
+            onTap: () {
+              String affordableAppsEmail = 'affordableapps4u@gmail.com';
+              _service.sendEmail(affordableAppsEmail);
+            },
           ),
           ListTile(
             contentPadding: EdgeInsets.all(8),

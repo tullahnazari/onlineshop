@@ -7,8 +7,10 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flushbar/flushbar_route.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sweepstakes/helper/calls_messaging_service.dart';
+import 'package:sweepstakes/helper/location_helper.dart';
 import 'package:sweepstakes/helper/service_locater.dart';
 import 'package:sweepstakes/models/place.dart';
 import 'package:sweepstakes/models/result.dart';
@@ -18,6 +20,7 @@ import 'package:sweepstakes/providers/results.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/widgets/animation.dart';
 import 'package:firebase_admob/firebase_admob.dart';
+import 'package:sweepstakes/widgets/location_input.dart';
 
 class SweepstakesDetail extends StatelessWidget {
   static const routeName = '/sweepstakedetail';
@@ -36,6 +39,42 @@ class SweepstakesDetail extends StatelessWidget {
       listen: false,
     ).findById(productId);
     String price = loadedPosting.price.toString();
+
+    _showPreview(double lat, double lng) {
+      LocationHelper.generateLocationPreviewImage(
+        latitude: lat,
+        longitude: lng,
+      );
+      //return staticMapImageUrl;
+    }
+
+    String generateLocationPreviewImage({
+      double latitude,
+      double longitude,
+    }) {
+      return 'https://maps.googleapis.com/maps/api/staticmap?center=$latitude,$longitude&zoom=12&size=600x300&maptype=roadmap&key=$GOOGLE_API_KEY';
+    }
+
+    Set<Circle> circles = Set.from([
+      Circle(
+        //circleId: CircleId(id),
+        center: LatLng(
+            loadedPosting.location.latitude, loadedPosting.location.longitude),
+        radius: 4000,
+      )
+    ]);
+
+    // GoogleMap(
+    //   mapType: MapType.normal,
+    //   myLocationEnabled: true,
+    //   myLocationButtonEnabled: true,
+    //   // initialCameraPosition: initialMapLocation,
+    //   // onMapCreated: (GoogleMapController controller) {
+    //   //   _controller.complete(controller);
+    //   // },
+    //   onCameraMove: null,
+    //   circles: circles,
+    // );
 
     // final coursePrice = Container(
     //   padding: const EdgeInsets.all(7.0),
@@ -153,7 +192,7 @@ class SweepstakesDetail extends StatelessWidget {
       children: <Widget>[
         Text(
           loadedPosting.description,
-          textAlign: TextAlign.left,
+          textAlign: TextAlign.center,
           overflow: TextOverflow.ellipsis,
           maxLines: 10,
           style: TextStyle(
@@ -170,7 +209,26 @@ class SweepstakesDetail extends StatelessWidget {
           style: TextStyle(
               color: Theme.of(context).primaryColor,
               fontFamily: 'Lato',
-              fontSize: 40),
+              fontSize: 30),
+        ),
+        SizedBox(
+          height: 40,
+        ),
+        Container(
+          width: double.infinity,
+          height: 200,
+          //width: 300,
+          child: Image.network(
+            generateLocationPreviewImage(
+                latitude: loadedPosting.location.latitude,
+                longitude: loadedPosting.location.longitude),
+            fit: BoxFit.cover,
+            width: double.infinity,
+          ),
+        ),
+        Text('For confideniality, Map has a radius'),
+        SizedBox(
+          height: 20,
         ),
         // Row(
         //   mainAxisAlignment: MainAxisAlignment.end,
@@ -257,32 +315,39 @@ class SweepstakesDetail extends StatelessWidget {
 
     return Scaffold(
       floatingActionButton: FabCircularMenu(
-        // ringDiameter: width * 1.25,
+        ringDiameter: width * 1.0,
         // ringWidth: width * 1.25,
         fabElevation: 30,
         fabSize: 85,
         children: <Widget>[
           IconButton(
+              color: Theme.of(context).primaryColor,
+              iconSize: 50,
               icon: Icon(
                 Icons.message,
               ),
               onPressed: () {
-                print('Home');
+                _service.sendSms(loadedPosting.phone);
               }),
           IconButton(
+              color: Theme.of(context).primaryColor,
+              iconSize: 50,
               icon: Icon(
                 Icons.call,
               ),
               onPressed: () {
-                print('Home');
+                _service.call(loadedPosting.phone);
               }),
           IconButton(
+            color: Theme.of(context).primaryColor,
+            iconSize: 50,
             icon: Icon(Icons.email),
             onPressed: () {
-              print('Favorite');
+              _service.sendEmail(loadedPosting.email);
             },
           ),
           IconButton(
+            color: Theme.of(context).primaryColor,
             icon: Icon(Icons.report),
             onPressed: () {
               String affordableAppsEmail = 'affordableapps4u@gmail.com';
