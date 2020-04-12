@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ads/admob.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:clippy_flutter/diagonal.dart';
@@ -55,14 +57,31 @@ class SweepstakesDetail extends StatelessWidget {
       return 'https://maps.googleapis.com/maps/api/staticmap?center=$latitude,$longitude&zoom=12&size=600x300&maptype=roadmap&key=$GOOGLE_API_KEY';
     }
 
-    Set<Circle> circles = Set.from([
-      Circle(
-        //circleId: CircleId(id),
-        center: LatLng(
-            loadedPosting.location.latitude, loadedPosting.location.longitude),
-        radius: 4000,
-      )
-    ]);
+    Widget _detectWidget() {
+      if (Platform.isAndroid) {
+        // Return here any Widget you want to display in Android Device.
+        return IconButton(
+            color: Theme.of(context).primaryColor,
+            iconSize: 50,
+            icon: Icon(
+              Icons.arrow_back,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            });
+      } else if (Platform.isIOS) {
+        // Return here any Widget you want to display in iOS Device.
+        return IconButton(
+            color: Theme.of(context).primaryColor,
+            iconSize: 50,
+            icon: Icon(
+              Icons.arrow_back_ios,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            });
+      }
+    }
 
     // GoogleMap(
     //   mapType: MapType.normal,
@@ -119,7 +138,7 @@ class SweepstakesDetail extends StatelessWidget {
     // );
 
     final CarouselSlider autoPlayDemo = CarouselSlider(
-      height: height * .75,
+      height: height * .85,
       viewportFraction: 0.9,
       aspectRatio: 50 / 45,
       autoPlay: true,
@@ -315,11 +334,13 @@ class SweepstakesDetail extends StatelessWidget {
 
     return Scaffold(
       floatingActionButton: FabCircularMenu(
+        fabOpenColor: Theme.of(context).accentColor,
         ringDiameter: width * 1.0,
         // ringWidth: width * 1.25,
         fabElevation: 30,
         fabSize: 85,
         children: <Widget>[
+          _detectWidget(),
           IconButton(
               color: Theme.of(context).primaryColor,
               iconSize: 50,
@@ -344,14 +365,6 @@ class SweepstakesDetail extends StatelessWidget {
             icon: Icon(Icons.email),
             onPressed: () {
               _service.sendEmail(loadedPosting.email);
-            },
-          ),
-          IconButton(
-            color: Theme.of(context).primaryColor,
-            icon: Icon(Icons.report),
-            onPressed: () {
-              String affordableAppsEmail = 'affordableapps4u@gmail.com';
-              _service.sendEmail(affordableAppsEmail);
             },
           ),
         ],
