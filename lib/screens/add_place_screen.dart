@@ -37,6 +37,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
   PlaceLocation _pickedLocation;
   List<String> imageList = [];
   List<Asset> images = List<Asset>();
+  var _isLoading = false;
 
   void _selectImage(List pickedImage) {
     imageList = pickedImage;
@@ -80,6 +81,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
       maxImages: 10,
       enableCamera: true,
     );
+    _isLoading = true;
 
     // The data selected here comes back in the list
     print(resultList);
@@ -93,6 +95,10 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
         //_selectImage(downloadUrl);
 
         var test = imageList.add(downloadUrl.toString());
+
+        setState(() {
+          _isLoading = false;
+        });
 
         // });
         // Get the download URL
@@ -150,7 +156,13 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                       child: Text('Upload'),
                       onPressed: _getImageList,
                     ),
-                    buildGridView(),
+                    _isLoading
+                        ? Center(
+                            child: CircularProgressIndicator(
+                              backgroundColor: Theme.of(context).primaryColor,
+                            ),
+                          )
+                        : buildGridView(),
                     // SizedBox(
                     //   height: 10,
                     // ),
