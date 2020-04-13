@@ -36,6 +36,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
   File _pickedImage;
   PlaceLocation _pickedLocation;
   List<String> imageList = [];
+  List<Asset> images = List<Asset>();
 
   void _selectImage(List pickedImage) {
     imageList = pickedImage;
@@ -82,6 +83,9 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
 
     // The data selected here comes back in the list
     print(resultList);
+    setState(() {
+      images = resultList;
+    });
     for (var asset in resultList) {
       postImage(asset).then((downloadUrl) {
         //setState(() {
@@ -109,6 +113,24 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
     return storageTaskSnapshot.ref.getDownloadURL();
   }
 
+  Widget buildGridView() {
+    return Container(
+      height: 200,
+      width: double.infinity,
+      child: GridView.count(
+        crossAxisCount: 2,
+        children: List.generate(images.length, (index) {
+          Asset asset = images[index];
+          return AssetThumb(
+            asset: asset,
+            width: 100,
+            height: 100,
+          );
+        }),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,9 +150,10 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                       child: Text('Upload'),
                       onPressed: _getImageList,
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
+                    buildGridView(),
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
                     TextFormField(
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
@@ -293,6 +316,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                     //   height: 10,
                     // ),
                     LocationInput(_selectPlace),
+                    //buildGridView(),
                   ],
                 ),
               ),
