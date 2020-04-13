@@ -36,6 +36,8 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
   File _pickedImage;
   PlaceLocation _pickedLocation;
   List<String> imageList = [];
+  List<Asset> images = List<Asset>();
+  var _isLoading = false;
 
   void _selectImage(List pickedImage) {
     imageList = pickedImage;
@@ -79,9 +81,13 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
       maxImages: 10,
       enableCamera: true,
     );
+    _isLoading = true;
 
     // The data selected here comes back in the list
     print(resultList);
+    setState(() {
+      images = resultList;
+    });
     for (var asset in resultList) {
       postImage(asset).then((downloadUrl) {
         //setState(() {
@@ -89,6 +95,10 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
         //_selectImage(downloadUrl);
 
         var test = imageList.add(downloadUrl.toString());
+
+        setState(() {
+          _isLoading = false;
+        });
 
         // });
         // Get the download URL
@@ -107,6 +117,24 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
     StorageUploadTask uploadTask = reference.putData(imageData);
     StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
     return storageTaskSnapshot.ref.getDownloadURL();
+  }
+
+  Widget buildGridView() {
+    return Container(
+      height: 200,
+      width: double.infinity,
+      child: GridView.count(
+        crossAxisCount: 2,
+        children: List.generate(images.length, (index) {
+          Asset asset = images[index];
+          return AssetThumb(
+            asset: asset,
+            width: 100,
+            height: 100,
+          );
+        }),
+      ),
+    );
   }
 
   @override
@@ -128,9 +156,16 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                       child: Text('Upload'),
                       onPressed: _getImageList,
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
+                    _isLoading
+                        ? Center(
+                            child: CircularProgressIndicator(
+                              backgroundColor: Theme.of(context).primaryColor,
+                            ),
+                          )
+                        : buildGridView(),
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
                     TextFormField(
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
@@ -293,6 +328,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                     //   height: 10,
                     // ),
                     LocationInput(_selectPlace),
+                    //buildGridView(),
                   ],
                 ),
               ),
