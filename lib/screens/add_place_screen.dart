@@ -76,12 +76,15 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
     Navigator.of(context).pop();
   }
 
-  _getImageList() async {
+  Future<void> _getImageList() async {
     var resultList = await MultiImagePicker.pickImages(
       maxImages: 10,
       enableCamera: true,
     );
-    _isLoading = true;
+
+    setState(() {
+      _isLoading = true;
+    });
 
     // The data selected here comes back in the list
     print(resultList);
@@ -124,13 +127,13 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
       height: 200,
       width: double.infinity,
       child: GridView.count(
-        crossAxisCount: 2,
+        crossAxisCount: 3,
         children: List.generate(images.length, (index) {
           Asset asset = images[index];
           return AssetThumb(
             asset: asset,
-            width: 100,
-            height: 100,
+            width: 300,
+            height: 300,
           );
         }),
       ),

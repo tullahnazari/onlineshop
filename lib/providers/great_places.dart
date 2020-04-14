@@ -171,6 +171,39 @@ class GreatPlaces with ChangeNotifier {
         loadedProducts.add(Place(
             id: prodId,
             title: prodData['title'],
+            image: prodData['image'],
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
+              address: prodData['address'],
+            )));
+      });
+      _items = loadedProducts;
+
+      notifyListeners();
+    } catch (error) {
+      throw (error);
+    }
+  }
+
+  //TODO work on this as POST is working but not GET
+  Future<void> fetchFirstImage([bool filterByUser = true]) async {
+    final filterString =
+        filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
+    final url =
+        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&$filterString';
+    try {
+      final response = await http.get(url);
+
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      if (extractedData == null) {
+        return;
+      }
+      final List<Place> loadedProducts = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(Place(
+            id: prodId,
+            title: prodData['title'],
             //image: File(prodData['image']),
             location: PlaceLocation(
               latitude: prodData['loc_lat'],
