@@ -57,6 +57,7 @@ class SweepstakeManagement extends StatelessWidget {
           },
           child: Icon(
             FontAwesomeIcons.plus,
+            size: 30,
             color: Theme.of(context).accentColor,
           ),
         ),

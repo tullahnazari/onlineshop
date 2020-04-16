@@ -139,9 +139,9 @@ class SweepstakesDetail extends StatelessWidget {
 
     final CarouselSlider autoPlayDemo = CarouselSlider(
       height: height * .85,
-      viewportFraction: 0.9,
-      aspectRatio: 50 / 45,
-      autoPlay: true,
+      viewportFraction: 1.0,
+      aspectRatio: 1.85 / 1,
+      //autoPlay: true,
       enlargeCenterPage: true,
       items: loadedPosting.image.map(
         (url) {
@@ -151,8 +151,8 @@ class SweepstakesDetail extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(5.0)),
               child: Image.network(
                 url,
-                fit: BoxFit.cover,
-                width: 1000.0,
+                fit: BoxFit.fill,
+                //width: 1000.0,
               ),
             ),
           );
