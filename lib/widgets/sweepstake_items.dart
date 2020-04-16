@@ -9,9 +9,9 @@ class SweepstakeItems extends StatelessWidget {
   final String id;
   final String title;
   final List image;
-  final String address;
+  final String price;
 
-  SweepstakeItems({this.id, this.title, this.image, this.address});
+  SweepstakeItems({this.id, this.title, this.image, this.price});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class SweepstakeItems extends StatelessWidget {
         ),
       ),
       title: Text(title ?? ''),
-      subtitle: Text(address ?? ''),
+      subtitle: Text('\$$price' ?? ''),
       trailing:
           // Container(
           //   width: 100,

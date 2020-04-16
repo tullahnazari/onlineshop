@@ -47,7 +47,7 @@ class OverviewPosting extends StatelessWidget {
                 ),
               ),
               subtitle: Text(
-                price,
+                '\$$price',
                 style: TextStyle(
                   fontFamily: 'Lato',
                   fontSize: 20,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:sweepstakes/helper/location_helper.dart';
@@ -170,6 +171,7 @@ class GreatPlaces with ChangeNotifier {
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(Place(
             id: prodId,
+            price: prodData['price'],
             title: prodData['title'],
             image: prodData['image'],
             location: PlaceLocation(
@@ -234,6 +236,18 @@ class GreatPlaces with ChangeNotifier {
       throw HttpException('Could not delete sweepstake.');
     }
     existingProduct = null;
+  }
+
+  Future deleteImage(String imageFileName) async {
+    final StorageReference firebaseStorageRef =
+        FirebaseStorage.instance.ref().child(imageFileName);
+
+    try {
+      await firebaseStorageRef.delete();
+      return true;
+    } catch (e) {
+      return e.toString();
+    }
   }
 
   Future<void> updateProduct(String id, Place newPlace) async {

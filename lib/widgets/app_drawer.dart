@@ -53,7 +53,7 @@ class AppDrawer extends StatelessWidget {
               Icons.contact_mail,
               size: 30,
             ),
-            title: Text('Contact HB'),
+            title: Text('Contact HB/Provide Feedback'),
             onTap: () {
               String affordableAppsEmail = 'affordableapps4u@gmail.com';
               _service.sendEmail(affordableAppsEmail);
