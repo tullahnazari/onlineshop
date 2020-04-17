@@ -228,6 +228,9 @@ class GreatPlaces with ChangeNotifier {
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
     _items.removeAt(existingProductIndex);
+    //TODO delete a list of images
+    //final image = existingProduct.image.forEach();
+    //deleteImage(existingProduct.image);
     notifyListeners();
     final response = await http.delete(url);
     if (response.statusCode >= 400) {

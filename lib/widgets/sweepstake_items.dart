@@ -16,13 +16,18 @@ class SweepstakeItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      contentPadding: EdgeInsets.all(4),
       leading: CircleAvatar(
+        radius: 30,
         backgroundImage: NetworkImage(
-          image.first ?? '',
+          image.first,
         ),
       ),
-      title: Text(title ?? ''),
-      subtitle: Text('\$$price' ?? ''),
+      title: Text(
+        title,
+        style: TextStyle(fontSize: 22),
+      ),
+      subtitle: Text('\$$price'),
       trailing:
           // Container(
           //   width: 100,
@@ -38,6 +43,7 @@ class SweepstakeItems extends StatelessWidget {
           //   color: Theme.of(context).primaryColor,
           // ),
           IconButton(
+        iconSize: 30,
         icon: Icon(Icons.delete),
         onPressed: () {
           Provider.of<GreatPlaces>(context, listen: false).deleteProduct(id);

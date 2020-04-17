@@ -38,6 +38,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
   List<String> imageList = [];
   List<Asset> images = List<Asset>();
   var _isLoading = false;
+  var _showText = false;
 
   void _selectImage(List pickedImage) {
     imageList = pickedImage;
@@ -45,6 +46,12 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
 
   void _selectPlace(double lat, double lng) {
     _pickedLocation = PlaceLocation(latitude: lat, longitude: lng);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _showText = false;
   }
 
   Future<void> _savePlace() async {
@@ -101,6 +108,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
 
         setState(() {
           _isLoading = false;
+          _showText = true;
         });
 
         // });
@@ -122,7 +130,8 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
     return storageTaskSnapshot.ref.getDownloadURL();
   }
 
-  Widget buildGridView() {
+  buildGridView() {
+    //sepearate the two
     return Container(
       height: 200,
       width: double.infinity,
@@ -136,6 +145,19 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
             height: 300,
           );
         }),
+      ),
+    );
+  }
+
+  showText() {
+    return Container(
+      height: 200,
+      width: double.infinity,
+      child: Center(
+        child: Text(
+          'Please upload images by pressing upload button above',
+          style: TextStyle(color: Theme.of(context).primaryColor),
+        ),
       ),
     );
   }
@@ -155,17 +177,20 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                 padding: EdgeInsets.all(10),
                 child: Column(
                   children: <Widget>[
-                    RaisedButton(
-                      child: Text('Upload'),
-                      onPressed: _getImageList,
+                    SizedBox(
+                      width: double.infinity,
+                      child: RaisedButton(
+                        elevation: 10,
+                        color: Theme.of(context).primaryColor,
+                        child: Text(
+                          'Upload',
+                          style:
+                              TextStyle(color: Theme.of(context).accentColor),
+                        ),
+                        onPressed: _getImageList,
+                      ),
                     ),
-                    _isLoading
-                        ? Center(
-                            child: CircularProgressIndicator(
-                              backgroundColor: Theme.of(context).primaryColor,
-                            ),
-                          )
-                        : buildGridView(),
+                    _showText ? buildGridView() : showText(),
                     // SizedBox(
                     //   height: 10,
                     // ),
