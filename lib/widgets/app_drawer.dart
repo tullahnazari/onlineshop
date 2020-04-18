@@ -11,8 +11,10 @@ class AppDrawer extends StatelessWidget {
   final CallsAndMessagesService _service = locator<CallsAndMessagesService>();
   @override
   Widget build(BuildContext context) {
+    final deviceSize = MediaQuery.of(context).size;
     final userProvider = Provider.of<Auth>(context);
     return Drawer(
+      elevation: 5,
       child: Column(
         children: <Widget>[
           AppBar(
@@ -45,7 +47,7 @@ class AppDrawer extends StatelessWidget {
             },
           ),
           SizedBox(
-            height: 400,
+            height: deviceSize.height * .42,
           ),
           ListTile(
             contentPadding: EdgeInsets.all(8),
@@ -53,7 +55,7 @@ class AppDrawer extends StatelessWidget {
               Icons.contact_mail,
               size: 30,
             ),
-            title: Text('Contact HB'),
+            title: Text('Contact HB/Provide Feedback'),
             onTap: () {
               String affordableAppsEmail = 'affordableapps4u@gmail.com';
               _service.sendEmail(affordableAppsEmail);

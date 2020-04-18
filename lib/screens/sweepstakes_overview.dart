@@ -34,23 +34,23 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   Position currentLocation;
   var value;
 
-  @override
-  void didChangeDependencies() {
-    if (_isInit) {
-      setState(() {
-        _isLoading = true;
-      });
-      getUserLocation().then((value) async {
-        await Provider.of<GreatPlaces>(context, listen: false)
-            .fetchResultsByState(value);
-      });
-      setState(() {
-        _isLoading = false;
-      });
-    }
-    _isInit = false;
-    super.didChangeDependencies();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   if (_isInit) {
+  //     setState(() {
+  //       _isLoading = true;
+  //     });
+  //     getUserLocation().then((value) async {
+  //       await Provider.of<GreatPlaces>(context, listen: false)
+  //           .fetchResultsByState(value);
+  //     });
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //   }
+  //   _isInit = false;
+  //   super.didChangeDependencies();
+  // }
 
   Future<void> _refreshProducts(BuildContext context) async {
     await getUserLocation().then((value) async {
@@ -117,7 +117,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                             padding: const EdgeInsets.only(
                                 top: 2, bottom: 2, left: 2, right: 2),
                             child: GridView.builder(
-                              padding: const EdgeInsets.all(8),
+                              // padding: const EdgeInsets.all(8),
                               //padding: const EdgeInsets.all(10.0),
                               itemCount: greatPlaces.items.length,
                               itemBuilder: (ctx, i) =>

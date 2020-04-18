@@ -1,5 +1,9 @@
 import 'dart:io';
 
+import 'package:fancy_dialog/FancyAnimation.dart';
+import 'package:fancy_dialog/FancyGif.dart';
+import 'package:fancy_dialog/FancyTheme.dart';
+import 'package:fancy_dialog/fancy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sweepstakes/providers/great_places.dart';
@@ -9,20 +13,28 @@ class SweepstakeItems extends StatelessWidget {
   final String id;
   final String title;
   final List image;
-  final String address;
+  final String price;
 
-  SweepstakeItems({this.id, this.title, this.image, this.address});
+  SweepstakeItems({this.id, this.title, this.image, this.price});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      contentPadding: EdgeInsets.all(4),
       leading: CircleAvatar(
+        radius: 30,
         backgroundImage: NetworkImage(
-          image ?? '',
+          image.first,
         ),
       ),
-      title: Text(title ?? ''),
-      subtitle: Text(address ?? ''),
+      title: Text(
+        title,
+        style: TextStyle(fontSize: 22),
+      ),
+      subtitle: Text(
+        '\$$price',
+        style: TextStyle(fontSize: 18),
+      ),
       trailing:
           // Container(
           //   width: 100,
@@ -38,9 +50,24 @@ class SweepstakeItems extends StatelessWidget {
           //   color: Theme.of(context).primaryColor,
           // ),
           IconButton(
+        iconSize: 30,
         icon: Icon(Icons.delete),
         onPressed: () {
-          Provider.of<GreatPlaces>(context, listen: false).deleteProduct(id);
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => FancyDialog(
+              ok: 'Delete',
+              title: "We just want to confirm",
+              descreption: "Are you sure you want to delete this posting?",
+              animationType: FancyAnimation.BOTTOM_TOP,
+              theme: FancyTheme.FANCY,
+              gifPath: FancyGif.MOVE_FORWARD, //'./assets/walp.png',
+              okFun: () => {
+                Provider.of<GreatPlaces>(context, listen: false)
+                    .deleteProduct(id)
+              },
+            ),
+          );
         },
         color: Theme.of(context).errorColor,
       ),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:sweepstakes/helper/location_helper.dart';
@@ -35,6 +36,8 @@ class GreatPlaces with ChangeNotifier {
   ) async {
     var stateAddress = await LocationHelper.getPlaceAddress(
         pickedLocation.latitude, pickedLocation.longitude);
+    var countyAddress = await LocationHelper.getCounty(
+        pickedLocation.latitude, pickedLocation.longitude);
     final address = await LocationHelper.getPlaceAddress(
         pickedLocation.latitude, pickedLocation.longitude);
     final updatedLocation = PlaceLocation(
@@ -50,6 +53,7 @@ class GreatPlaces with ChangeNotifier {
         image: pickedImage,
         title: pickedTitle,
         description: pickedDescription,
+        address: countyAddress,
         location: updatedLocation,
         email: pickedEmail,
         phone: pickedPhone,
@@ -63,7 +67,7 @@ class GreatPlaces with ChangeNotifier {
           'image': newPlace.image,
           'loc_lat': newPlace.location.latitude,
           'loc_lng': newPlace.location.longitude,
-          'address': stateAddress,
+          'address': countyAddress,
           'creatorId': userId,
           'state': stateAddress,
           'description': newPlace.description,
@@ -96,19 +100,19 @@ class GreatPlaces with ChangeNotifier {
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(
           Place(
-            id: prodId,
-            title: prodData['title'],
-            image: prodData['image'],
-            location: PlaceLocation(
-              latitude: prodData['loc_lat'],
-              longitude: prodData['loc_lng'],
-              address: prodData['address'],
-            ),
-            description: prodData['description'],
-            email: prodData['email'],
-            phone: prodData['phone'],
-            price: prodData['price'],
-          ),
+              id: prodId,
+              title: prodData['title'],
+              image: prodData['image'],
+              location: PlaceLocation(
+                latitude: prodData['loc_lat'],
+                longitude: prodData['loc_lng'],
+                address: prodData['address'],
+              ),
+              description: prodData['description'],
+              email: prodData['email'],
+              phone: prodData['phone'],
+              price: prodData['price'],
+              address: prodData['address']),
         );
       });
       _items = loadedProducts.reversed.toList();
@@ -168,6 +172,44 @@ class GreatPlaces with ChangeNotifier {
       }
       final List<Place> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(
+          Place(
+            id: prodId,
+            price: prodData['price'],
+            title: prodData['title'],
+            image: prodData['image'],
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
+              address: prodData['address'],
+            ),
+            address: prodData['address'],
+          ),
+        );
+      });
+      _items = loadedProducts;
+
+      notifyListeners();
+    } catch (error) {
+      throw (error);
+    }
+  }
+
+  //TODO work on this as POST is working but not GET
+  Future<void> fetchFirstImage([bool filterByUser = true]) async {
+    final filterString =
+        filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
+    final url =
+        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&$filterString';
+    try {
+      final response = await http.get(url);
+
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      if (extractedData == null) {
+        return;
+      }
+      final List<Place> loadedProducts = [];
+      extractedData.forEach((prodId, prodData) {
         loadedProducts.add(Place(
             id: prodId,
             title: prodData['title'],
@@ -192,7 +234,12 @@ class GreatPlaces with ChangeNotifier {
     //optimistic deleting/updating
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
+    deleteImage(existingProduct.image.first);
     _items.removeAt(existingProductIndex);
+
+    //TODO delete a list of images
+    //final image = existingProduct.image.forEach();
+
     notifyListeners();
     final response = await http.delete(url);
     if (response.statusCode >= 400) {
@@ -201,6 +248,18 @@ class GreatPlaces with ChangeNotifier {
       throw HttpException('Could not delete sweepstake.');
     }
     existingProduct = null;
+  }
+
+  Future deleteImage(String imageFileName) async {
+    final StorageReference firebaseStorageRef =
+        FirebaseStorage.instance.ref().child(imageFileName);
+
+    try {
+      await firebaseStorageRef.delete();
+      return true;
+    } catch (e) {
+      return e.toString();
+    }
   }
 
   Future<void> updateProduct(String id, Place newPlace) async {

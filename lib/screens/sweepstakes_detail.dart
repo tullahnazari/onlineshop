@@ -138,9 +138,10 @@ class SweepstakesDetail extends StatelessWidget {
     // );
 
     final CarouselSlider autoPlayDemo = CarouselSlider(
+      pauseAutoPlayOnTouch: Duration(seconds: 50),
       height: height * .85,
-      viewportFraction: 0.9,
-      aspectRatio: 50 / 45,
+      viewportFraction: 1.0,
+      aspectRatio: 1.85 / 1,
       autoPlay: true,
       enlargeCenterPage: true,
       items: loadedPosting.image.map(
@@ -151,8 +152,8 @@ class SweepstakesDetail extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(5.0)),
               child: Image.network(
                 url,
-                fit: BoxFit.cover,
-                width: 1000.0,
+                fit: BoxFit.fitWidth,
+                //width: 1000.0,
               ),
             ),
           );
@@ -233,6 +234,7 @@ class SweepstakesDetail extends StatelessWidget {
         SizedBox(
           height: 40,
         ),
+        Text(loadedPosting.address),
         Container(
           width: double.infinity,
           height: 200,

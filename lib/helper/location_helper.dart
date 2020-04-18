@@ -59,4 +59,25 @@ class LocationHelper {
     // print(addresses);
     // return addresses;
   }
+
+  static Future<String> getCounty(double lat, double lng) async {
+    final url =
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=$GOOGLE_API_KEY';
+    final response = await http.get(url);
+    var addressBody = response.body;
+    List<dynamic> addressComponents =
+        json.decode(addressBody)['results'][0]['address_components'];
+
+    String address = addressComponents.firstWhere((entry) =>
+        entry['types'].contains('administrative_area_level_2'))['long_name'];
+    print(address);
+    return address;
+    // List<Placemark> placemark =
+    //     await Geolocator().placemarkFromCoordinates(lat, lng);
+
+    // var addresses = placemark.first.administrativeArea;
+    // //var state = addresses.first.adminArea;
+    // print(addresses);
+    // return addresses;
+  }
 }

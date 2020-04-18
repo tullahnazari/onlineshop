@@ -38,7 +38,7 @@ class OverviewPosting extends StatelessWidget {
             color: Colors.transparent,
             clipBehavior: Clip.antiAlias,
             child: GridTileBar(
-              backgroundColor: Colors.black54,
+              backgroundColor: Colors.black87,
               title: Text(
                 title,
                 style: TextStyle(
@@ -47,7 +47,7 @@ class OverviewPosting extends StatelessWidget {
                 ),
               ),
               subtitle: Text(
-                price,
+                '\$$price',
                 style: TextStyle(
                   fontFamily: 'Lato',
                   fontSize: 20,

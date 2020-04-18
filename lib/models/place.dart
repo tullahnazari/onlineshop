@@ -18,11 +18,12 @@ class Place with ChangeNotifier {
   final String id;
   final String title;
   final PlaceLocation location;
-  List image;
+  final List image;
   final String description;
   final String email;
   final String phone;
   final String price;
+  final String address;
 
   Place({
     @required this.id,
@@ -33,6 +34,7 @@ class Place with ChangeNotifier {
     @required this.email,
     @required this.phone,
     @required this.price,
+    @required this.address,
   });
 
   notifyListeners();
