@@ -1,5 +1,9 @@
 import 'dart:io';
 
+import 'package:fancy_dialog/FancyAnimation.dart';
+import 'package:fancy_dialog/FancyGif.dart';
+import 'package:fancy_dialog/FancyTheme.dart';
+import 'package:fancy_dialog/fancy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sweepstakes/providers/great_places.dart';
@@ -49,7 +53,21 @@ class SweepstakeItems extends StatelessWidget {
         iconSize: 30,
         icon: Icon(Icons.delete),
         onPressed: () {
-          Provider.of<GreatPlaces>(context, listen: false).deleteProduct(id);
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => FancyDialog(
+              ok: 'Delete',
+              title: "We just want to confirm",
+              descreption: "Are you sure you want to delete this posting?",
+              animationType: FancyAnimation.BOTTOM_TOP,
+              theme: FancyTheme.FANCY,
+              gifPath: FancyGif.MOVE_FORWARD, //'./assets/walp.png',
+              okFun: () => {
+                Provider.of<GreatPlaces>(context, listen: false)
+                    .deleteProduct(id)
+              },
+            ),
+          );
         },
         color: Theme.of(context).errorColor,
       ),
