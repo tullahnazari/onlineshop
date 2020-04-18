@@ -36,6 +36,8 @@ class GreatPlaces with ChangeNotifier {
   ) async {
     var stateAddress = await LocationHelper.getPlaceAddress(
         pickedLocation.latitude, pickedLocation.longitude);
+    var countyAddress = await LocationHelper.getCounty(
+        pickedLocation.latitude, pickedLocation.longitude);
     final address = await LocationHelper.getPlaceAddress(
         pickedLocation.latitude, pickedLocation.longitude);
     final updatedLocation = PlaceLocation(
@@ -51,6 +53,7 @@ class GreatPlaces with ChangeNotifier {
         image: pickedImage,
         title: pickedTitle,
         description: pickedDescription,
+        address: countyAddress,
         location: updatedLocation,
         email: pickedEmail,
         phone: pickedPhone,
@@ -64,7 +67,7 @@ class GreatPlaces with ChangeNotifier {
           'image': newPlace.image,
           'loc_lat': newPlace.location.latitude,
           'loc_lng': newPlace.location.longitude,
-          'address': stateAddress,
+          'address': countyAddress,
           'creatorId': userId,
           'state': stateAddress,
           'description': newPlace.description,
@@ -97,19 +100,19 @@ class GreatPlaces with ChangeNotifier {
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(
           Place(
-            id: prodId,
-            title: prodData['title'],
-            image: prodData['image'],
-            location: PlaceLocation(
-              latitude: prodData['loc_lat'],
-              longitude: prodData['loc_lng'],
-              address: prodData['address'],
-            ),
-            description: prodData['description'],
-            email: prodData['email'],
-            phone: prodData['phone'],
-            price: prodData['price'],
-          ),
+              id: prodId,
+              title: prodData['title'],
+              image: prodData['image'],
+              location: PlaceLocation(
+                latitude: prodData['loc_lat'],
+                longitude: prodData['loc_lng'],
+                address: prodData['address'],
+              ),
+              description: prodData['description'],
+              email: prodData['email'],
+              phone: prodData['phone'],
+              price: prodData['price'],
+              address: prodData['address']),
         );
       });
       _items = loadedProducts.reversed.toList();
@@ -169,7 +172,8 @@ class GreatPlaces with ChangeNotifier {
       }
       final List<Place> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
-        loadedProducts.add(Place(
+        loadedProducts.add(
+          Place(
             id: prodId,
             price: prodData['price'],
             title: prodData['title'],
@@ -178,7 +182,10 @@ class GreatPlaces with ChangeNotifier {
               latitude: prodData['loc_lat'],
               longitude: prodData['loc_lng'],
               address: prodData['address'],
-            )));
+            ),
+            address: prodData['address'],
+          ),
+        );
       });
       _items = loadedProducts;
 
@@ -227,10 +234,12 @@ class GreatPlaces with ChangeNotifier {
     //optimistic deleting/updating
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
+    deleteImage(existingProduct.image.first);
     _items.removeAt(existingProductIndex);
+
     //TODO delete a list of images
     //final image = existingProduct.image.forEach();
-    //deleteImage(existingProduct.image);
+
     notifyListeners();
     final response = await http.delete(url);
     if (response.statusCode >= 400) {

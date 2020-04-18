@@ -117,7 +117,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                             padding: const EdgeInsets.only(
                                 top: 2, bottom: 2, left: 2, right: 2),
                             child: GridView.builder(
-                              padding: const EdgeInsets.all(8),
+                              // padding: const EdgeInsets.all(8),
                               //padding: const EdgeInsets.all(10.0),
                               itemCount: greatPlaces.items.length,
                               itemBuilder: (ctx, i) =>

@@ -3,6 +3,7 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 import 'package:sweepstakes/providers/great_places.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/screens/add_place_screen.dart';
@@ -20,6 +21,7 @@ class SweepstakeManagement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deviceSize = MediaQuery.of(context).size;
     int count = 0;
     final products = Provider.of<GreatPlaces>(context, listen: false);
     final productCount = Provider.of<GreatPlaces>(context, listen: false);
@@ -44,11 +46,11 @@ class SweepstakeManagement extends StatelessWidget {
           backgroundColor: Theme.of(context).primaryColor,
           onPressed: () async {
             var order = await productCount.getCount();
-            if (order > 9) {
+            if (order > 4) {
               Flushbar(
                 title: "Ohhh Shucks...",
                 message:
-                    "You can only post 10 items at a time, please delete unused posts ",
+                    "You can only have 5 active postings, please delete inactive or dated posts ",
                 duration: Duration(seconds: 5),
               )..show(context);
             } else {
@@ -123,6 +125,34 @@ class SweepstakeManagement extends StatelessWidget {
                     // ),
                   ),
                 ),
+        ),
+        bottomSheet: SolidBottomSheet(
+          headerBar: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadiusDirectional.only(
+                  topStart: Radius.circular(50), topEnd: Radius.circular(50)),
+              color: Theme.of(context).primaryColor,
+            ),
+            height: deviceSize.height * .10,
+            child: Center(
+                child: Text(
+              'Swipe up for Instructions',
+              style:
+                  TextStyle(fontSize: 20, color: Theme.of(context).accentColor),
+            )),
+          ), // Your header here
+          body: Container(
+            height: 100,
+            child: Center(
+              child: Text(
+                'Click on the plus icon on the right to add a service or product. Your posting will be shared with the community near by. The limit is 5 postings, once you reach the limit, please delete unwanted postings in order to add more',
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ), // Your body here
         ),
       ),
     );

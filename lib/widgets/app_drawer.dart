@@ -11,6 +11,7 @@ class AppDrawer extends StatelessWidget {
   final CallsAndMessagesService _service = locator<CallsAndMessagesService>();
   @override
   Widget build(BuildContext context) {
+    final deviceSize = MediaQuery.of(context).size;
     final userProvider = Provider.of<Auth>(context);
     return Drawer(
       child: Column(
@@ -45,7 +46,7 @@ class AppDrawer extends StatelessWidget {
             },
           ),
           SizedBox(
-            height: 400,
+            height: deviceSize.height * .42,
           ),
           ListTile(
             contentPadding: EdgeInsets.all(8),

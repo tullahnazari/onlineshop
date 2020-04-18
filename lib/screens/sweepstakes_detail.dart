@@ -151,7 +151,7 @@ class SweepstakesDetail extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(5.0)),
               child: Image.network(
                 url,
-                fit: BoxFit.fill,
+                fit: BoxFit.fitWidth,
                 //width: 1000.0,
               ),
             ),
@@ -233,6 +233,7 @@ class SweepstakesDetail extends StatelessWidget {
         SizedBox(
           height: 40,
         ),
+        Text(loadedPosting.address),
         Container(
           width: double.infinity,
           height: 200,

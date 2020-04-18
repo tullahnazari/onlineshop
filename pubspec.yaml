@@ -54,6 +54,7 @@ dependencies:
   multi_image_picker: ^4.6.5+rc.1
   carousel_slider: ^1.4.1
   fab_circular_menu: ^1.0.0
+  solid_bottom_sheet: ^0.1.9
 
 
 
@@ -66,7 +67,7 @@ dev_dependencies:
 
 flutter_icons: 
   android: true
-  image_path: "assets/images/HLogowithbackground.png"
+  image_path: "assets/images/hblogo.png"
   adaptive_icon_background: "#191919"
 
 
@@ -84,6 +85,7 @@ flutter:
   assets:
    - assets/images/google_logo.png
    - assets/images/fblogo.png
+   - assets/images/hblogo.png
    - assets/images/HLogotransparent.png
    - assets/images/HLogowithbackground.png
 

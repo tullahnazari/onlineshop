@@ -85,7 +85,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
 
   Future<void> _getImageList() async {
     var resultList = await MultiImagePicker.pickImages(
-      maxImages: 10,
+      maxImages: 5,
       enableCamera: true,
     );
 
@@ -123,7 +123,9 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
   Future<dynamic> postImage(Asset asset) async {
     ByteData byteData = await asset.requestOriginal();
     List<int> imageData = byteData.buffer.asUint8List();
-    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    String fileName = DateTime.now().microsecondsSinceEpoch.toString() +
+        DateTime.now().millisecondsSinceEpoch.toString() +
+        DateTime.now().day.toString();
     StorageReference reference = FirebaseStorage.instance.ref().child(fileName);
     StorageUploadTask uploadTask = reference.putData(imageData);
     StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
