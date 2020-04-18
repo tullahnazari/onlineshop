@@ -82,51 +82,58 @@ class SweepstakeManagement extends StatelessWidget {
                         itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
                           // builder: (c) => products[i],
                           value: greatPlaces.items[i],
-                          child: SweepstakeItems(
-                            id: greatPlaces.items[i].id,
-                            title: greatPlaces.items[i].title,
-                            image: greatPlaces.items[i].image,
-                            price: greatPlaces.items[i].price,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              //                    <-- BoxDecoration
+                              border: Border(bottom: BorderSide()),
+                            ),
+                            child: SweepstakeItems(
+                              id: greatPlaces.items[i].id,
+                              title: greatPlaces.items[i].title,
+                              image: greatPlaces.items[i].image,
+                              price: greatPlaces.items[i].price,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    // onTap: () {
-                    //   Navigator.of(context).pushNamed(
-                    //     PlaceDetailScreen.routeName,
-                    //     arguments: greatPlaces.items[i].id,
-                    //   );
-                    // },
+                      // onTap: () {
+                      //   Navigator.of(context).pushNamed(
+                      //     PlaceDetailScreen.routeName,
+                      //     arguments: greatPlaces.items[i].id,
+                      //   );
+                      // },
 
-                    // trailing: Container(
-                    //   width: 100,
-                    //   child: Row(
-                    //     children: <Widget>[
-                    //       IconButton(
-                    //         icon: Icon(Icons.edit),
-                    //         // onPressed: () {
-                    //         //   Navigator.of(context).pushNamed(
-                    //         //       AddingSweepstake.routeName,
-                    //         //       arguments: id);
-                    //         // },
-                    //         color: Theme.of(context).primaryColor,
-                    //       ),
-                    //       IconButton(
-                    //         icon: Icon(Icons.delete),
-                    //         onPressed: () {
-                    //           Provider.of<GreatPlaces>(context,
-                    //                   listen: false)
-                    //               .deleteProduct(greatPlaces.items[1].id);
-                    //         },
-                    //         color: Theme.of(context).errorColor,
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
+                      // trailing: Container(
+                      //   width: 100,
+                      //   child: Row(
+                      //     children: <Widget>[
+                      //       IconButton(
+                      //         icon: Icon(Icons.edit),
+                      //         // onPressed: () {
+                      //         //   Navigator.of(context).pushNamed(
+                      //         //       AddingSweepstake.routeName,
+                      //         //       arguments: id);
+                      //         // },
+                      //         color: Theme.of(context).primaryColor,
+                      //       ),
+                      //       IconButton(
+                      //         icon: Icon(Icons.delete),
+                      //         onPressed: () {
+                      //           Provider.of<GreatPlaces>(context,
+                      //                   listen: false)
+                      //               .deleteProduct(greatPlaces.items[1].id);
+                      //         },
+                      //         color: Theme.of(context).errorColor,
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                    ),
                   ),
                 ),
         ),
         bottomSheet: SolidBottomSheet(
+          maxHeight: deviceSize.height * .22,
           headerBar: Container(
             width: double.infinity,
             decoration: BoxDecoration(
@@ -138,17 +145,23 @@ class SweepstakeManagement extends StatelessWidget {
             child: Center(
                 child: Text(
               'Swipe up for Instructions',
-              style:
-                  TextStyle(fontSize: 20, color: Theme.of(context).accentColor),
+              style: TextStyle(
+                  fontSize: 20,
+                  color: Theme.of(context).accentColor,
+                  fontFamily: 'Lato'),
             )),
           ), // Your header here
           body: Container(
             height: 100,
-            child: Center(
-              child: Text(
-                'Click on the plus icon on the right to add a service or product. Your posting will be shared with the community near by. The limit is 5 postings, once you reach the limit, please delete unwanted postings in order to add more',
-                style: TextStyle(
-                  fontSize: 20,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Click on the plus icon on the right to add a service or product. Your posting will be shared with the community near by. The limit is 5 postings, once you reach the limit, please delete unwanted postings in order to add more.',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: 'Lato',
+                  ),
                 ),
               ),
             ),

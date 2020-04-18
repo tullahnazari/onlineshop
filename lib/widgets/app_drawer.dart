@@ -14,6 +14,7 @@ class AppDrawer extends StatelessWidget {
     final deviceSize = MediaQuery.of(context).size;
     final userProvider = Provider.of<Auth>(context);
     return Drawer(
+      elevation: 5,
       child: Column(
         children: <Widget>[
           AppBar(

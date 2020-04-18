@@ -55,6 +55,7 @@ dependencies:
   carousel_slider: ^1.4.1
   fab_circular_menu: ^1.0.0
   solid_bottom_sheet: ^0.1.9
+  fancy_dialog: ^1.0.3
 
 
 

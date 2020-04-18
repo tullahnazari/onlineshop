@@ -23,6 +23,12 @@ class AddPlaceScreen extends StatefulWidget {
 }
 
 class _AddPlaceScreenState extends State<AddPlaceScreen> {
+  final _priceFocusNode = FocusNode();
+  final _descriptionFocusNode = FocusNode();
+  final _titleFocusNode = FocusNode();
+  final _emailFocusNode = FocusNode();
+  final _phoneFocusNode = FocusNode();
+
   String price;
   final _priceController = TextEditingController();
   String emailText;
@@ -52,6 +58,16 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
   void initState() {
     super.initState();
     _showText = false;
+  }
+
+  @override
+  void dispose() {
+    _titleFocusNode.dispose();
+    _emailFocusNode.dispose();
+    _phoneFocusNode.dispose();
+    _priceFocusNode.dispose();
+    _descriptionFocusNode.dispose();
+    super.dispose();
   }
 
   Future<void> _savePlace() async {
@@ -197,6 +213,10 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                     //   height: 10,
                     // ),
                     TextFormField(
+                      focusNode: _titleFocusNode,
+                      onFieldSubmitted: (_) {
+                        FocusScope.of(context).requestFocus(_priceFocusNode);
+                      },
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide:
@@ -221,32 +241,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                         ///print(databaseText);
                       },
                     ),
-                    TextField(
-                      maxLines: 3,
-                      decoration: InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.greenAccent, width: 1.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.black, width: 1.0),
-                        ),
-                        hintText: 'Description: ',
-                        fillColor: Colors.white,
-                        border: InputBorder.none,
-                        filled: true,
-                        contentPadding: EdgeInsets.only(
-                            bottom: 10.0, left: 10.0, right: 10.0),
-                      ),
-                      controller: _descriptionController,
-                      keyboardType: TextInputType.multiline,
-                      onEditingComplete: () {
-                        descriptionText = _descriptionController.text;
 
-                        ///print(databaseText);
-                      },
-                    ),
                     // TextField(
                     //   decoration: InputDecoration(
                     //     focusedBorder: OutlineInputBorder(
@@ -276,7 +271,11 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                     //         onChanged: () {
                     //           price = double.parse(_priceController.text);
                     //         })),
-                    TextField(
+                    TextFormField(
+                      focusNode: _priceFocusNode,
+                      onFieldSubmitted: (_) {
+                        FocusScope.of(context).requestFocus(_emailFocusNode);
+                      },
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide:
@@ -300,7 +299,11 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                         ///print(databaseText);
                       },
                     ),
-                    TextField(
+                    TextFormField(
+                      focusNode: _emailFocusNode,
+                      onFieldSubmitted: (_) {
+                        FocusScope.of(context).requestFocus(_phoneFocusNode);
+                      },
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide:
@@ -325,7 +328,12 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                         ///print(databaseText);
                       },
                     ),
-                    TextField(
+                    TextFormField(
+                      focusNode: _phoneFocusNode,
+                      onFieldSubmitted: (_) {
+                        FocusScope.of(context)
+                            .requestFocus(_descriptionFocusNode);
+                      },
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide:
@@ -346,6 +354,33 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                       keyboardType: TextInputType.phone,
                       onEditingComplete: () {
                         phoneText = _phoneController.text;
+
+                        ///print(databaseText);
+                      },
+                    ),
+                    TextFormField(
+                      focusNode: _descriptionFocusNode,
+                      maxLines: 3,
+                      decoration: InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.greenAccent, width: 1.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.black, width: 1.0),
+                        ),
+                        hintText: 'Description: ',
+                        fillColor: Colors.white,
+                        border: InputBorder.none,
+                        filled: true,
+                        contentPadding: EdgeInsets.only(
+                            bottom: 10.0, left: 10.0, right: 10.0),
+                      ),
+                      controller: _descriptionController,
+                      keyboardType: TextInputType.multiline,
+                      onEditingComplete: () {
+                        descriptionText = _descriptionController.text;
 
                         ///print(databaseText);
                       },

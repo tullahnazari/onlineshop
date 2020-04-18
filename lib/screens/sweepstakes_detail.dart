@@ -138,10 +138,11 @@ class SweepstakesDetail extends StatelessWidget {
     // );
 
     final CarouselSlider autoPlayDemo = CarouselSlider(
+      pauseAutoPlayOnTouch: Duration(seconds: 50),
       height: height * .85,
       viewportFraction: 1.0,
       aspectRatio: 1.85 / 1,
-      //autoPlay: true,
+      autoPlay: true,
       enlargeCenterPage: true,
       items: loadedPosting.image.map(
         (url) {

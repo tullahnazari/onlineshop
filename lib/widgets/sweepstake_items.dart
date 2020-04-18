@@ -27,7 +27,10 @@ class SweepstakeItems extends StatelessWidget {
         title,
         style: TextStyle(fontSize: 22),
       ),
-      subtitle: Text('\$$price'),
+      subtitle: Text(
+        '\$$price',
+        style: TextStyle(fontSize: 18),
+      ),
       trailing:
           // Container(
           //   width: 100,
