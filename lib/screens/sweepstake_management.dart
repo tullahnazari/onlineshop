@@ -157,7 +157,7 @@ class SweepstakeManagement extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Center(
                 child: Text(
-                  'Click on the plus icon on the right to add a service or product. Your posting will be shared with the community near by. The limit is 5 postings, once you reach the limit, please delete unwanted postings in order to add more.',
+                  'Click on the plus icon on the right to add a service or product. Your posting will be shared with the community near by. You can also post services you want, such as Food prep service, tailoring, and even a reccomendation for a nice restaurant',
                   style: TextStyle(
                     fontSize: 20,
                     fontFamily: 'Lato',

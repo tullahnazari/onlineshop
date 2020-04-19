@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:ads/admob.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:clippy_flutter/diagonal.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
@@ -21,7 +20,6 @@ import 'package:sweepstakes/providers/great_places.dart';
 import 'package:sweepstakes/providers/results.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/widgets/animation.dart';
-import 'package:firebase_admob/firebase_admob.dart';
 import 'package:sweepstakes/widgets/location_input.dart';
 
 class SweepstakesDetail extends StatelessWidget {
