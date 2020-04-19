@@ -189,12 +189,14 @@ class SweepstakesDetail extends StatelessWidget {
     //   ],
     // );
 
-    final bottomContentText = Text(
-      loadedPosting.title,
-      style: TextStyle(
-          fontSize: 34.0,
-          color: Theme.of(context).primaryColor,
-          fontFamily: 'Lato'),
+    final bottomContentText = Center(
+      child: Text(
+        loadedPosting.title,
+        style: TextStyle(
+            fontSize: 34.0,
+            color: Theme.of(context).primaryColor,
+            fontFamily: 'Lato'),
+      ),
     );
     // final backButton = InkWell(
     //   //highlightColor: Colors.black,
@@ -208,15 +210,17 @@ class SweepstakesDetail extends StatelessWidget {
     // );
     final description = Column(
       children: <Widget>[
-        Text(
-          loadedPosting.description,
-          textAlign: TextAlign.center,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 10,
-          style: TextStyle(
-            color: Colors.black,
-            fontFamily: 'Lato',
-            fontSize: 20,
+        Center(
+          child: Text(
+            loadedPosting.description,
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 10,
+            style: TextStyle(
+              color: Colors.black,
+              fontFamily: 'Lato',
+              fontSize: 20,
+            ),
           ),
         ),
         SizedBox(
