@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -78,10 +79,11 @@ class OverviewPosting extends StatelessWidget {
               // ),
             ),
           ),
-          child: Image.network(
-            image.first,
-            width: double.infinity,
-            fit: BoxFit.cover,
+          child: CachedNetworkImage(
+            imageUrl: image.first,
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                CircularProgressIndicator(value: downloadProgress.progress),
+            errorWidget: (context, url, error) => Icon(Icons.error),
           ),
         ),
       ),

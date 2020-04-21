@@ -11,8 +11,19 @@ import 'package:sweepstakes/widgets/app_drawer.dart';
 import 'package:sweepstakes/widgets/sweepstake_items.dart';
 import 'package:sweepstakes/widgets/user_sweepstakes_item.dart';
 
-class SweepstakeManagement extends StatelessWidget {
+class SweepstakeManagement extends StatefulWidget {
   static const routeName = '/user-sweepstakes';
+
+  @override
+  _SweepstakeManagementState createState() => _SweepstakeManagementState();
+}
+
+class _SweepstakeManagementState extends State<SweepstakeManagement> {
+  @override
+  void initState() {
+    super.initState();
+    _refreshProducts(context);
+  }
 
   Future<void> _refreshProducts(BuildContext context) async {
     await Provider.of<GreatPlaces>(context, listen: false)

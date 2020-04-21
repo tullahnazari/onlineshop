@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:clippy_flutter/diagonal.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
@@ -148,10 +149,11 @@ class SweepstakesDetail extends StatelessWidget {
             margin: EdgeInsets.all(5.0),
             child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(5.0)),
-              child: Image.network(
-                url,
-                fit: BoxFit.fitWidth,
-                //width: 1000.0,
+              child: CachedNetworkImage(
+                imageUrl: url,
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    CircularProgressIndicator(value: downloadProgress.progress),
+                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
             ),
           );
