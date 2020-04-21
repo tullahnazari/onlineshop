@@ -11,7 +11,7 @@ description: A new Flutter project.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+2
+version: 1.1.0+13
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -27,8 +27,6 @@ dependencies:
   clippy_flutter: ^1.1.0
   flutter_swiper: ^1.1.6
   provider: ^4.0.0
-  ads: ^1.7.2
-  firebase_admob: ^0.9.0+10
   flushbar: ^1.9.1
   flutter_facebook_login: ^3.0.0
   google_sign_in: ^4.1.1
@@ -37,7 +35,6 @@ dependencies:
   google_maps_flutter: ^0.5.24+1
   image_picker: ^0.6.3+4
   path_provider: ^1.6.1
-  camera: ^0.5.7+4
   http: ^0.12.0+4
   geocoder: ^0.2.1
   geoflutterfire: ^2.1.0
@@ -56,6 +53,7 @@ dependencies:
   fab_circular_menu: ^1.0.0
   solid_bottom_sheet: ^0.1.9
   fancy_dialog: ^1.0.3
+  cached_network_image: ^2.1.0+1
 
 
 
@@ -68,8 +66,8 @@ dev_dependencies:
 
 flutter_icons: 
   android: true
+  ios: true
   image_path: "assets/images/hblogo.png"
-  adaptive_icon_background: "#191919"
 
 
 # For information on the generic Dart part of this file, see the

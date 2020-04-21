@@ -33,6 +33,11 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   var _isInit = true;
   Position currentLocation;
   var value;
+  @override
+  void initState() {
+    super.initState();
+    _refreshProducts(context);
+  }
 
   // @override
   // void didChangeDependencies() {

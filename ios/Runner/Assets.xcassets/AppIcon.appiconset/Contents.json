@@ -3,7 +3,7 @@
     {
       "size" : "20x20",
       "idiom" : "iphone",
-      "filename" : "Icon-App-20x20@2x.png",
+      "filename" : "hbapplogo.jpg",
       "scale" : "2x"
     },
     {
@@ -111,7 +111,7 @@
     {
       "size" : "1024x1024",
       "idiom" : "ios-marketing",
-      "filename" : "Icon-App-1024x1024@1x.png",
+      "filename" : "hblogo.jpg",
       "scale" : "1x"
     }
   ],

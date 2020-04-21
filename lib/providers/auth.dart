@@ -24,9 +24,7 @@ class Auth with ChangeNotifier {
   }
 
   String get token {
-    if (_expiryDate != null &&
-        _expiryDate.isAfter(DateTime.now()) &&
-        _token != null) {
+    if (_expiryDate != null && _token != null) {
       return _token;
     }
     return null;
@@ -68,7 +66,7 @@ class Auth with ChangeNotifier {
           ),
         ),
       );
-      _autoLogout();
+      //_autoLogout();
       notifyListeners();
       final prefs = await SharedPreferences.getInstance();
       final userData = json.encode(
@@ -173,7 +171,7 @@ class Auth with ChangeNotifier {
     _userId = extractedUserData['userId'];
     _expiryDate = expiryDate;
     notifyListeners();
-    _autoLogout();
+    //_autoLogout();
     return true;
   }
 

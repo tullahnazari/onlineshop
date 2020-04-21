@@ -11,8 +11,19 @@ import 'package:sweepstakes/widgets/app_drawer.dart';
 import 'package:sweepstakes/widgets/sweepstake_items.dart';
 import 'package:sweepstakes/widgets/user_sweepstakes_item.dart';
 
-class SweepstakeManagement extends StatelessWidget {
+class SweepstakeManagement extends StatefulWidget {
   static const routeName = '/user-sweepstakes';
+
+  @override
+  _SweepstakeManagementState createState() => _SweepstakeManagementState();
+}
+
+class _SweepstakeManagementState extends State<SweepstakeManagement> {
+  @override
+  void initState() {
+    super.initState();
+    _refreshProducts(context);
+  }
 
   Future<void> _refreshProducts(BuildContext context) async {
     await Provider.of<GreatPlaces>(context, listen: false)
@@ -157,7 +168,7 @@ class SweepstakeManagement extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Center(
                 child: Text(
-                  'Click on the plus icon on the right to add a service or product. Your posting will be shared with the community near by. The limit is 5 postings, once you reach the limit, please delete unwanted postings in order to add more.',
+                  'Click on the plus icon on the right to add a service or product. Your posting will be shared with the community near by. You can also post services you want, such as Food prep service, tailoring, and even a reccomendation for a nice restaurant',
                   style: TextStyle(
                     fontSize: 20,
                     fontFamily: 'Lato',

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:ads/admob.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:clippy_flutter/diagonal.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
@@ -21,7 +21,6 @@ import 'package:sweepstakes/providers/great_places.dart';
 import 'package:sweepstakes/providers/results.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/widgets/animation.dart';
-import 'package:firebase_admob/firebase_admob.dart';
 import 'package:sweepstakes/widgets/location_input.dart';
 
 class SweepstakesDetail extends StatelessWidget {
@@ -150,10 +149,11 @@ class SweepstakesDetail extends StatelessWidget {
             margin: EdgeInsets.all(5.0),
             child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(5.0)),
-              child: Image.network(
-                url,
-                fit: BoxFit.fitWidth,
-                //width: 1000.0,
+              child: CachedNetworkImage(
+                imageUrl: url,
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    CircularProgressIndicator(value: downloadProgress.progress),
+                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
             ),
           );
@@ -191,12 +191,14 @@ class SweepstakesDetail extends StatelessWidget {
     //   ],
     // );
 
-    final bottomContentText = Text(
-      loadedPosting.title,
-      style: TextStyle(
-          fontSize: 34.0,
-          color: Theme.of(context).primaryColor,
-          fontFamily: 'Lato'),
+    final bottomContentText = Center(
+      child: Text(
+        loadedPosting.title,
+        style: TextStyle(
+            fontSize: 34.0,
+            color: Theme.of(context).primaryColor,
+            fontFamily: 'Lato'),
+      ),
     );
     // final backButton = InkWell(
     //   //highlightColor: Colors.black,
@@ -210,15 +212,17 @@ class SweepstakesDetail extends StatelessWidget {
     // );
     final description = Column(
       children: <Widget>[
-        Text(
-          loadedPosting.description,
-          textAlign: TextAlign.center,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 10,
-          style: TextStyle(
-            color: Colors.black,
-            fontFamily: 'Lato',
-            fontSize: 20,
+        Center(
+          child: Text(
+            loadedPosting.description,
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 10,
+            style: TextStyle(
+              color: Colors.black,
+              fontFamily: 'Lato',
+              fontSize: 20,
+            ),
           ),
         ),
         SizedBox(
