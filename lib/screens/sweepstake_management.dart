@@ -19,11 +19,11 @@ class SweepstakeManagement extends StatefulWidget {
 }
 
 class _SweepstakeManagementState extends State<SweepstakeManagement> {
-  @override
-  void initState() {
-    super.initState();
-    _refreshProducts(context);
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _refreshProducts(context);
+  // }
 
   Future<void> _refreshProducts(BuildContext context) async {
     await Provider.of<GreatPlaces>(context, listen: false)
