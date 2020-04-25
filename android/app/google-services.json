@@ -8,18 +8,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:623511190098:android:3b2fc94dfea0c73d0d7d8b",
+        "mobilesdk_app_id": "1:623511190098:android:ca8ded90b9987b920d7d8b",
         "android_client_info": {
           "package_name": "com.tullahnazari.bazaar"
         }
       },
       "oauth_client": [
         {
-          "client_id": "623511190098-vafblp13gfbj1kfo3iinak7q7irsq17c.apps.googleusercontent.com",
+          "client_id": "623511190098-v7p2cmv3gmufem3bjkt7e2th3tr623kj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.tullahnazari.bazaar",
-            "certificate_hash": "38a397004d2d6fc0b27f4123ec210264b35511a3"
+            "certificate_hash": "45c922b673b0eb51756d54c8891eb98f3854f0d5"
           }
         },
         {
