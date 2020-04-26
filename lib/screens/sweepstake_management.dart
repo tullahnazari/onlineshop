@@ -1,4 +1,5 @@
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -81,7 +82,10 @@ class SweepstakeManagement extends StatelessWidget {
                                   image: greatPlaces.items[i].image,
                                   price: greatPlaces.items[i].price,
                                 ),
-                                Divider(),
+                                Divider(
+                                  thickness: 3,
+                                  color: Colors.black,
+                                ),
                               ],
                             ),
                           ),

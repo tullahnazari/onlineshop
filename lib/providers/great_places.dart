@@ -243,7 +243,7 @@ class GreatPlaces with ChangeNotifier {
     //optimistic deleting/updating
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
-    deleteImage(existingProduct.image.first);
+    //deleteImage(existingProduct.image.first);
     _items.removeAt(existingProductIndex);
 
     //TODO delete a list of images
@@ -260,11 +260,14 @@ class GreatPlaces with ChangeNotifier {
   }
 
   Future deleteImage(String imageFileName) async {
-    final StorageReference firebaseStorageRef =
-        FirebaseStorage.instance.ref().child(imageFileName);
+    // final FirebaseStorage storage =
+    //     FirebaseStorage(storageBucket: 'gs://bazaar-45301.appspot.com/');
 
     try {
-      await firebaseStorageRef.delete();
+      await FirebaseStorage.instance
+          .getReferenceFromUrl(imageFileName)
+          .then((reference) => reference.delete())
+          .catchError((e) => print(e));
       return true;
     } catch (e) {
       return e.toString();
