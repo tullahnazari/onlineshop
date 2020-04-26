@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sweepstakes/helper/service_locater.dart';
 import 'package:sweepstakes/models/place.dart';
@@ -22,6 +23,7 @@ import 'package:sweepstakes/screens/sweepstakes_overview.dart';
 
 void main() {
   setupLocator();
+
   runApp(MyApp());
 }
 

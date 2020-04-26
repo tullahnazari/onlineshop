@@ -7,10 +7,12 @@ import 'package:geocoder/geocoder.dart';
 import 'package:sweepstakes/helper/location_helper.dart';
 import 'package:http/http.dart' as http;
 import '../models/place.dart';
+import 'package:uuid/uuid.dart';
 
 class GreatPlaces with ChangeNotifier {
   GreatPlaces(this.authToken, this.userId, this._items);
   bool error = false;
+
   bool isDisposed = false;
   List<Place> _items = [];
 
@@ -45,11 +47,14 @@ class GreatPlaces with ChangeNotifier {
       longitude: pickedLocation.longitude,
       address: stateAddress,
     );
+    var uuid = Uuid();
+    String uid = uuid.v1();
     final url =
         'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken';
     try {
       final newPlace = Place(
-        id: DateTime.now().toString(),
+        id: uid,
+        dateTime: DateTime.now().toString(),
         image: pickedImage,
         title: pickedTitle,
         description: pickedDescription,
@@ -63,6 +68,7 @@ class GreatPlaces with ChangeNotifier {
         url,
         body: json.encode({
           'id': newPlace.id,
+          'dateTime': DateTime.now().toString(),
           'title': newPlace.title,
           'image': newPlace.image,
           'loc_lat': newPlace.location.latitude,
@@ -101,6 +107,7 @@ class GreatPlaces with ChangeNotifier {
         loadedProducts.add(
           Place(
               id: prodId,
+              dateTime: prodData['dateTime'],
               title: prodData['title'],
               image: prodData['image'],
               location: PlaceLocation(
@@ -115,7 +122,8 @@ class GreatPlaces with ChangeNotifier {
               address: prodData['address']),
         );
       });
-      _items = loadedProducts.reversed.toList();
+      _items = loadedProducts.toList();
+      _items.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
       notifyListeners();
     } catch (error) {
@@ -182,6 +190,9 @@ class GreatPlaces with ChangeNotifier {
               address: prodData['address'],
             ),
             address: prodData['address'],
+            description: prodData['description'],
+            email: prodData['email'],
+            phone: prodData['phone'],
           ),
         );
       });

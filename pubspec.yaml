@@ -54,6 +54,7 @@ dependencies:
   solid_bottom_sheet: ^0.1.9
   fancy_dialog: ^1.0.3
   cached_network_image: ^2.1.0+1
+  uuid: ^2.0.4
 
 
 
