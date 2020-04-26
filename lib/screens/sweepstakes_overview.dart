@@ -113,9 +113,12 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                     ? Center(
                         child: CircularProgressIndicator(
                           backgroundColor: Theme.of(context).primaryColor,
+                          strokeWidth: 6,
                         ),
                       )
                     : RefreshIndicator(
+                        displacement: 120,
+                        color: Theme.of(context).primaryColor,
                         onRefresh: () => _refreshProducts(context),
                         child: Consumer<GreatPlaces>(
                           builder: (ctx, greatPlaces, _) => Padding(

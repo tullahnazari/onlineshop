@@ -11,37 +11,11 @@ import 'package:sweepstakes/widgets/app_drawer.dart';
 import 'package:sweepstakes/widgets/sweepstake_items.dart';
 import 'package:sweepstakes/widgets/user_sweepstakes_item.dart';
 
-class SweepstakeManagement extends StatefulWidget {
+class SweepstakeManagement extends StatelessWidget {
   static const routeName = '/user-sweepstakes';
 
-  @override
-  _SweepstakeManagementState createState() => _SweepstakeManagementState();
-}
-
-class _SweepstakeManagementState extends State<SweepstakeManagement> {
-  var _isLoading = false;
-
-  var _isInit = true;
-
-  @override
-  void didChangeDependencies() {
-    if (_isInit) {
-      setState(() {
-        _isLoading = true;
-      });
-      Provider.of<GreatPlaces>(context).fetchAndSetPlaces(true).then((_) {
-        setState(() {
-          _isLoading = false;
-        });
-      });
-    }
-    _isInit = false;
-    super.didChangeDependencies();
-  }
-
   Future<void> _refreshProducts(BuildContext context) async {
-    await Provider.of<GreatPlaces>(context, listen: false)
-        .fetchAndSetPlaces(true);
+    await Provider.of<GreatPlaces>(context, listen: false).fetchAndSetPlaces();
   }
 
   @override
@@ -55,14 +29,6 @@ class _SweepstakeManagementState extends State<SweepstakeManagement> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Your Postings'),
-          actions: <Widget>[
-            // IconButton(
-            //   icon: const Icon(Icons.add),
-            //   onPressed: () {
-            //     Navigator.of(context).pushNamed(AddPlaceScreen.routeName);
-            //   },
-            // ),
-          ],
         ),
         drawer: AppDrawer(),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -88,69 +54,74 @@ class _SweepstakeManagementState extends State<SweepstakeManagement> {
             color: Theme.of(context).accentColor,
           ),
         ),
-        body: _isLoading
-            ? Center(
-                child: CircularProgressIndicator(
-                  backgroundColor: Theme.of(context).primaryColor,
-                ),
-              )
-            : RefreshIndicator(
-                onRefresh: () => _refreshProducts(context),
-
-                child: Consumer<GreatPlaces>(
-                  builder: (ctx, greatPlaces, _) => Padding(
-                    padding: EdgeInsets.all(8),
-                    child: ListView.builder(
-                      itemCount: greatPlaces.items.length,
-                      itemBuilder: (_, i) => Column(
-                        children: [
-                          SweepstakeItems(
-                            id: greatPlaces.items[i].id,
-                            title: greatPlaces.items[i].title,
-                            image: greatPlaces.items[i].image,
-                            price: greatPlaces.items[i].price,
-                          ),
-                          Divider(),
-                        ],
+        body: FutureBuilder(
+          future: _refreshProducts(context),
+          builder: (ctx, snapshot) =>
+              snapshot.connectionState == ConnectionState.waiting
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        strokeWidth: 6,
                       ),
-                    ),
-                  ),
-                  // onTap: () {
-                  //   Navigator.of(context).pushNamed(
-                  //     PlaceDetailScreen.routeName,
-                  //     arguments: greatPlaces.items[i].id,
-                  //   );
-                  // },
+                    )
+                  : RefreshIndicator(
+                      displacement: 120,
+                      color: Theme.of(context).primaryColor,
+                      onRefresh: () => _refreshProducts(context),
+                      child: Consumer<GreatPlaces>(
+                        builder: (ctx, greatPlaces, _) => Padding(
+                          padding: EdgeInsets.all(8),
+                          child: ListView.builder(
+                            itemCount: greatPlaces.items.length,
+                            itemBuilder: (_, i) => Column(
+                              children: [
+                                SweepstakeItems(
+                                  id: greatPlaces.items[i].id,
+                                  title: greatPlaces.items[i].title,
+                                  image: greatPlaces.items[i].image,
+                                  price: greatPlaces.items[i].price,
+                                ),
+                                Divider(),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // onTap: () {
+                        //   Navigator.of(context).pushNamed(
+                        //     PlaceDetailScreen.routeName,
+                        //     arguments: greatPlaces.items[i].id,
+                        //   );
+                        // },
 
-                  // trailing: Container(
-                  //   width: 100,
-                  //   child: Row(
-                  //     children: <Widget>[
-                  //       IconButton(
-                  //         icon: Icon(Icons.edit),
-                  //         // onPressed: () {
-                  //         //   Navigator.of(context).pushNamed(
-                  //         //       AddingSweepstake.routeName,
-                  //         //       arguments: id);
-                  //         // },
-                  //         color: Theme.of(context).primaryColor,
-                  //       ),
-                  //       IconButton(
-                  //         icon: Icon(Icons.delete),
-                  //         onPressed: () {
-                  //           Provider.of<GreatPlaces>(context,
-                  //                   listen: false)
-                  //               .deleteProduct(greatPlaces.items[1].id);
-                  //         },
-                  //         color: Theme.of(context).errorColor,
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                ),
-                // ),
-              ),
-        //   ),
+                        // trailing: Container(
+                        //   width: 100,
+                        //   child: Row(
+                        //     children: <Widget>[
+                        //       IconButton(
+                        //         icon: Icon(Icons.edit),
+                        //         // onPressed: () {
+                        //         //   Navigator.of(context).pushNamed(
+                        //         //       AddingSweepstake.routeName,
+                        //         //       arguments: id);
+                        //         // },
+                        //         color: Theme.of(context).primaryColor,
+                        //       ),
+                        //       IconButton(
+                        //         icon: Icon(Icons.delete),
+                        //         onPressed: () {
+                        //           Provider.of<GreatPlaces>(context,
+                        //                   listen: false)
+                        //               .deleteProduct(greatPlaces.items[1].id);
+                        //         },
+                        //         color: Theme.of(context).errorColor,
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                      ),
+                      // ),
+                    ),
+        ),
         bottomSheet: SolidBottomSheet(
           maxHeight: deviceSize.height * .22,
           headerBar: Container(
