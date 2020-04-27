@@ -63,6 +63,7 @@ class GreatPlaces with ChangeNotifier {
         email: pickedEmail,
         phone: pickedPhone,
         price: pickedPrice,
+        creatorId: userId,
       );
       await http.post(
         url,
@@ -74,7 +75,7 @@ class GreatPlaces with ChangeNotifier {
           'loc_lat': newPlace.location.latitude,
           'loc_lng': newPlace.location.longitude,
           'address': countyAddress,
-          'creatorId': userId,
+          'creatorId': newPlace.creatorId,
           'state': stateAddress,
           'description': newPlace.description,
           'email': newPlace.email,
@@ -193,6 +194,8 @@ class GreatPlaces with ChangeNotifier {
             description: prodData['description'],
             email: prodData['email'],
             phone: prodData['phone'],
+            dateTime: prodData['dateTime'],
+            creatorId: prodData['creatorId'],
           ),
         );
       });

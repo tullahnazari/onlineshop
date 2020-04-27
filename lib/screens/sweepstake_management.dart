@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
+import 'package:sweepstakes/providers/auth.dart';
 import 'package:sweepstakes/providers/great_places.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/screens/add_place_screen.dart';
@@ -15,7 +16,7 @@ import 'package:sweepstakes/widgets/user_sweepstakes_item.dart';
 class SweepstakeManagement extends StatelessWidget {
   static const routeName = '/user-sweepstakes';
 
-  Future<void> _refreshProducts(BuildContext context) async {
+  Future<void> _showOnlyUserProducts(BuildContext context) async {
     await Provider.of<GreatPlaces>(context, listen: false).fetchAndSetPlaces();
   }
 
@@ -56,7 +57,7 @@ class SweepstakeManagement extends StatelessWidget {
           ),
         ),
         body: FutureBuilder(
-          future: _refreshProducts(context),
+          future: _showOnlyUserProducts(context),
           builder: (ctx, snapshot) =>
               snapshot.connectionState == ConnectionState.waiting
                   ? Center(
@@ -68,7 +69,7 @@ class SweepstakeManagement extends StatelessWidget {
                   : RefreshIndicator(
                       displacement: 120,
                       color: Theme.of(context).primaryColor,
-                      onRefresh: () => _refreshProducts(context),
+                      onRefresh: () => _showOnlyUserProducts(context),
                       child: Consumer<GreatPlaces>(
                         builder: (ctx, greatPlaces, _) => Padding(
                           padding: EdgeInsets.all(8),

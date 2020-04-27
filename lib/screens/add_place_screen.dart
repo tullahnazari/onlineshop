@@ -77,7 +77,8 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
         _emailController.text.isEmpty ||
         _phoneController.text.isEmpty ||
         imageList == null ||
-        _pickedLocation == null) {
+        _pickedLocation == null ||
+        _isLoading == true) {
       return Flushbar(
         title: "Hey, are you missing something?",
         message:
@@ -105,13 +106,10 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
       enableCamera: true,
     );
 
-    setState(() {
-      _isLoading = true;
-    });
-
     // The data selected here comes back in the list
     print(resultList);
     setState(() {
+      _isLoading = true;
       images = resultList;
     });
     for (var asset in resultList) {
@@ -208,7 +206,15 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                         onPressed: _getImageList,
                       ),
                     ),
-                    _showText ? buildGridView() : showText(),
+                    _isLoading
+                        ? Container(
+                            height: 200,
+                            child: CircularProgressIndicator(
+                              backgroundColor: Colors.teal,
+                              strokeWidth: 6,
+                            ),
+                          )
+                        : buildGridView(),
                     // SizedBox(
                     //   height: 10,
                     // ),
