@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:sweepstakes/models/place.dart';
-import 'package:sweepstakes/widgets/custom_info_widget.dart';
+import 'package:halalbazaar/models/place.dart';
+import 'package:halalbazaar/widgets/custom_info_widget.dart';
 
 class MapScreen extends StatefulWidget {
   final PlaceLocation initialLocation;

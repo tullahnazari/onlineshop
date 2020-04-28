@@ -6,8 +6,8 @@ import 'package:fancy_dialog/FancyTheme.dart';
 import 'package:fancy_dialog/fancy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sweepstakes/providers/great_places.dart';
-import 'package:sweepstakes/screens/sweepstakes_detail.dart';
+import 'package:halalbazaar/providers/great_places.dart';
+import 'package:halalbazaar/screens/sweepstakes_detail.dart';
 
 class SweepstakeItems extends StatelessWidget {
   final String id;

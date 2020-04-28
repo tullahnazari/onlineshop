@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:geocoder/geocoder.dart';
-import 'package:sweepstakes/helper/location_helper.dart';
+import 'package:halalbazaar/helper/location_helper.dart';
 import 'package:http/http.dart' as http;
 import '../models/place.dart';
 import 'package:uuid/uuid.dart';

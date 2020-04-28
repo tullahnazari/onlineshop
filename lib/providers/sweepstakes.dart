@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:sweepstakes/models/sweepstake.dart';
+import 'package:halalbazaar/models/sweepstake.dart';
 import 'package:http/http.dart' as http;
 
 class Sweepstakes with ChangeNotifier {

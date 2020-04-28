@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:flutter/widgets.dart';
-import 'package:sweepstakes/models/result.dart';
-import 'package:sweepstakes/models/sweepstake.dart';
+import 'package:halalbazaar/models/result.dart';
+import 'package:halalbazaar/models/sweepstake.dart';
 
 class Results with ChangeNotifier {
   List<ResultItem> _resultItems = [];

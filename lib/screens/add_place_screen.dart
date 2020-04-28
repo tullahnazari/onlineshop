@@ -7,10 +7,10 @@ import 'package:flutter/services.dart';
 import 'package:moneytextformfield/moneytextformfield.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:sweepstakes/screens/camera_screen.dart';
-import 'package:sweepstakes/widgets/add_picture.dart';
-import 'package:sweepstakes/widgets/location_input.dart';
-import 'package:sweepstakes/widgets/upload_from_gallery.dart';
+import 'package:halalbazaar/screens/camera_screen.dart';
+import 'package:halalbazaar/widgets/add_picture.dart';
+import 'package:halalbazaar/widgets/location_input.dart';
+import 'package:halalbazaar/widgets/upload_from_gallery.dart';
 
 import '../providers/great_places.dart';
 import '../models/place.dart';
@@ -399,7 +399,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                     // SizedBox(
                     //   height: 10,
                     // ),
-                    
+
                     //buildGridView(),
                   ],
                 ),

@@ -5,29 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
-import 'package:sweepstakes/providers/auth.dart';
-import 'package:sweepstakes/providers/great_places.dart';
-import 'package:sweepstakes/providers/sweepstakes.dart';
-import 'package:sweepstakes/screens/add_place_screen.dart';
-import 'package:sweepstakes/widgets/app_drawer.dart';
-import 'package:sweepstakes/widgets/sweepstake_items.dart';
-import 'package:sweepstakes/widgets/user_sweepstakes_item.dart';
+import 'package:halalbazaar/providers/auth.dart';
+import 'package:halalbazaar/providers/great_places.dart';
+import 'package:halalbazaar/providers/sweepstakes.dart';
+import 'package:halalbazaar/screens/add_place_screen.dart';
+import 'package:halalbazaar/widgets/app_drawer.dart';
+import 'package:halalbazaar/widgets/sweepstake_items.dart';
+import 'package:halalbazaar/widgets/user_sweepstakes_item.dart';
 
 class SweepstakeManagement extends StatelessWidget {
   static const routeName = '/user-sweepstakes';
 
-  Auth auth;
-
-  Future<void> _showOnlyUserProducts(BuildContext context) async {
-    await Provider.of<GreatPlaces>(context, listen: false)
-        .fetchAndSetPlaces(auth.userId);
-  }
-
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
-    int count = 0;
-    final products = Provider.of<GreatPlaces>(context, listen: false);
     final authData = Provider.of<Auth>(context, listen: false);
     final productCount = Provider.of<GreatPlaces>(context, listen: false);
     return new WillPopScope(

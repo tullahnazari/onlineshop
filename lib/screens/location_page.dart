@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:sweepstakes/helper/location_helper.dart';
-import 'package:sweepstakes/models/user_location.dart';
-import 'package:sweepstakes/providers/location_service.dart';
-import 'package:sweepstakes/screens/map_screen.dart';
+import 'package:halalbazaar/helper/location_helper.dart';
+import 'package:halalbazaar/models/user_location.dart';
+import 'package:halalbazaar/providers/location_service.dart';
+import 'package:halalbazaar/screens/map_screen.dart';
 
 class LocationPage extends StatefulWidget {
   static const routeName = '/location-page';

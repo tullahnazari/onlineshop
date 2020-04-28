@@ -10,16 +10,16 @@ import 'package:geolocator/geolocator.dart' as geo;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sweepstakes/helper/location_helper.dart';
-import 'package:sweepstakes/models/place.dart';
-import 'package:sweepstakes/models/user_location.dart';
-import 'package:sweepstakes/providers/auth.dart';
-import 'package:sweepstakes/providers/great_places.dart';
-import 'package:sweepstakes/screens/add_place_screen.dart';
+import 'package:halalbazaar/helper/location_helper.dart';
+import 'package:halalbazaar/models/place.dart';
+import 'package:halalbazaar/models/user_location.dart';
+import 'package:halalbazaar/providers/auth.dart';
+import 'package:halalbazaar/providers/great_places.dart';
+import 'package:halalbazaar/screens/add_place_screen.dart';
 import 'package:http/http.dart' as http;
-import 'package:sweepstakes/widgets/app_drawer.dart';
-import 'package:sweepstakes/widgets/overview_posting.dart';
-import 'package:sweepstakes/widgets/sweepstake_items.dart';
+import 'package:halalbazaar/widgets/app_drawer.dart';
+import 'package:halalbazaar/widgets/overview_posting.dart';
+import 'package:halalbazaar/widgets/sweepstake_items.dart';
 
 class SweepstakesOverview extends StatefulWidget {
   static const routeName = '/sweepstakeoverview';

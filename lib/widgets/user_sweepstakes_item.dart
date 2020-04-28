@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sweepstakes/providers/great_places.dart';
-import 'package:sweepstakes/providers/sweepstakes.dart';
+import 'package:halalbazaar/providers/great_places.dart';
+import 'package:halalbazaar/providers/sweepstakes.dart';
 
 class UserSweepstakeItem extends StatelessWidget {
   final String id;

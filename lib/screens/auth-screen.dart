@@ -5,10 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sweepstakes/helper/location_helper.dart';
-import 'package:sweepstakes/models/place.dart';
-import 'package:sweepstakes/providers/auth.dart';
-import 'package:sweepstakes/models/http_exception.dart';
+import 'package:halalbazaar/helper/location_helper.dart';
+import 'package:halalbazaar/models/place.dart';
+import 'package:halalbazaar/providers/auth.dart';
+import 'package:halalbazaar/models/http_exception.dart';
 
 enum AuthMode { Signup, Login }
 
