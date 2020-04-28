@@ -16,8 +16,11 @@ import 'package:sweepstakes/widgets/user_sweepstakes_item.dart';
 class SweepstakeManagement extends StatelessWidget {
   static const routeName = '/user-sweepstakes';
 
+  Auth auth;
+
   Future<void> _showOnlyUserProducts(BuildContext context) async {
-    await Provider.of<GreatPlaces>(context, listen: false).fetchAndSetPlaces();
+    await Provider.of<GreatPlaces>(context, listen: false)
+        .fetchAndSetPlaces(auth.userId);
   }
 
   @override
@@ -25,6 +28,7 @@ class SweepstakeManagement extends StatelessWidget {
     final deviceSize = MediaQuery.of(context).size;
     int count = 0;
     final products = Provider.of<GreatPlaces>(context, listen: false);
+    final authData = Provider.of<Auth>(context, listen: false);
     final productCount = Provider.of<GreatPlaces>(context, listen: false);
     return new WillPopScope(
       onWillPop: () async => false,
@@ -57,111 +61,71 @@ class SweepstakeManagement extends StatelessWidget {
           ),
         ),
         body: FutureBuilder(
-          future: _showOnlyUserProducts(context),
-          builder: (ctx, snapshot) =>
-              snapshot.connectionState == ConnectionState.waiting
-                  ? Center(
-                      child: CircularProgressIndicator(
-                        backgroundColor: Theme.of(context).primaryColor,
-                        strokeWidth: 6,
-                      ),
-                    )
-                  : RefreshIndicator(
-                      displacement: 120,
-                      color: Theme.of(context).primaryColor,
-                      onRefresh: () => _showOnlyUserProducts(context),
-                      child: Consumer<GreatPlaces>(
-                        builder: (ctx, greatPlaces, _) => Padding(
-                          padding: EdgeInsets.all(8),
-                          child: ListView.builder(
-                            itemCount: greatPlaces.items.length,
-                            itemBuilder: (_, i) => Column(
-                              children: [
-                                SweepstakeItems(
-                                  id: greatPlaces.items[i].id,
-                                  title: greatPlaces.items[i].title,
-                                  image: greatPlaces.items[i].image,
-                                  price: greatPlaces.items[i].price,
-                                ),
-                                Divider(
-                                  thickness: 3,
-                                  color: Colors.black,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        // onTap: () {
-                        //   Navigator.of(context).pushNamed(
-                        //     PlaceDetailScreen.routeName,
-                        //     arguments: greatPlaces.items[i].id,
-                        //   );
-                        // },
-
-                        // trailing: Container(
-                        //   width: 100,
-                        //   child: Row(
-                        //     children: <Widget>[
-                        //       IconButton(
-                        //         icon: Icon(Icons.edit),
-                        //         // onPressed: () {
-                        //         //   Navigator.of(context).pushNamed(
-                        //         //       AddingSweepstake.routeName,
-                        //         //       arguments: id);
-                        //         // },
-                        //         color: Theme.of(context).primaryColor,
-                        //       ),
-                        //       IconButton(
-                        //         icon: Icon(Icons.delete),
-                        //         onPressed: () {
-                        //           Provider.of<GreatPlaces>(context,
-                        //                   listen: false)
-                        //               .deleteProduct(greatPlaces.items[1].id);
-                        //         },
-                        //         color: Theme.of(context).errorColor,
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                      ),
-                      // ),
+            future: Provider.of<GreatPlaces>(context, listen: false)
+                .fetchAndSetPlaces(authData.userId),
+            builder: (ctx, dataSnapshot) {
+              if (dataSnapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+              // else {
+              //   if (dataSnapshot.error != null) {
+              //     // ...
+              //     // Do error handling stuff
+              //     return Center(
+              //       child: Text('An error occurred!'),
+              //     );
+              //   }
+              else {
+                return Consumer<GreatPlaces>(
+                  builder: (ctx, greatPlaces, child) => ListView.builder(
+                    itemCount: greatPlaces.items.length,
+                    itemBuilder: (ctx, i) => SweepstakeItems(
+                      id: greatPlaces.items[i].id,
+                      title: greatPlaces.items[i].title,
+                      image: greatPlaces.items[i].image,
+                      price: greatPlaces.items[i].price,
                     ),
-        ),
-        bottomSheet: SolidBottomSheet(
-          maxHeight: deviceSize.height * .22,
-          headerBar: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadiusDirectional.only(
-                  topStart: Radius.circular(50), topEnd: Radius.circular(50)),
-              color: Theme.of(context).primaryColor,
-            ),
-            height: deviceSize.height * .10,
-            child: Center(
-                child: Text(
-              'Swipe up for Instructions',
-              style: TextStyle(
-                  fontSize: 20,
-                  color: Theme.of(context).accentColor,
-                  fontFamily: 'Lato'),
-            )),
-          ), // Your header here
-          body: Container(
-            height: 100,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Text(
-                  'Click on the plus icon on the right to add a service or product. Your posting will be shared with the community near by. You can also post services you want, such as Food prep service, tailoring, and even a reccomendation for a nice restaurant',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontFamily: 'Lato',
                   ),
-                ),
-              ),
+                );
+              }
+            }
+            //     },
             ),
-          ), // Your body here
-        ),
+        // bottomSheet: SolidBottomSheet(
+        //   maxHeight: deviceSize.height * .22,
+        //   headerBar: Container(
+        //     width: double.infinity,
+        //     decoration: BoxDecoration(
+        //       borderRadius: BorderRadiusDirectional.only(
+        //           topStart: Radius.circular(50), topEnd: Radius.circular(50)),
+        //       color: Theme.of(context).primaryColor,
+        //     ),
+        //     height: deviceSize.height * .10,
+        //     child: Center(
+        //         child: Text(
+        //       'Swipe up for Instructions',
+        //       style: TextStyle(
+        //           fontSize: 20,
+        //           color: Theme.of(context).accentColor,
+        //           fontFamily: 'Lato'),
+        //     )),
+        //   ), // Your header here
+        //   body: Container(
+        //     height: 100,
+        //     child: Padding(
+        //       padding: const EdgeInsets.all(8.0),
+        //       child: Center(
+        //         child: Text(
+        //           'Click on the plus icon on the right to add a service or product. Your posting will be shared with the community near by. You can also post services you want, such as Food prep service, tailoring, and even a reccomendation for a nice restaurant',
+        //           style: TextStyle(
+        //             fontSize: 20,
+        //             fontFamily: 'Lato',
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //   ), // Your body here
+        // ),
       ),
     );
   }

@@ -167,7 +167,7 @@ class GreatPlaces with ChangeNotifier {
   }
 
   //TODO work on this as POST is working but not GET
-  Future<void> fetchAndSetPlaces() async {
+  Future<void> fetchAndSetPlaces(String userId) async {
     final url =
         'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="creatorId"&equalTo="$userId"';
     try {

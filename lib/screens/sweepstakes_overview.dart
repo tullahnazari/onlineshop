@@ -45,10 +45,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   //     setState(() {
   //       _isLoading = true;
   //     });
-  //     getUserLocation().then((value) async {
-  //       await Provider.of<GreatPlaces>(context, listen: false)
-  //           .fetchResultsByState(value);
-  //     });
+  //     _refreshProducts(context);
   //     setState(() {
   //       _isLoading = false;
   //     });

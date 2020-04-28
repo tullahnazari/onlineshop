@@ -218,6 +218,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                     // SizedBox(
                     //   height: 10,
                     // ),
+                    LocationInput(_selectPlace),
                     TextFormField(
                       focusNode: _titleFocusNode,
                       onFieldSubmitted: (_) {
@@ -398,7 +399,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                     // SizedBox(
                     //   height: 10,
                     // ),
-                    LocationInput(_selectPlace),
+                    
                     //buildGridView(),
                   ],
                 ),
