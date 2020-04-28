@@ -24,6 +24,8 @@ class Place with ChangeNotifier {
   final String phone;
   final String price;
   final String address;
+  final String dateTime;
+  final String creatorId;
 
   Place({
     @required this.id,
@@ -35,7 +37,11 @@ class Place with ChangeNotifier {
     @required this.phone,
     @required this.price,
     @required this.address,
+    @required this.dateTime,
+    @required this.creatorId,
   });
 
   notifyListeners();
+
+  compareTo(Place b) {}
 }

@@ -1,9 +1,11 @@
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
+import 'package:sweepstakes/providers/auth.dart';
 import 'package:sweepstakes/providers/great_places.dart';
 import 'package:sweepstakes/providers/sweepstakes.dart';
 import 'package:sweepstakes/screens/add_place_screen.dart';
@@ -11,37 +13,14 @@ import 'package:sweepstakes/widgets/app_drawer.dart';
 import 'package:sweepstakes/widgets/sweepstake_items.dart';
 import 'package:sweepstakes/widgets/user_sweepstakes_item.dart';
 
-class SweepstakeManagement extends StatefulWidget {
+class SweepstakeManagement extends StatelessWidget {
   static const routeName = '/user-sweepstakes';
 
-  @override
-  _SweepstakeManagementState createState() => _SweepstakeManagementState();
-}
+  Auth auth;
 
-class _SweepstakeManagementState extends State<SweepstakeManagement> {
-  var _isLoading = false;
-
-  var _isInit = true;
-
-  @override
-  void didChangeDependencies() {
-    if (_isInit) {
-      setState(() {
-        _isLoading = true;
-      });
-      Provider.of<GreatPlaces>(context).fetchAndSetPlaces(true).then((_) {
-        setState(() {
-          _isLoading = false;
-        });
-      });
-    }
-    _isInit = false;
-    super.didChangeDependencies();
-  }
-
-  Future<void> _refreshProducts(BuildContext context) async {
+  Future<void> _showOnlyUserProducts(BuildContext context) async {
     await Provider.of<GreatPlaces>(context, listen: false)
-        .fetchAndSetPlaces(true);
+        .fetchAndSetPlaces(auth.userId);
   }
 
   @override
@@ -49,20 +28,13 @@ class _SweepstakeManagementState extends State<SweepstakeManagement> {
     final deviceSize = MediaQuery.of(context).size;
     int count = 0;
     final products = Provider.of<GreatPlaces>(context, listen: false);
+    final authData = Provider.of<Auth>(context, listen: false);
     final productCount = Provider.of<GreatPlaces>(context, listen: false);
     return new WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Your Postings'),
-          actions: <Widget>[
-            // IconButton(
-            //   icon: const Icon(Icons.add),
-            //   onPressed: () {
-            //     Navigator.of(context).pushNamed(AddPlaceScreen.routeName);
-            //   },
-            // ),
-          ],
         ),
         drawer: AppDrawer(),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -88,104 +60,72 @@ class _SweepstakeManagementState extends State<SweepstakeManagement> {
             color: Theme.of(context).accentColor,
           ),
         ),
-        body: _isLoading
-            ? Center(
-                child: CircularProgressIndicator(
-                  backgroundColor: Theme.of(context).primaryColor,
-                ),
-              )
-            : RefreshIndicator(
-                onRefresh: () => _refreshProducts(context),
-
-                child: Consumer<GreatPlaces>(
-                  builder: (ctx, greatPlaces, _) => Padding(
-                    padding: EdgeInsets.all(8),
-                    child: ListView.builder(
-                      itemCount: greatPlaces.items.length,
-                      itemBuilder: (_, i) => Column(
-                        children: [
-                          SweepstakeItems(
-                            id: greatPlaces.items[i].id,
-                            title: greatPlaces.items[i].title,
-                            image: greatPlaces.items[i].image,
-                            price: greatPlaces.items[i].price,
-                          ),
-                          Divider(),
-                        ],
-                      ),
+        body: FutureBuilder(
+            future: Provider.of<GreatPlaces>(context, listen: false)
+                .fetchAndSetPlaces(authData.userId),
+            builder: (ctx, dataSnapshot) {
+              if (dataSnapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+              // else {
+              //   if (dataSnapshot.error != null) {
+              //     // ...
+              //     // Do error handling stuff
+              //     return Center(
+              //       child: Text('An error occurred!'),
+              //     );
+              //   }
+              else {
+                return Consumer<GreatPlaces>(
+                  builder: (ctx, greatPlaces, child) => ListView.builder(
+                    itemCount: greatPlaces.items.length,
+                    itemBuilder: (ctx, i) => SweepstakeItems(
+                      id: greatPlaces.items[i].id,
+                      title: greatPlaces.items[i].title,
+                      image: greatPlaces.items[i].image,
+                      price: greatPlaces.items[i].price,
                     ),
                   ),
-                  // onTap: () {
-                  //   Navigator.of(context).pushNamed(
-                  //     PlaceDetailScreen.routeName,
-                  //     arguments: greatPlaces.items[i].id,
-                  //   );
-                  // },
-
-                  // trailing: Container(
-                  //   width: 100,
-                  //   child: Row(
-                  //     children: <Widget>[
-                  //       IconButton(
-                  //         icon: Icon(Icons.edit),
-                  //         // onPressed: () {
-                  //         //   Navigator.of(context).pushNamed(
-                  //         //       AddingSweepstake.routeName,
-                  //         //       arguments: id);
-                  //         // },
-                  //         color: Theme.of(context).primaryColor,
-                  //       ),
-                  //       IconButton(
-                  //         icon: Icon(Icons.delete),
-                  //         onPressed: () {
-                  //           Provider.of<GreatPlaces>(context,
-                  //                   listen: false)
-                  //               .deleteProduct(greatPlaces.items[1].id);
-                  //         },
-                  //         color: Theme.of(context).errorColor,
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                ),
-                // ),
-              ),
-        //   ),
-        bottomSheet: SolidBottomSheet(
-          maxHeight: deviceSize.height * .22,
-          headerBar: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadiusDirectional.only(
-                  topStart: Radius.circular(50), topEnd: Radius.circular(50)),
-              color: Theme.of(context).primaryColor,
+                );
+              }
+            }
+            //     },
             ),
-            height: deviceSize.height * .10,
-            child: Center(
-                child: Text(
-              'Swipe up for Instructions',
-              style: TextStyle(
-                  fontSize: 20,
-                  color: Theme.of(context).accentColor,
-                  fontFamily: 'Lato'),
-            )),
-          ), // Your header here
-          body: Container(
-            height: 100,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Text(
-                  'Click on the plus icon on the right to add a service or product. Your posting will be shared with the community near by. You can also post services you want, such as Food prep service, tailoring, and even a reccomendation for a nice restaurant',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontFamily: 'Lato',
-                  ),
-                ),
-              ),
-            ),
-          ), // Your body here
-        ),
+        // bottomSheet: SolidBottomSheet(
+        //   maxHeight: deviceSize.height * .22,
+        //   headerBar: Container(
+        //     width: double.infinity,
+        //     decoration: BoxDecoration(
+        //       borderRadius: BorderRadiusDirectional.only(
+        //           topStart: Radius.circular(50), topEnd: Radius.circular(50)),
+        //       color: Theme.of(context).primaryColor,
+        //     ),
+        //     height: deviceSize.height * .10,
+        //     child: Center(
+        //         child: Text(
+        //       'Swipe up for Instructions',
+        //       style: TextStyle(
+        //           fontSize: 20,
+        //           color: Theme.of(context).accentColor,
+        //           fontFamily: 'Lato'),
+        //     )),
+        //   ), // Your header here
+        //   body: Container(
+        //     height: 100,
+        //     child: Padding(
+        //       padding: const EdgeInsets.all(8.0),
+        //       child: Center(
+        //         child: Text(
+        //           'Click on the plus icon on the right to add a service or product. Your posting will be shared with the community near by. You can also post services you want, such as Food prep service, tailoring, and even a reccomendation for a nice restaurant',
+        //           style: TextStyle(
+        //             fontSize: 20,
+        //             fontFamily: 'Lato',
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //   ), // Your body here
+        // ),
       ),
     );
   }

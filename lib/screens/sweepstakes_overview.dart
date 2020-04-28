@@ -45,10 +45,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   //     setState(() {
   //       _isLoading = true;
   //     });
-  //     getUserLocation().then((value) async {
-  //       await Provider.of<GreatPlaces>(context, listen: false)
-  //           .fetchResultsByState(value);
-  //     });
+  //     _refreshProducts(context);
   //     setState(() {
   //       _isLoading = false;
   //     });
@@ -113,9 +110,12 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                     ? Center(
                         child: CircularProgressIndicator(
                           backgroundColor: Theme.of(context).primaryColor,
+                          strokeWidth: 6,
                         ),
                       )
                     : RefreshIndicator(
+                        displacement: 120,
+                        color: Theme.of(context).primaryColor,
                         onRefresh: () => _refreshProducts(context),
                         child: Consumer<GreatPlaces>(
                           builder: (ctx, greatPlaces, _) => Padding(

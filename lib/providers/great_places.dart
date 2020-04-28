@@ -7,10 +7,12 @@ import 'package:geocoder/geocoder.dart';
 import 'package:sweepstakes/helper/location_helper.dart';
 import 'package:http/http.dart' as http;
 import '../models/place.dart';
+import 'package:uuid/uuid.dart';
 
 class GreatPlaces with ChangeNotifier {
   GreatPlaces(this.authToken, this.userId, this._items);
   bool error = false;
+
   bool isDisposed = false;
   List<Place> _items = [];
 
@@ -45,11 +47,14 @@ class GreatPlaces with ChangeNotifier {
       longitude: pickedLocation.longitude,
       address: stateAddress,
     );
+    var uuid = Uuid();
+    String uid = uuid.v1();
     final url =
         'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken';
     try {
       final newPlace = Place(
-        id: DateTime.now().toString(),
+        id: uid,
+        dateTime: DateTime.now().toString(),
         image: pickedImage,
         title: pickedTitle,
         description: pickedDescription,
@@ -58,17 +63,19 @@ class GreatPlaces with ChangeNotifier {
         email: pickedEmail,
         phone: pickedPhone,
         price: pickedPrice,
+        creatorId: userId,
       );
       await http.post(
         url,
         body: json.encode({
           'id': newPlace.id,
+          'dateTime': DateTime.now().toString(),
           'title': newPlace.title,
           'image': newPlace.image,
           'loc_lat': newPlace.location.latitude,
           'loc_lng': newPlace.location.longitude,
           'address': countyAddress,
-          'creatorId': userId,
+          'creatorId': newPlace.creatorId,
           'state': stateAddress,
           'description': newPlace.description,
           'email': newPlace.email,
@@ -101,6 +108,7 @@ class GreatPlaces with ChangeNotifier {
         loadedProducts.add(
           Place(
               id: prodId,
+              dateTime: prodData['dateTime'],
               title: prodData['title'],
               image: prodData['image'],
               location: PlaceLocation(
@@ -115,7 +123,8 @@ class GreatPlaces with ChangeNotifier {
               address: prodData['address']),
         );
       });
-      _items = loadedProducts.reversed.toList();
+      _items = loadedProducts.toList();
+      _items.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
       notifyListeners();
     } catch (error) {
@@ -158,11 +167,9 @@ class GreatPlaces with ChangeNotifier {
   }
 
   //TODO work on this as POST is working but not GET
-  Future<void> fetchAndSetPlaces([bool filterByUser = true]) async {
-    final filterString =
-        filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
+  Future<void> fetchAndSetPlaces(String userId) async {
     final url =
-        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&$filterString';
+        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="creatorId"&equalTo="$userId"';
     try {
       final response = await http.get(url);
 
@@ -184,6 +191,11 @@ class GreatPlaces with ChangeNotifier {
               address: prodData['address'],
             ),
             address: prodData['address'],
+            description: prodData['description'],
+            email: prodData['email'],
+            phone: prodData['phone'],
+            dateTime: prodData['dateTime'],
+            creatorId: prodData['creatorId'],
           ),
         );
       });
@@ -234,7 +246,7 @@ class GreatPlaces with ChangeNotifier {
     //optimistic deleting/updating
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
-    deleteImage(existingProduct.image.first);
+    //deleteImage(existingProduct.image.first);
     _items.removeAt(existingProductIndex);
 
     //TODO delete a list of images
@@ -251,11 +263,14 @@ class GreatPlaces with ChangeNotifier {
   }
 
   Future deleteImage(String imageFileName) async {
-    final StorageReference firebaseStorageRef =
-        FirebaseStorage.instance.ref().child(imageFileName);
+    // final FirebaseStorage storage =
+    //     FirebaseStorage(storageBucket: 'gs://bazaar-45301.appspot.com/');
 
     try {
-      await firebaseStorageRef.delete();
+      await FirebaseStorage.instance
+          .getReferenceFromUrl(imageFileName)
+          .then((reference) => reference.delete())
+          .catchError((e) => print(e));
       return true;
     } catch (e) {
       return e.toString();
