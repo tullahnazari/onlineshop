@@ -1,7 +1,11 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:connectivity/connectivity.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:halalbazaar/screens/report_posting.dart';
 import 'package:provider/provider.dart';
 import 'package:halalbazaar/helper/service_locater.dart';
 import 'package:halalbazaar/models/place.dart';
@@ -27,13 +31,56 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+final GlobalKey<NavigatorState> nav = GlobalKey<NavigatorState>();
+
+class _MyAppState extends State<MyApp> {
   File _pickedImage;
+
   void _selectImage(File pickedImage) {
     _pickedImage = pickedImage;
   }
 
-  // This widget is the root of your application.
+  StreamSubscription connectivitySubscription;
+
+  ConnectivityResult _previousResult;
+
+  @override
+  void initState() {
+    super.initState();
+
+    connectivitySubscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult connectivityResult) {
+      if (connectivityResult == ConnectivityResult.none) {
+        Future.delayed(const Duration(seconds: 8), () {
+          Center(
+            child: CircularProgressIndicator(
+              backgroundColor: Theme.of(context).primaryColor,
+              strokeWidth: 6,
+            ),
+          );
+        });
+      } else if (_previousResult == ConnectivityResult.none) {
+        nav.currentState.push(MaterialPageRoute(
+            builder: (BuildContext _) => SweepstakesOverview()));
+      }
+
+      _previousResult = connectivityResult;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    connectivitySubscription.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     //ability to add multiple providers at root of app
@@ -78,6 +125,7 @@ class MyApp extends StatelessWidget {
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(
+          navigatorKey: nav,
           title: 'Halal Bazaar',
           theme: ThemeData(
             primaryColor: Colors.teal,
@@ -103,6 +151,7 @@ class MyApp extends StatelessWidget {
             SweepstakesOverview.routeName: (ctx) => SweepstakesOverview(),
             LocationPage.routeName: (ctx) => LocationPage(),
             AddPlaceScreen.routeName: (ctx) => AddPlaceScreen(),
+            ReportListing.routeName: (ctx) => ReportListing(),
           },
         ),
       ),

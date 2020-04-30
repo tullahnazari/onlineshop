@@ -16,6 +16,10 @@ import 'package:halalbazaar/widgets/user_sweepstakes_item.dart';
 class SweepstakeManagement extends StatelessWidget {
   static const routeName = '/user-sweepstakes';
 
+  Future<void> _refreshProducts(BuildContext context) async {
+    await Provider.of<GreatPlaces>(context, listen: false).fetchAndSetPlaces();
+  }
+
   @override
   Widget build(BuildContext context) {
     final authData = Provider.of<Auth>(context, listen: false);
@@ -51,38 +55,41 @@ class SweepstakeManagement extends StatelessWidget {
           ),
         ),
         body: FutureBuilder(
-            future: Provider.of<GreatPlaces>(context, listen: false)
-                .fetchAndSetPlaces(authData.userId),
-            builder: (ctx, dataSnapshot) {
-              if (dataSnapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              }
-              // else {
-              //   if (dataSnapshot.error != null) {
-              //     // ...
-              //     // Do error handling stuff
-              //     return Center(
-              //       child: Text('An error occurred!'),
-              //     );
-              //   }
-              else {
-                return Consumer<GreatPlaces>(
-                  builder: (ctx, greatPlaces, child) => ListView.builder(
-                    itemCount: greatPlaces.items.length,
-                    itemBuilder: (ctx, i) => SweepstakeItems(
-                      id: greatPlaces.items[i].id,
-                      title: greatPlaces.items[i].title,
-                      image: greatPlaces.items[i].image,
-                      price: greatPlaces.items[i].price,
+            future: _refreshProducts(context),
+            builder: (ctx, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return RefreshIndicator(
+                  displacement: 120,
+                  color: Theme.of(context).primaryColor,
+                  onRefresh: () => _refreshProducts(context),
+                  child: Consumer<GreatPlaces>(
+                    builder: (ctx, greatPlaces, _) => Padding(
+                      padding: EdgeInsets.all(8),
+                      child: ListView.builder(
+                        itemCount: greatPlaces.items.length,
+                        itemBuilder: (_, i) => Column(children: [
+                          SweepstakeItems(
+                            id: greatPlaces.items[i].id,
+                            title: greatPlaces.items[i].title,
+                            image: greatPlaces.items[i].image,
+                            price: greatPlaces.items[i].price,
+                          ),
+                          Divider(),
+                        ]),
+                      ),
                     ),
                   ),
                 );
-              }
-            }
-            //     },
-            ),
+              } else
+                return Center(
+                  child: CircularProgressIndicator(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    strokeWidth: 6,
+                  ),
+                );
+            }),
         // bottomSheet: SolidBottomSheet(
-        //   maxHeight: deviceSize.height * .22,
+        //   maxHeight: MediaQuery.of(context).size.height * .22,
         //   headerBar: Container(
         //     width: double.infinity,
         //     decoration: BoxDecoration(
@@ -90,7 +97,7 @@ class SweepstakeManagement extends StatelessWidget {
         //           topStart: Radius.circular(50), topEnd: Radius.circular(50)),
         //       color: Theme.of(context).primaryColor,
         //     ),
-        //     height: deviceSize.height * .10,
+        //     height: MediaQuery.of(context).size.height * .10,
         //     child: Center(
         //         child: Text(
         //       'Swipe up for Instructions',

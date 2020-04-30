@@ -5,6 +5,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -33,6 +34,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   var _isInit = true;
   Position currentLocation;
   var value;
+
   // @override
   // void initState() {
   //   super.initState();
@@ -63,6 +65,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
 
   @override
   Widget build(BuildContext context) {
+    final productCount = Provider.of<GreatPlaces>(context, listen: false);
     return WillPopScope(
       onWillPop: () async => false,
       // final loadedSweepstakeData = Provider.of<GreatPlaces>(context);
@@ -96,6 +99,29 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
             textAlign: TextAlign.center,
           ),
         ),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        // floatingActionButton: FloatingActionButton(
+        //   tooltip: 'Add A Posting',
+        //   backgroundColor: Theme.of(context).primaryColor,
+        //   onPressed: () async {
+        //     var order = await productCount.getCount();
+        //     if (order > 4) {
+        //       Flushbar(
+        //         title: "Ohhh Shucks...",
+        //         message:
+        //             "You can only have 5 active postings, please delete inactive or dated posts ",
+        //         duration: Duration(seconds: 5),
+        //       )..show(context);
+        //     } else {
+        //       Navigator.of(context).pushNamed(AddPlaceScreen.routeName);
+        //     }
+        //   },
+        //   child: Icon(
+        //     FontAwesomeIcons.plus,
+        //     size: 30,
+        //     color: Theme.of(context).accentColor,
+        //   ),
+        // ),
         // bottomNavigationBar: BottomBar(),
         body: _isLoading
             ? Center(

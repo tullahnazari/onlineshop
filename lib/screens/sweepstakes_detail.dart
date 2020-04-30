@@ -8,8 +8,10 @@ import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flushbar/flushbar_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:halalbazaar/screens/report_posting.dart';
 import 'package:provider/provider.dart';
 import 'package:halalbazaar/helper/calls_messaging_service.dart';
 import 'package:halalbazaar/helper/location_helper.dart';
@@ -47,6 +49,23 @@ class SweepstakesDetail extends StatelessWidget {
         longitude: lng,
       );
       //return staticMapImageUrl;
+    }
+
+    Future<void> send() async {
+      final Email email = Email(
+        body:
+            'I would like to report the following user ${loadedPosting.creatorId}. Additionally if you would like to add more details about why you are reporting this listing, please describe below. If not, please hit send and we will follow-up within 24 hours.',
+        subject: '${loadedPosting.id}',
+        recipients: ['affordableapps4u@gmail.com'],
+      );
+      String platformResponse;
+
+      try {
+        await FlutterEmailSender.send(email);
+        platformResponse = 'success';
+      } catch (error) {
+        platformResponse = error.toString();
+      }
     }
 
     String generateLocationPreviewImage({
@@ -255,6 +274,17 @@ class SweepstakesDetail extends StatelessWidget {
         SizedBox(
           height: 20,
         ),
+        RaisedButton(
+          child: Text('Report Posting'),
+          onPressed: () {
+            send();
+            // //Navigator.of(context).pushNamed(ReportListing.routeName);
+            // Navigator.of(context).pushNamed(
+            //   ReportListing.routeName,
+            //   arguments: id,
+            // );
+          },
+        )
         // Row(
         //   mainAxisAlignment: MainAxisAlignment.end,
         //   children: <Widget>[

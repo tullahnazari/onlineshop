@@ -120,10 +120,11 @@ class GreatPlaces with ChangeNotifier {
               email: prodData['email'],
               phone: prodData['phone'],
               price: prodData['price'],
-              address: prodData['address']),
+              address: prodData['address'],
+              creatorId: prodData['creatorId']),
         );
       });
-      _items = loadedProducts.toList();
+      _items = loadedProducts;
       _items.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
       notifyListeners();
@@ -167,7 +168,7 @@ class GreatPlaces with ChangeNotifier {
   }
 
   //TODO work on this as POST is working but not GET
-  Future<void> fetchAndSetPlaces(String userId) async {
+  Future<void> fetchAndSetPlaces() async {
     final url =
         'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="creatorId"&equalTo="$userId"';
     try {
