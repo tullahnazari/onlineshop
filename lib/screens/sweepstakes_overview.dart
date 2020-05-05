@@ -41,20 +41,23 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   //   _refreshProducts(context);
   // }
 
-  // @override
-  // void didChangeDependencies() {
-  //   if (_isInit) {
-  //     setState(() {
-  //       _isLoading = true;
-  //     });
-  //     _refreshProducts(context);
-  //     setState(() {
-  //       _isLoading = false;
-  //     });
-  //   }
-  //   _isInit = false;
-  //   super.didChangeDependencies();
-  // }
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      getUserLocation().then((value) async {
+        Provider.of<GreatPlaces>(context, listen: false)
+            .fetchResultsByState(value);
+      });
+      setState(() {
+        _isLoading = false;
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
 
   Future<void> _refreshProducts(BuildContext context) async {
     await getUserLocation().then((value) async {

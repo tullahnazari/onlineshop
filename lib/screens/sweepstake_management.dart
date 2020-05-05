@@ -3,6 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 import 'package:halalbazaar/providers/auth.dart';
@@ -13,8 +14,34 @@ import 'package:halalbazaar/widgets/app_drawer.dart';
 import 'package:halalbazaar/widgets/sweepstake_items.dart';
 import 'package:halalbazaar/widgets/user_sweepstakes_item.dart';
 
-class SweepstakeManagement extends StatelessWidget {
+class SweepstakeManagement extends StatefulWidget {
   static const routeName = '/user-sweepstakes';
+
+  @override
+  _SweepstakeManagementState createState() => _SweepstakeManagementState();
+}
+
+class _SweepstakeManagementState extends State<SweepstakeManagement> {
+  var _isLoading = false;
+
+  var _isInit = true;
+
+  Position currentLocation;
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      Provider.of<GreatPlaces>(context, listen: false).fetchAndSetPlaces();
+      setState(() {
+        _isLoading = false;
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
 
   Future<void> _refreshProducts(BuildContext context) async {
     await Provider.of<GreatPlaces>(context, listen: false).fetchAndSetPlaces();

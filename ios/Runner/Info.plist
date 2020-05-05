@@ -37,6 +37,8 @@
 	<string>ca-app-pub-3940256099942544~1458002511</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>googlegmail</string>
+		<string>mailto</string>
 		<string>fbapi</string>
 		<string>fbapi20130214</string>
 		<string>fbapi20130410</string>
@@ -62,6 +64,8 @@
 	<string>Halal Bazaar requires access to your location to better display results near you. Your images will not be shared without your permission</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Halal Bazaar requires access to your microphone</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Halal Bazaar requires access to your camera to let you add pictures to your posting which you can share with the community</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Halal Bazaar requires access to your camera to let you add pictures to your posting which you can share with the community</string>
 	<key>UILaunchStoryboardName</key>

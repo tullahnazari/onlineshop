@@ -24,6 +24,7 @@ import 'package:halalbazaar/providers/results.dart';
 import 'package:halalbazaar/providers/sweepstakes.dart';
 import 'package:halalbazaar/widgets/animation.dart';
 import 'package:halalbazaar/widgets/location_input.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SweepstakesDetail extends StatelessWidget {
   static const routeName = '/sweepstakedetail';
@@ -51,20 +52,34 @@ class SweepstakesDetail extends StatelessWidget {
       //return staticMapImageUrl;
     }
 
-    Future<void> send() async {
+    _sendEmail() async {
+      final String _email = Uri.encodeFull('mailto:affordableapps4u@gmail.com' +
+          '?subject=user ${loadedPosting.id} was reported' +
+          '&body=I would like to report the following user ${loadedPosting.creatorId}. Additionally if you would like to add more details about why you are reporting this listing, please describe below. If not, please hit send and we will follow-up within 24 hours.');
+      if (await canLaunch(_email)) {
+        await launch(_email);
+      } else {
+        throw "Can't phone that number.";
+      }
+    }
+
+    Future<void> sendEmail() async {
       final Email email = Email(
-        body:
-            'I would like to report the following user ${loadedPosting.creatorId}. Additionally if you would like to add more details about why you are reporting this listing, please describe below. If not, please hit send and we will follow-up within 24 hours.',
-        subject: '${loadedPosting.id}',
-        recipients: ['affordableapps4u@gmail.com'],
-      );
+          body:
+              'I would like to report the following user ${loadedPosting.creatorId}. Additionally if you would like to add more details about why you are reporting this listing, please describe below. If not, please hit send and we will follow-up within 24 hours.',
+          subject: '${loadedPosting.id}',
+          recipients: ['mailto:affordableapps4u@gmail.com']);
       String platformResponse;
 
       try {
         await FlutterEmailSender.send(email);
-        platformResponse = 'success';
       } catch (error) {
-        platformResponse = error.toString();
+        error.toString();
+        Flushbar(
+          title: "Uh-oh",
+          message: "We ran into an error while trying to report",
+          duration: Duration(seconds: 5),
+        )..show(context);
       }
     }
 
@@ -275,16 +290,14 @@ class SweepstakesDetail extends StatelessWidget {
           height: 20,
         ),
         RaisedButton(
-          child: Text('Report Posting'),
-          onPressed: () {
-            send();
-            // //Navigator.of(context).pushNamed(ReportListing.routeName);
-            // Navigator.of(context).pushNamed(
-            //   ReportListing.routeName,
-            //   arguments: id,
-            // );
-          },
-        )
+            child: Text('Report Posting'),
+            onPressed: () {
+              if (Platform.isIOS) {
+                sendEmail();
+              } else {
+                sendEmail();
+              }
+            }),
         // Row(
         //   mainAxisAlignment: MainAxisAlignment.end,
         //   children: <Widget>[
