@@ -4,8 +4,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:sweepstakes/models/place.dart';
-import 'package:sweepstakes/screens/sweepstakes_detail.dart';
+import 'package:halalbazaar/models/place.dart';
+import 'package:halalbazaar/screens/sweepstakes_detail.dart';
 
 class OverviewPosting extends StatelessWidget {
   final String id;

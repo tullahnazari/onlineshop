@@ -7,8 +7,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sweepstakes/models/http_exception.dart';
-import 'package:sweepstakes/providers/user_table_roles.dart';
+import 'package:halalbazaar/models/http_exception.dart';
+import 'package:halalbazaar/providers/user_table_roles.dart';
 
 class Auth with ChangeNotifier {
   String _token;

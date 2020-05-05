@@ -1,25 +1,29 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:connectivity/connectivity.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:halalbazaar/screens/report_posting.dart';
 import 'package:provider/provider.dart';
-import 'package:sweepstakes/helper/service_locater.dart';
-import 'package:sweepstakes/models/place.dart';
-import 'package:sweepstakes/models/result.dart';
-import 'package:sweepstakes/models/user_location.dart';
-import 'package:sweepstakes/providers/auth.dart';
-import 'package:sweepstakes/providers/great_places.dart';
-import 'package:sweepstakes/providers/location_service.dart';
-import 'package:sweepstakes/providers/results.dart';
-import 'package:sweepstakes/providers/sweepstakes.dart';
-import 'package:sweepstakes/screens/add_place_screen.dart';
+import 'package:halalbazaar/helper/service_locater.dart';
+import 'package:halalbazaar/models/place.dart';
+import 'package:halalbazaar/models/result.dart';
+import 'package:halalbazaar/models/user_location.dart';
+import 'package:halalbazaar/providers/auth.dart';
+import 'package:halalbazaar/providers/great_places.dart';
+import 'package:halalbazaar/providers/location_service.dart';
+import 'package:halalbazaar/providers/results.dart';
+import 'package:halalbazaar/providers/sweepstakes.dart';
+import 'package:halalbazaar/screens/add_place_screen.dart';
 
-import 'package:sweepstakes/screens/auth-screen.dart';
-import 'package:sweepstakes/screens/location_page.dart';
-import 'package:sweepstakes/screens/spash_screen.dart';
-import 'package:sweepstakes/screens/sweepstake_management.dart';
-import 'package:sweepstakes/screens/sweepstakes_detail.dart';
-import 'package:sweepstakes/screens/sweepstakes_overview.dart';
+import 'package:halalbazaar/screens/auth-screen.dart';
+import 'package:halalbazaar/screens/location_page.dart';
+import 'package:halalbazaar/screens/spash_screen.dart';
+import 'package:halalbazaar/screens/sweepstake_management.dart';
+import 'package:halalbazaar/screens/sweepstakes_detail.dart';
+import 'package:halalbazaar/screens/sweepstakes_overview.dart';
 
 void main() {
   setupLocator();
@@ -27,13 +31,56 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+final GlobalKey<NavigatorState> nav = GlobalKey<NavigatorState>();
+
+class _MyAppState extends State<MyApp> {
   File _pickedImage;
+
   void _selectImage(File pickedImage) {
     _pickedImage = pickedImage;
   }
 
-  // This widget is the root of your application.
+  StreamSubscription connectivitySubscription;
+
+  ConnectivityResult _previousResult;
+
+  @override
+  void initState() {
+    super.initState();
+
+    connectivitySubscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult connectivityResult) {
+      if (connectivityResult == ConnectivityResult.none) {
+        Future.delayed(const Duration(seconds: 8), () {
+          Center(
+            child: CircularProgressIndicator(
+              backgroundColor: Theme.of(context).primaryColor,
+              strokeWidth: 6,
+            ),
+          );
+        });
+      } else if (_previousResult == ConnectivityResult.none) {
+        nav.currentState.push(MaterialPageRoute(
+            builder: (BuildContext _) => SweepstakesOverview()));
+      }
+
+      _previousResult = connectivityResult;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    connectivitySubscription.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     //ability to add multiple providers at root of app
@@ -78,6 +125,7 @@ class MyApp extends StatelessWidget {
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(
+          navigatorKey: nav,
           title: 'Halal Bazaar',
           theme: ThemeData(
             primaryColor: Colors.teal,
@@ -103,6 +151,7 @@ class MyApp extends StatelessWidget {
             SweepstakesOverview.routeName: (ctx) => SweepstakesOverview(),
             LocationPage.routeName: (ctx) => LocationPage(),
             AddPlaceScreen.routeName: (ctx) => AddPlaceScreen(),
+            ReportListing.routeName: (ctx) => ReportListing(),
           },
         ),
       ),

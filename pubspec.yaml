@@ -1,5 +1,5 @@
-name: sweepstakes
-description: A new Flutter project.
+name: halalbazaar
+description: Community and location based app that will help find listing, and post listings for various products (selling a car, selling a phone, etc) and services (tax filing service, cleaning service, etc)
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -11,7 +11,7 @@ description: A new Flutter project.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.1.4+43
+version: 1.1.4+53
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -55,6 +55,9 @@ dependencies:
   fancy_dialog: ^1.0.3
   cached_network_image: ^2.1.0+1
   uuid: ^2.0.4
+  flutter_email_sender: ^3.0.1
+  data_connection_checker: ^0.3.4
+  connectivity: ^0.4.8+2
 
 
 

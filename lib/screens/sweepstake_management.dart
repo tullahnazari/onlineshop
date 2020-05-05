@@ -3,31 +3,52 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
-import 'package:sweepstakes/providers/auth.dart';
-import 'package:sweepstakes/providers/great_places.dart';
-import 'package:sweepstakes/providers/sweepstakes.dart';
-import 'package:sweepstakes/screens/add_place_screen.dart';
-import 'package:sweepstakes/widgets/app_drawer.dart';
-import 'package:sweepstakes/widgets/sweepstake_items.dart';
-import 'package:sweepstakes/widgets/user_sweepstakes_item.dart';
+import 'package:halalbazaar/providers/auth.dart';
+import 'package:halalbazaar/providers/great_places.dart';
+import 'package:halalbazaar/providers/sweepstakes.dart';
+import 'package:halalbazaar/screens/add_place_screen.dart';
+import 'package:halalbazaar/widgets/app_drawer.dart';
+import 'package:halalbazaar/widgets/sweepstake_items.dart';
+import 'package:halalbazaar/widgets/user_sweepstakes_item.dart';
 
-class SweepstakeManagement extends StatelessWidget {
+class SweepstakeManagement extends StatefulWidget {
   static const routeName = '/user-sweepstakes';
 
-  Auth auth;
+  @override
+  _SweepstakeManagementState createState() => _SweepstakeManagementState();
+}
 
-  Future<void> _showOnlyUserProducts(BuildContext context) async {
-    await Provider.of<GreatPlaces>(context, listen: false)
-        .fetchAndSetPlaces(auth.userId);
+class _SweepstakeManagementState extends State<SweepstakeManagement> {
+  var _isLoading = false;
+
+  var _isInit = true;
+
+  Position currentLocation;
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      Provider.of<GreatPlaces>(context, listen: false).fetchAndSetPlaces();
+      setState(() {
+        _isLoading = false;
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
+
+  Future<void> _refreshProducts(BuildContext context) async {
+    await Provider.of<GreatPlaces>(context, listen: false).fetchAndSetPlaces();
   }
 
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
-    int count = 0;
-    final products = Provider.of<GreatPlaces>(context, listen: false);
     final authData = Provider.of<Auth>(context, listen: false);
     final productCount = Provider.of<GreatPlaces>(context, listen: false);
     return new WillPopScope(
@@ -61,38 +82,41 @@ class SweepstakeManagement extends StatelessWidget {
           ),
         ),
         body: FutureBuilder(
-            future: Provider.of<GreatPlaces>(context, listen: false)
-                .fetchAndSetPlaces(authData.userId),
-            builder: (ctx, dataSnapshot) {
-              if (dataSnapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              }
-              // else {
-              //   if (dataSnapshot.error != null) {
-              //     // ...
-              //     // Do error handling stuff
-              //     return Center(
-              //       child: Text('An error occurred!'),
-              //     );
-              //   }
-              else {
-                return Consumer<GreatPlaces>(
-                  builder: (ctx, greatPlaces, child) => ListView.builder(
-                    itemCount: greatPlaces.items.length,
-                    itemBuilder: (ctx, i) => SweepstakeItems(
-                      id: greatPlaces.items[i].id,
-                      title: greatPlaces.items[i].title,
-                      image: greatPlaces.items[i].image,
-                      price: greatPlaces.items[i].price,
+            future: _refreshProducts(context),
+            builder: (ctx, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return RefreshIndicator(
+                  displacement: 120,
+                  color: Theme.of(context).primaryColor,
+                  onRefresh: () => _refreshProducts(context),
+                  child: Consumer<GreatPlaces>(
+                    builder: (ctx, greatPlaces, _) => Padding(
+                      padding: EdgeInsets.all(8),
+                      child: ListView.builder(
+                        itemCount: greatPlaces.items.length,
+                        itemBuilder: (_, i) => Column(children: [
+                          SweepstakeItems(
+                            id: greatPlaces.items[i].id,
+                            title: greatPlaces.items[i].title,
+                            image: greatPlaces.items[i].image,
+                            price: greatPlaces.items[i].price,
+                          ),
+                          Divider(),
+                        ]),
+                      ),
                     ),
                   ),
                 );
-              }
-            }
-            //     },
-            ),
+              } else
+                return Center(
+                  child: CircularProgressIndicator(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    strokeWidth: 6,
+                  ),
+                );
+            }),
         // bottomSheet: SolidBottomSheet(
-        //   maxHeight: deviceSize.height * .22,
+        //   maxHeight: MediaQuery.of(context).size.height * .22,
         //   headerBar: Container(
         //     width: double.infinity,
         //     decoration: BoxDecoration(
@@ -100,7 +124,7 @@ class SweepstakeManagement extends StatelessWidget {
         //           topStart: Radius.circular(50), topEnd: Radius.circular(50)),
         //       color: Theme.of(context).primaryColor,
         //     ),
-        //     height: deviceSize.height * .10,
+        //     height: MediaQuery.of(context).size.height * .10,
         //     child: Center(
         //         child: Text(
         //       'Swipe up for Instructions',

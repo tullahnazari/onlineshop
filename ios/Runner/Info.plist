@@ -37,6 +37,8 @@
 	<string>ca-app-pub-3940256099942544~1458002511</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>googlegmail</string>
+		<string>mailto</string>
 		<string>fbapi</string>
 		<string>fbapi20130214</string>
 		<string>fbapi20130410</string>
@@ -55,15 +57,17 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>We need to take a picture</string>
+	<string>Halal Bazaar requires access to your camera to let you add pictures to your posting</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Need your location</string>
+	<string>Halal Bazaar requires access to your location to better display results near you. Your images will not be shared without your permission</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Need your location</string>
+	<string>Halal Bazaar requires access to your location to better display results near you. Your images will not be shared without your permission</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Need to upload image</string>
+	<string>Halal Bazaar requires access to your microphone</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Halal Bazaar requires access to your camera to let you add pictures to your posting which you can share with the community</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We need to take a picture</string>
+	<string>Halal Bazaar requires access to your camera to let you add pictures to your posting which you can share with the community</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

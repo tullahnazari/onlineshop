@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sweepstakes/widgets/upload_from_gallery.dart';
+import 'package:halalbazaar/widgets/upload_from_gallery.dart';
 
 /// Widget to capture and crop the image
 class ImageCapture extends StatefulWidget {

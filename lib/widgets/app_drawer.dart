@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sweepstakes/helper/calls_messaging_service.dart';
-import 'package:sweepstakes/helper/service_locater.dart';
-import 'package:sweepstakes/providers/auth.dart';
+import 'package:halalbazaar/helper/calls_messaging_service.dart';
+import 'package:halalbazaar/helper/service_locater.dart';
+import 'package:halalbazaar/providers/auth.dart';
 
-import 'package:sweepstakes/screens/sweepstake_management.dart';
+import 'package:halalbazaar/screens/sweepstake_management.dart';
 
 class AppDrawer extends StatelessWidget {
   final CallsAndMessagesService _service = locator<CallsAndMessagesService>();

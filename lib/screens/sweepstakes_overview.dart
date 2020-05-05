@@ -5,21 +5,22 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sweepstakes/helper/location_helper.dart';
-import 'package:sweepstakes/models/place.dart';
-import 'package:sweepstakes/models/user_location.dart';
-import 'package:sweepstakes/providers/auth.dart';
-import 'package:sweepstakes/providers/great_places.dart';
-import 'package:sweepstakes/screens/add_place_screen.dart';
+import 'package:halalbazaar/helper/location_helper.dart';
+import 'package:halalbazaar/models/place.dart';
+import 'package:halalbazaar/models/user_location.dart';
+import 'package:halalbazaar/providers/auth.dart';
+import 'package:halalbazaar/providers/great_places.dart';
+import 'package:halalbazaar/screens/add_place_screen.dart';
 import 'package:http/http.dart' as http;
-import 'package:sweepstakes/widgets/app_drawer.dart';
-import 'package:sweepstakes/widgets/overview_posting.dart';
-import 'package:sweepstakes/widgets/sweepstake_items.dart';
+import 'package:halalbazaar/widgets/app_drawer.dart';
+import 'package:halalbazaar/widgets/overview_posting.dart';
+import 'package:halalbazaar/widgets/sweepstake_items.dart';
 
 class SweepstakesOverview extends StatefulWidget {
   static const routeName = '/sweepstakeoverview';
@@ -33,26 +34,30 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   var _isInit = true;
   Position currentLocation;
   var value;
+
   // @override
   // void initState() {
   //   super.initState();
   //   _refreshProducts(context);
   // }
 
-  // @override
-  // void didChangeDependencies() {
-  //   if (_isInit) {
-  //     setState(() {
-  //       _isLoading = true;
-  //     });
-  //     _refreshProducts(context);
-  //     setState(() {
-  //       _isLoading = false;
-  //     });
-  //   }
-  //   _isInit = false;
-  //   super.didChangeDependencies();
-  // }
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      getUserLocation().then((value) async {
+        Provider.of<GreatPlaces>(context, listen: false)
+            .fetchResultsByState(value);
+      });
+      setState(() {
+        _isLoading = false;
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
 
   Future<void> _refreshProducts(BuildContext context) async {
     await getUserLocation().then((value) async {
@@ -63,6 +68,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
 
   @override
   Widget build(BuildContext context) {
+    final productCount = Provider.of<GreatPlaces>(context, listen: false);
     return WillPopScope(
       onWillPop: () async => false,
       // final loadedSweepstakeData = Provider.of<GreatPlaces>(context);
@@ -96,6 +102,29 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
             textAlign: TextAlign.center,
           ),
         ),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        // floatingActionButton: FloatingActionButton(
+        //   tooltip: 'Add A Posting',
+        //   backgroundColor: Theme.of(context).primaryColor,
+        //   onPressed: () async {
+        //     var order = await productCount.getCount();
+        //     if (order > 4) {
+        //       Flushbar(
+        //         title: "Ohhh Shucks...",
+        //         message:
+        //             "You can only have 5 active postings, please delete inactive or dated posts ",
+        //         duration: Duration(seconds: 5),
+        //       )..show(context);
+        //     } else {
+        //       Navigator.of(context).pushNamed(AddPlaceScreen.routeName);
+        //     }
+        //   },
+        //   child: Icon(
+        //     FontAwesomeIcons.plus,
+        //     size: 30,
+        //     color: Theme.of(context).accentColor,
+        //   ),
+        // ),
         // bottomNavigationBar: BottomBar(),
         body: _isLoading
             ? Center(

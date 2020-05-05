@@ -1,13 +1,14 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fancy_dialog/FancyAnimation.dart';
 import 'package:fancy_dialog/FancyGif.dart';
 import 'package:fancy_dialog/FancyTheme.dart';
 import 'package:fancy_dialog/fancy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sweepstakes/providers/great_places.dart';
-import 'package:sweepstakes/screens/sweepstakes_detail.dart';
+import 'package:halalbazaar/providers/great_places.dart';
+import 'package:halalbazaar/screens/sweepstakes_detail.dart';
 
 class SweepstakeItems extends StatelessWidget {
   final String id;
@@ -21,12 +22,18 @@ class SweepstakeItems extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       contentPadding: EdgeInsets.all(4),
-      leading: CircleAvatar(
-        radius: 30,
-        backgroundImage: NetworkImage(
-          image.first,
+      leading: Container(
+        height: 100,
+        width: 100,
+        child: CachedNetworkImage(
+          fit: BoxFit.cover,
+          imageUrl: image.first,
+          progressIndicatorBuilder: (context, url, downloadProgress) =>
+              CircularProgressIndicator(value: downloadProgress.progress),
+          errorWidget: (context, url, error) => Icon(Icons.error),
         ),
       ),
+
       title: Text(
         title,
         style: TextStyle(fontSize: 22),

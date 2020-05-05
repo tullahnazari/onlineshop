@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sweepstakes/models/result.dart';
+import 'package:halalbazaar/models/result.dart';
 
 class ResultItemWidget extends StatefulWidget {
   final ResultItem order;

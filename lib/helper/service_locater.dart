@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:sweepstakes/helper/calls_messaging_service.dart';
+import 'package:halalbazaar/helper/calls_messaging_service.dart';
 
 GetIt locator = GetIt.asNewInstance();
 

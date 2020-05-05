@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
-import 'package:sweepstakes/helper/location_helper.dart';
+import 'package:halalbazaar/helper/location_helper.dart';
 
 class MapViewDetail extends StatefulWidget {
   static const routeName = '/mapviewpage';

@@ -8,20 +8,23 @@ import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flushbar/flushbar_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:halalbazaar/screens/report_posting.dart';
 import 'package:provider/provider.dart';
-import 'package:sweepstakes/helper/calls_messaging_service.dart';
-import 'package:sweepstakes/helper/location_helper.dart';
-import 'package:sweepstakes/helper/service_locater.dart';
-import 'package:sweepstakes/models/place.dart';
-import 'package:sweepstakes/models/result.dart';
-import 'package:sweepstakes/models/sweepstake.dart';
-import 'package:sweepstakes/providers/great_places.dart';
-import 'package:sweepstakes/providers/results.dart';
-import 'package:sweepstakes/providers/sweepstakes.dart';
-import 'package:sweepstakes/widgets/animation.dart';
-import 'package:sweepstakes/widgets/location_input.dart';
+import 'package:halalbazaar/helper/calls_messaging_service.dart';
+import 'package:halalbazaar/helper/location_helper.dart';
+import 'package:halalbazaar/helper/service_locater.dart';
+import 'package:halalbazaar/models/place.dart';
+import 'package:halalbazaar/models/result.dart';
+import 'package:halalbazaar/models/sweepstake.dart';
+import 'package:halalbazaar/providers/great_places.dart';
+import 'package:halalbazaar/providers/results.dart';
+import 'package:halalbazaar/providers/sweepstakes.dart';
+import 'package:halalbazaar/widgets/animation.dart';
+import 'package:halalbazaar/widgets/location_input.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SweepstakesDetail extends StatelessWidget {
   static const routeName = '/sweepstakedetail';
@@ -47,6 +50,37 @@ class SweepstakesDetail extends StatelessWidget {
         longitude: lng,
       );
       //return staticMapImageUrl;
+    }
+
+    _sendEmail() async {
+      final String _email = Uri.encodeFull('mailto:affordableapps4u@gmail.com' +
+          '?subject=user ${loadedPosting.id} was reported' +
+          '&body=I would like to report the following user ${loadedPosting.creatorId}. Additionally if you would like to add more details about why you are reporting this listing, please describe below. If not, please hit send and we will follow-up within 24 hours.');
+      if (await canLaunch(_email)) {
+        await launch(_email);
+      } else {
+        throw "Can't phone that number.";
+      }
+    }
+
+    Future<void> sendEmail() async {
+      final Email email = Email(
+          body:
+              'I would like to report the following user ${loadedPosting.creatorId}. Additionally if you would like to add more details about why you are reporting this listing, please describe below. If not, please hit send and we will follow-up within 24 hours.',
+          subject: '${loadedPosting.id}',
+          recipients: ['mailto:affordableapps4u@gmail.com']);
+      String platformResponse;
+
+      try {
+        await FlutterEmailSender.send(email);
+      } catch (error) {
+        error.toString();
+        Flushbar(
+          title: "Uh-oh",
+          message: "We ran into an error while trying to report",
+          duration: Duration(seconds: 5),
+        )..show(context);
+      }
     }
 
     String generateLocationPreviewImage({
@@ -255,6 +289,15 @@ class SweepstakesDetail extends StatelessWidget {
         SizedBox(
           height: 20,
         ),
+        RaisedButton(
+            child: Text('Report Posting'),
+            onPressed: () {
+              if (Platform.isIOS) {
+                sendEmail();
+              } else {
+                sendEmail();
+              }
+            }),
         // Row(
         //   mainAxisAlignment: MainAxisAlignment.end,
         //   children: <Widget>[
