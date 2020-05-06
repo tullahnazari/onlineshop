@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:halalbazaar/screens/eula.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:halalbazaar/helper/location_helper.dart';
@@ -311,6 +312,12 @@ class _AuthCardState extends State<AuthCard> {
                           }
                         : null,
                   ),
+                RaisedButton(
+                  child: Text('EULA'),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(EULA.routeName);
+                  },
+                ),
                 SizedBox(
                   height: 20,
                 ),
