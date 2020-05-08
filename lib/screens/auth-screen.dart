@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
@@ -13,15 +14,14 @@ import 'package:halalbazaar/models/http_exception.dart';
 
 enum AuthMode { Signup, Login }
 
-class AuthScreen extends StatelessWidget {
+class AuthScreen extends StatefulWidget {
   static const routeName = '/auth';
-  PlaceLocation pickedLocation;
 
-  // addStringToSF() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   prefs.setString('stateOfUser', "Minnesota");
-  // }
+  @override
+  _AuthScreenState createState() => _AuthScreenState();
+}
 
+class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     Widget _signInButton() {
@@ -169,6 +169,7 @@ class AuthCard extends StatefulWidget {
 }
 
 class _AuthCardState extends State<AuthCard> {
+  bool checkTheBox = false;
   final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.Login;
   Map<String, String> _authData = {
@@ -264,10 +265,10 @@ class _AuthCardState extends State<AuthCard> {
       ),
       elevation: 8.0,
       child: Container(
-        height: _authMode == AuthMode.Signup ? 320 : 260,
+        height: _authMode == AuthMode.Signup ? 370 : 310,
         constraints:
-            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 260),
-        width: deviceSize.width * 0.75,
+            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 370 : 310),
+        width: deviceSize.width * 0.90,
         padding: EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
@@ -312,12 +313,35 @@ class _AuthCardState extends State<AuthCard> {
                           }
                         : null,
                   ),
-                RaisedButton(
-                  child: Text('EULA'),
-                  onPressed: () {
+                Row(
+                  children: <Widget>[
+                    Checkbox(
+                      activeColor: Theme.of(context).primaryColor,
+                      value: checkTheBox,
+                      onChanged: (bool value) {
+                        setState(() {
+                          checkTheBox = value;
+                        });
+                      },
+                    ),
+                    Text('By clicking Register, you agree to our'),
+                  ],
+                ),
+                InkWell(
+                  onTap: () {
                     Navigator.of(context).pushNamed(EULA.routeName);
                   },
+                  child: new Text(
+                    'Terms and Conditions.',
+                    style: TextStyle(color: Theme.of(context).primaryColor),
+                  ),
                 ),
+                // RaisedButton(
+                //   child: Text('EULA'),
+                //   onPressed: () {
+                //     Navigator.of(context).pushNamed(EULA.routeName);
+                //   },
+                // ),
                 SizedBox(
                   height: 20,
                 ),
