@@ -57,7 +57,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Halal Bazaar requires access to your camera to let you add pictures to your posting</string>
+	<string>Halal Bazaar requires access to your camera to let you add pictures to your posting which you can share with the community</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Halal Bazaar requires access to your location to better display results near you. Your images will not be shared without your permission</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -65,9 +65,9 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Halal Bazaar requires access to your microphone</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Halal Bazaar requires access to your camera to let you add pictures to your posting which you can share with the community</string>
+	<string>Halal Bazaar requires access to your Photos to let you add pictures to your posting which you can share with the community</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Halal Bazaar requires access to your camera to let you add pictures to your posting which you can share with the community</string>
+	<string>Halal Bazaar requires access to your Photos to let you add pictures to your posting which you can share with the community</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
