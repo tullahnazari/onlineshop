@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:flushbar/flushbar.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
@@ -15,13 +17,6 @@ enum AuthMode { Signup, Login }
 
 class AuthScreen extends StatelessWidget {
   static const routeName = '/auth';
-  PlaceLocation pickedLocation;
-
-  // addStringToSF() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   prefs.setString('stateOfUser', "Minnesota");
-  // }
-
   @override
   Widget build(BuildContext context) {
     Widget _signInButton() {
@@ -169,6 +164,7 @@ class AuthCard extends StatefulWidget {
 }
 
 class _AuthCardState extends State<AuthCard> {
+  bool checkTheBox = false;
   final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.Login;
   Map<String, String> _authData = {
@@ -200,6 +196,9 @@ class _AuthCardState extends State<AuthCard> {
     if (!_formKey.currentState.validate()) {
       // Invalid!
       return;
+    }
+    if (checkTheBox == false) {
+      return _showErrorDialog('Please agree to the terms before registering.');
     }
     _formKey.currentState.save();
     setState(() {
@@ -264,10 +263,10 @@ class _AuthCardState extends State<AuthCard> {
       ),
       elevation: 8.0,
       child: Container(
-        height: _authMode == AuthMode.Signup ? 320 : 260,
+        height: _authMode == AuthMode.Signup ? 370 : 310,
         constraints:
-            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 260),
-        width: deviceSize.width * 0.75,
+            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 370 : 310),
+        width: deviceSize.width * 0.90,
         padding: EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
@@ -300,24 +299,54 @@ class _AuthCardState extends State<AuthCard> {
                   },
                 ),
                 if (_authMode == AuthMode.Signup)
-                  TextFormField(
-                    enabled: _authMode == AuthMode.Signup,
-                    decoration: InputDecoration(labelText: 'Confirm Password'),
-                    obscureText: true,
-                    validator: _authMode == AuthMode.Signup
-                        ? (value) {
-                            if (value != _passwordController.text) {
-                              return 'Passwords do not match!';
-                            }
-                          }
-                        : null,
+                  Column(
+                    children: <Widget>[
+                      TextFormField(
+                        enabled: _authMode == AuthMode.Signup,
+                        decoration:
+                            InputDecoration(labelText: 'Confirm Password'),
+                        obscureText: true,
+                        validator: _authMode == AuthMode.Signup
+                            ? (value) {
+                                if (value != _passwordController.text) {
+                                  return 'Passwords do not match!';
+                                }
+                              }
+                            : null,
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Checkbox(
+                            activeColor: Theme.of(context).primaryColor,
+                            value: checkTheBox,
+                            onChanged: (bool value) {
+                              setState(() {
+                                checkTheBox = value;
+                              });
+                            },
+                          ),
+                          Text('By clicking Register, you agree to our'),
+                        ],
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(EULA.routeName);
+                        },
+                        child: new Text(
+                          'Terms and Conditions.',
+                          style:
+                              TextStyle(color: Theme.of(context).primaryColor),
+                        ),
+                      ),
+                    ],
                   ),
-                RaisedButton(
-                  child: Text('EULA'),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(EULA.routeName);
-                  },
-                ),
+
+                // RaisedButton(
+                //   child: Text('EULA'),
+                //   onPressed: () {
+                //     Navigator.of(context).pushNamed(EULA.routeName);
+                //   },
+                // ),
                 SizedBox(
                   height: 20,
                 ),
