@@ -35,29 +35,28 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   Position currentLocation;
   var value;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _refreshProducts(context);
-  // }
-
   @override
-  void didChangeDependencies() {
-    if (_isInit) {
-      setState(() {
-        _isLoading = true;
-      });
-      getUserLocation().then((value) async {
-        Provider.of<GreatPlaces>(context, listen: false)
-            .fetchResultsByState(value);
-      });
-      setState(() {
-        _isLoading = false;
-      });
-    }
-    _isInit = false;
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
+
+    _refreshProducts(context);
   }
+
+  // @override
+  // void didChangeDependencies() {
+  //   getUserLocation();
+  //   if (_isInit) {
+  //     setState(() {
+  //       _isLoading = true;
+  //     });
+  //     _refreshProducts(context);
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //   }
+  //   _isInit = false;
+  //   super.didChangeDependencies();
+  // }
 
   Future<void> _refreshProducts(BuildContext context) async {
     await getUserLocation().then((value) async {
@@ -134,15 +133,39 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
               )
             : FutureBuilder(
                 future: _refreshProducts(context),
-                builder: (ctx, snapshot) => snapshot.connectionState ==
-                        ConnectionState.waiting
-                    ? Center(
+                builder: (ctx, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                      return Center(
                         child: CircularProgressIndicator(
                           backgroundColor: Theme.of(context).primaryColor,
                           strokeWidth: 6,
                         ),
-                      )
-                    : RefreshIndicator(
+                      );
+                    case ConnectionState.active:
+                      return Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Theme.of(context).primaryColor,
+                          strokeWidth: 6,
+                        ),
+                      );
+                    case ConnectionState.waiting:
+                      return Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Theme.of(context).primaryColor,
+                          strokeWidth: 6,
+                        ),
+                      );
+                    case ConnectionState.done:
+                      // if (snapshot.hasError) {
+                      //   return Center(
+                      //     child: CircularProgressIndicator(
+                      //       backgroundColor: Theme.of(context).primaryColor,
+                      //       strokeWidth: 6,
+                      //     ),
+                      //   );
+                      // } else {
+                      return RefreshIndicator(
                         displacement: 120,
                         color: Theme.of(context).primaryColor,
                         onRefresh: () => _refreshProducts(context),
@@ -181,8 +204,11 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                             ),
                           ),
                         ),
-                      ),
-              ),
+                      );
+                  }
+                }
+                //      },
+                ),
       ),
     );
   }

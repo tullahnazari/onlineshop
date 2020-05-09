@@ -135,7 +135,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
   }
 
   Future<dynamic> postImage(Asset asset) async {
-    ByteData byteData = await asset.requestOriginal();
+    ByteData byteData = await asset.requestOriginal(quality: 20);
     List<int> imageData = byteData.buffer.asUint8List();
     String fileName = DateTime.now().microsecondsSinceEpoch.toString() +
         DateTime.now().millisecondsSinceEpoch.toString() +
