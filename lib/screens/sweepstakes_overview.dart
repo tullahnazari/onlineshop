@@ -22,25 +22,20 @@ import 'package:halalbazaar/widgets/app_drawer.dart';
 import 'package:halalbazaar/widgets/overview_posting.dart';
 import 'package:halalbazaar/widgets/sweepstake_items.dart';
 
-class SweepstakesOverview extends StatefulWidget {
+class SweepstakesOverview extends StatelessWidget {
   static const routeName = '/sweepstakeoverview';
 
-  @override
-  _SweepstakesOverviewState createState() => _SweepstakesOverviewState();
-}
-
-class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   var _isLoading = false;
   var _isInit = true;
   Position currentLocation;
   var value;
 
-  @override
-  void initState() {
-    super.initState();
+  // @override
+  // void initState() {
+  //   super.initState();
 
-    _refreshProducts(context);
-  }
+  //   _refreshProducts(context);
+  // }
 
   // @override
   // void didChangeDependencies() {
@@ -170,41 +165,42 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                         color: Theme.of(context).primaryColor,
                         onRefresh: () => _refreshProducts(context),
                         child: Consumer<GreatPlaces>(
-                          builder: (ctx, greatPlaces, _) => Padding(
-                            padding: const EdgeInsets.only(
-                                top: 2, bottom: 2, left: 2, right: 2),
-                            child: GridView.builder(
-                              // padding: const EdgeInsets.all(8),
-                              //padding: const EdgeInsets.all(10.0),
-                              itemCount: greatPlaces.items.length,
-                              itemBuilder: (ctx, i) =>
-                                  ChangeNotifierProvider.value(
-                                // builder: (c) => products[i],
-                                value: greatPlaces.items[i],
-                                child: OverviewPosting(
-                                  id: greatPlaces.items[i].id,
-                                  title: greatPlaces.items[i].title,
-                                  image: greatPlaces.items[i].image,
-                                  address:
-                                      greatPlaces.items[i].location.address,
-                                ),
+                          builder: (ctx, greatPlaces, _) =>
+                              // Padding(
+                              // padding: const EdgeInsets.only(
+                              //     top: 2, bottom: 2, left: 2, right: 2),
+                              //child:
+                              GridView.builder(
+                            // padding: const EdgeInsets.all(8),
+                            //padding: const EdgeInsets.all(10.0),
+                            itemCount: greatPlaces.items.length,
+                            itemBuilder: (ctx, i) =>
+                                ChangeNotifierProvider.value(
+                              // builder: (c) => products[i],
+                              value: greatPlaces.items[i],
+                              child: OverviewPosting(
+                                id: greatPlaces.items[i].id,
+                                title: greatPlaces.items[i].title,
+                                image: greatPlaces.items[i].image,
+                                address: greatPlaces.items[i].location.address,
                               ),
-                              scrollDirection: Axis.vertical,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 1,
-                                mainAxisSpacing: 8,
-                                crossAxisSpacing: 8,
-                                //childAspectRatio: 1,
-                                childAspectRatio: MediaQuery.of(context)
-                                        .size
-                                        .width /
-                                    (MediaQuery.of(context).size.height * .50),
-                              ),
+                            ),
+                            scrollDirection: Axis.vertical,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 1,
+                              mainAxisSpacing: 8,
+                              crossAxisSpacing: 8,
+                              //childAspectRatio: 1,
+                              childAspectRatio: MediaQuery.of(context)
+                                      .size
+                                      .width /
+                                  (MediaQuery.of(context).size.height * .50),
                             ),
                           ),
                         ),
                       );
+                    //   );
                   }
                 }
                 //      },

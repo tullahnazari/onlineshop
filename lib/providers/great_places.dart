@@ -125,7 +125,7 @@ class GreatPlaces with ChangeNotifier {
         );
       });
       _items = loadedProducts;
-      _items.sort((a, b) => b.dateTime.compareTo(a.dateTime));
+      loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
       notifyListeners();
     } catch (error) {
