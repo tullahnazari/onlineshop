@@ -186,7 +186,11 @@ class SweepstakesDetail extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: url,
                 progressIndicatorBuilder: (context, url, downloadProgress) =>
-                    CircularProgressIndicator(value: downloadProgress.progress),
+                    CircularProgressIndicator(
+                  value: downloadProgress.progress,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                      Theme.of(context).primaryColor),
+                ),
                 errorWidget: (context, url, error) => Icon(Icons.error),
               ),
             ),
