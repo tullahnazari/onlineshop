@@ -19,8 +19,9 @@ class OverviewPosting extends StatelessWidget {
   Widget build(BuildContext context) {
     final place = Provider.of<Place>(context, listen: false);
     String price = place.price.toString();
-    return Padding(
-      padding: const EdgeInsets.all(2.0),
+    return Container(
+      // child: Padding(
+      //   padding: const EdgeInsets.all(2.0),
       child: GestureDetector(
         onTap: () {
           Navigator.of(context).pushNamed(
@@ -36,8 +37,8 @@ class OverviewPosting extends StatelessWidget {
                 top: Radius.circular(8),
               ),
             ),
-            color: Colors.transparent,
-            clipBehavior: Clip.antiAlias,
+            color: Colors.grey,
+            //clipBehavior: Clip.antiAlias,
             child: GridTileBar(
               backgroundColor: Colors.black87,
               title: Text(
@@ -80,13 +81,19 @@ class OverviewPosting extends StatelessWidget {
             ),
           ),
           child: CachedNetworkImage(
+            fit: BoxFit.fitWidth,
             imageUrl: image.first,
             progressIndicatorBuilder: (context, url, downloadProgress) =>
-                CircularProgressIndicator(value: downloadProgress.progress),
+                CircularProgressIndicator(
+              value: downloadProgress.progress,
+              valueColor:
+                  AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+            ),
             errorWidget: (context, url, error) => Icon(Icons.error),
           ),
         ),
       ),
+      // ),
     );
   }
 }

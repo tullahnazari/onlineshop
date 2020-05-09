@@ -34,7 +34,7 @@ class _SweepstakeManagementState extends State<SweepstakeManagement> {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<GreatPlaces>(context, listen: false).fetchAndSetPlaces();
+      _refreshProducts(context);
       setState(() {
         _isLoading = false;
       });
@@ -94,15 +94,19 @@ class _SweepstakeManagementState extends State<SweepstakeManagement> {
                       padding: EdgeInsets.all(8),
                       child: ListView.builder(
                         itemCount: greatPlaces.items.length,
-                        itemBuilder: (_, i) => Column(children: [
-                          SweepstakeItems(
-                            id: greatPlaces.items[i].id,
-                            title: greatPlaces.items[i].title,
-                            image: greatPlaces.items[i].image,
-                            price: greatPlaces.items[i].price,
-                          ),
-                          Divider(),
-                        ]),
+                        itemBuilder: (_, i) => ChangeNotifierProvider.value(
+                          // builder: (c) => products[i],
+                          value: greatPlaces.items[i],
+                          child: Column(children: [
+                            SweepstakeItems(
+                              id: greatPlaces.items[i].id,
+                              title: greatPlaces.items[i].title,
+                              image: greatPlaces.items[i].image,
+                              price: greatPlaces.items[i].price,
+                            ),
+                            Divider(),
+                          ]),
+                        ),
                       ),
                     ),
                   ),

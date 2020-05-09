@@ -22,14 +22,9 @@ import 'package:halalbazaar/widgets/app_drawer.dart';
 import 'package:halalbazaar/widgets/overview_posting.dart';
 import 'package:halalbazaar/widgets/sweepstake_items.dart';
 
-class SweepstakesOverview extends StatefulWidget {
+class SweepstakesOverview extends StatelessWidget {
   static const routeName = '/sweepstakeoverview';
 
-  @override
-  _SweepstakesOverviewState createState() => _SweepstakesOverviewState();
-}
-
-class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   var _isLoading = false;
   var _isInit = true;
   Position currentLocation;
@@ -38,26 +33,25 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   // @override
   // void initState() {
   //   super.initState();
+
   //   _refreshProducts(context);
   // }
 
-  @override
-  void didChangeDependencies() {
-    if (_isInit) {
-      setState(() {
-        _isLoading = true;
-      });
-      getUserLocation().then((value) async {
-        Provider.of<GreatPlaces>(context, listen: false)
-            .fetchResultsByState(value);
-      });
-      setState(() {
-        _isLoading = false;
-      });
-    }
-    _isInit = false;
-    super.didChangeDependencies();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   getUserLocation();
+  //   if (_isInit) {
+  //     setState(() {
+  //       _isLoading = true;
+  //     });
+  //     _refreshProducts(context);
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //   }
+  //   _isInit = false;
+  //   super.didChangeDependencies();
+  // }
 
   Future<void> _refreshProducts(BuildContext context) async {
     await getUserLocation().then((value) async {
@@ -134,55 +128,83 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
               )
             : FutureBuilder(
                 future: _refreshProducts(context),
-                builder: (ctx, snapshot) => snapshot.connectionState ==
-                        ConnectionState.waiting
-                    ? Center(
+                builder: (ctx, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                      return Center(
                         child: CircularProgressIndicator(
                           backgroundColor: Theme.of(context).primaryColor,
                           strokeWidth: 6,
                         ),
-                      )
-                    : RefreshIndicator(
+                      );
+                    case ConnectionState.active:
+                      return Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Theme.of(context).primaryColor,
+                          strokeWidth: 6,
+                        ),
+                      );
+                    case ConnectionState.waiting:
+                      return Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Theme.of(context).primaryColor,
+                          strokeWidth: 6,
+                        ),
+                      );
+                    case ConnectionState.done:
+                      // if (snapshot.hasError) {
+                      //   return Center(
+                      //     child: CircularProgressIndicator(
+                      //       backgroundColor: Theme.of(context).primaryColor,
+                      //       strokeWidth: 6,
+                      //     ),
+                      //   );
+                      // } else {
+                      return RefreshIndicator(
                         displacement: 120,
                         color: Theme.of(context).primaryColor,
                         onRefresh: () => _refreshProducts(context),
                         child: Consumer<GreatPlaces>(
-                          builder: (ctx, greatPlaces, _) => Padding(
-                            padding: const EdgeInsets.only(
-                                top: 2, bottom: 2, left: 2, right: 2),
-                            child: GridView.builder(
-                              // padding: const EdgeInsets.all(8),
-                              //padding: const EdgeInsets.all(10.0),
-                              itemCount: greatPlaces.items.length,
-                              itemBuilder: (ctx, i) =>
-                                  ChangeNotifierProvider.value(
-                                // builder: (c) => products[i],
-                                value: greatPlaces.items[i],
-                                child: OverviewPosting(
-                                  id: greatPlaces.items[i].id,
-                                  title: greatPlaces.items[i].title,
-                                  image: greatPlaces.items[i].image,
-                                  address:
-                                      greatPlaces.items[i].location.address,
-                                ),
+                          builder: (ctx, greatPlaces, _) =>
+                              // Padding(
+                              // padding: const EdgeInsets.only(
+                              //     top: 2, bottom: 2, left: 2, right: 2),
+                              //child:
+                              GridView.builder(
+                            // padding: const EdgeInsets.all(8),
+                            //padding: const EdgeInsets.all(10.0),
+                            itemCount: greatPlaces.items.length,
+                            itemBuilder: (ctx, i) =>
+                                ChangeNotifierProvider.value(
+                              // builder: (c) => products[i],
+                              value: greatPlaces.items[i],
+                              child: OverviewPosting(
+                                id: greatPlaces.items[i].id,
+                                title: greatPlaces.items[i].title,
+                                image: greatPlaces.items[i].image,
+                                address: greatPlaces.items[i].location.address,
                               ),
-                              scrollDirection: Axis.vertical,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 1,
-                                mainAxisSpacing: 8,
-                                crossAxisSpacing: 8,
-                                //childAspectRatio: 1,
-                                childAspectRatio: MediaQuery.of(context)
-                                        .size
-                                        .width /
-                                    (MediaQuery.of(context).size.height * .50),
-                              ),
+                            ),
+                            scrollDirection: Axis.vertical,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 1,
+                              mainAxisSpacing: 8,
+                              crossAxisSpacing: 8,
+                              //childAspectRatio: 1,
+                              childAspectRatio: MediaQuery.of(context)
+                                      .size
+                                      .width /
+                                  (MediaQuery.of(context).size.height * .50),
                             ),
                           ),
                         ),
-                      ),
-              ),
+                      );
+                    //   );
+                  }
+                }
+                //      },
+                ),
       ),
     );
   }
