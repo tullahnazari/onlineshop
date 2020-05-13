@@ -5,6 +5,8 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:halalbazaar/models/user.dart';
+import 'package:halalbazaar/providers/user_table_roles.dart';
 import 'package:halalbazaar/screens/eula.dart';
 import 'package:halalbazaar/screens/report_posting.dart';
 import 'package:provider/provider.dart';
@@ -111,6 +113,13 @@ class _MyAppState extends State<MyApp> {
             previousPosts == null ? [] : previousPosts.items,
           ),
         ),
+        ChangeNotifierProxyProvider<Auth, Users>(
+          update: (ctx, auth, previousPosts) => Users(
+            auth.token,
+            auth.userId,
+            previousPosts == null ? [] : previousPosts.items,
+          ),
+        ),
         ChangeNotifierProvider.value(
           value: ResultItem(),
         ),
@@ -122,6 +131,9 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider.value(
           value: Place(),
+        ),
+        ChangeNotifierProvider.value(
+          value: User(),
         ),
       ],
       child: Consumer<Auth>(

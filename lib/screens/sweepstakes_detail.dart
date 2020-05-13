@@ -11,6 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:halalbazaar/models/user.dart';
+import 'package:halalbazaar/providers/auth.dart';
+import 'package:halalbazaar/providers/user_table_roles.dart';
 import 'package:halalbazaar/screens/report_posting.dart';
 import 'package:provider/provider.dart';
 import 'package:halalbazaar/helper/calls_messaging_service.dart';
@@ -33,11 +36,19 @@ class SweepstakesDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // var editedProduct = User(
+    //   id: null,
+    //   blockedList: [],
+    // );
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     final posting = Provider.of<Place>(context, listen: false);
-    final productId =
-        ModalRoute.of(context).settings.arguments as String; // is the id!
+    final authData = Provider.of<Auth>(context, listen: false);
+    //final userData = ModalRoute.of(context).settings.arguments as String;
+    // final usersId =
+    //     Provider.of<Users>(context, listen: false).findById(authData.userId);
+    final productId = ModalRoute.of(context).settings.arguments as String;
+    // is the id!
     final loadedPosting = Provider.of<GreatPlaces>(
       context,
       listen: false,
@@ -199,6 +210,21 @@ class SweepstakesDetail extends StatelessWidget {
       ).toList(),
     );
 
+    Future<void> _updateRecord() async {
+      List blockedList = [];
+      String blockedId = loadedPosting.creatorId;
+      blockedList.add(blockedId);
+      await Provider.of<Users>(context, listen: false)
+          .updateAndBlockUser(authData.userId, blockedList);
+    }
+
+    Future<void> _saveRecord() async {
+      List blockedList = [];
+      String blockedId = loadedPosting.creatorId;
+      blockedList.add(blockedId);
+      await Provider.of<Users>(context, listen: false)
+          .addUserToBlockList(authData.userId, blockedList);
+    }
     // final topContent = Stack(
     //   children: <Widget>[
     //     Container(
@@ -301,6 +327,16 @@ class SweepstakesDetail extends StatelessWidget {
               } else {
                 sendEmail();
               }
+            }),
+        RaisedButton(
+            child: Text('Block User'),
+            onPressed: () {
+              _saveRecord();
+            }),
+        RaisedButton(
+            child: Text('Update User'),
+            onPressed: () {
+              _updateRecord();
             }),
         // Row(
         //   mainAxisAlignment: MainAxisAlignment.end,
