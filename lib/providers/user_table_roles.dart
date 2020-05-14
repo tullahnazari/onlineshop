@@ -27,14 +27,13 @@ class Users with ChangeNotifier {
 
   Future<void> addUserToBlockList(
     String id,
-    List blockedList,
+    String blockedList,
   ) async {
     var id = userId;
     final url =
         'https://bazaar-45301.firebaseio.com/users/$id.json?auth=$authToken';
     try {
       final newPlace = User(
-        id: userId,
         blockedList: blockedList,
       );
       await http.post(

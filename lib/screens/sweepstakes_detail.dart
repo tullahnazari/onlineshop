@@ -211,19 +211,19 @@ class SweepstakesDetail extends StatelessWidget {
     );
 
     Future<void> _updateRecord() async {
-      List blockedList = [];
+      List<String> blockedList = [];
       String blockedId = loadedPosting.creatorId;
-      blockedList.add(blockedId);
+      blockedList.insert(0, blockedId);
       await Provider.of<Users>(context, listen: false)
           .updateAndBlockUser(authData.userId, blockedList);
     }
 
     Future<void> _saveRecord() async {
-      List blockedList = [];
+      //List blockedList = [];
       String blockedId = loadedPosting.creatorId;
-      blockedList.add(blockedId);
+      //blockedList.add(blockedId);
       await Provider.of<Users>(context, listen: false)
-          .addUserToBlockList(authData.userId, blockedList);
+          .addUserToBlockList(authData.userId, blockedId);
     }
     // final topContent = Stack(
     //   children: <Widget>[
@@ -328,15 +328,15 @@ class SweepstakesDetail extends StatelessWidget {
                 sendEmail();
               }
             }),
-        RaisedButton(
-            child: Text('Block User'),
-            onPressed: () {
-              _saveRecord();
-            }),
+        // RaisedButton(
+        //     child: Text('Block User'),
+        //     onPressed: () {
+        //       // _saveRecord();
+        //     }),
         RaisedButton(
             child: Text('Update User'),
             onPressed: () {
-              _updateRecord();
+              _saveRecord();
             }),
         // Row(
         //   mainAxisAlignment: MainAxisAlignment.end,
