@@ -22,28 +22,56 @@ class Users with ChangeNotifier {
   }
 
   User findById(String id) {
-    return _items.firstWhere((user) => user.id == id);
+    return _items.firstWhere((user) => user.blocked == id);
   }
 
   Future<void> addUserToBlockList(
     String id,
-    String blockedList,
+    List blocked,
   ) async {
     var id = userId;
     final url =
         'https://bazaar-45301.firebaseio.com/users/$id.json?auth=$authToken';
     try {
       final newPlace = User(
-        blockedList: blockedList,
+        blocked: blocked,
       );
       await http.post(
         url,
         body: json.encode({
-          'blockedList': newPlace.blockedList,
+          'blocked': newPlace.blocked,
         }),
       );
       _items.add(newPlace);
       newPlace.notifyListeners();
+    } catch (error) {
+      throw (error);
+    }
+  }
+
+  //TODO work on this as POST is working but not GET
+  Future<void> fetchBlockedUsers(String id) async {
+    var id = userId;
+    final url =
+        'https://bazaar-45301.firebaseio.com/users/$id/.json?auth=$authToken';
+    try {
+      final response = await http.get(url);
+
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      if (extractedData == null) {
+        return;
+      }
+      final List<User> loadedProducts = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(
+          User(
+            blocked: prodData['blocked'],
+          ),
+        );
+      });
+      _items = loadedProducts;
+
+      notifyListeners();
     } catch (error) {
       throw (error);
     }
@@ -56,7 +84,7 @@ class Users with ChangeNotifier {
           'https://bazaar-45301.firebaseio.com/users/$id.json?auth=$authToken';
       await http.patch(url,
           body: json.encode({
-            'blockedList': updateUser,
+            'blocked': updateUser,
           }));
       //_items[prodIndex] = updateUser;
       notifyListeners();

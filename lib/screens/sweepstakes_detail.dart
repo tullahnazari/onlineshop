@@ -36,10 +36,7 @@ class SweepstakesDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // var editedProduct = User(
-    //   id: null,
-    //   blockedList: [],
-    // );
+    List blockedList = [];
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     final posting = Provider.of<Place>(context, listen: false);
@@ -210,20 +207,20 @@ class SweepstakesDetail extends StatelessWidget {
       ).toList(),
     );
 
-    Future<void> _updateRecord() async {
+    Future<void> _updateRecord(String blockedingUser, List blockList) async {
       List<String> blockedList = [];
       String blockedId = loadedPosting.creatorId;
-      blockedList.insert(0, blockedId);
+      blockedList.add(blockedId);
       await Provider.of<Users>(context, listen: false)
-          .updateAndBlockUser(authData.userId, blockedList);
+          .updateAndBlockUser(blockedingUser, blockedList);
     }
 
-    Future<void> _saveRecord() async {
-      //List blockedList = [];
+    Future<void> _saveRecord(String blockedingUser, List blockList) async {
+      List blockedList = [];
       String blockedId = loadedPosting.creatorId;
-      //blockedList.add(blockedId);
+      blockedList.add(blockedId);
       await Provider.of<Users>(context, listen: false)
-          .addUserToBlockList(authData.userId, blockedId);
+          .addUserToBlockList(blockedingUser, blockedList);
     }
     // final topContent = Stack(
     //   children: <Widget>[
@@ -328,15 +325,15 @@ class SweepstakesDetail extends StatelessWidget {
                 sendEmail();
               }
             }),
-        // RaisedButton(
-        //     child: Text('Block User'),
-        //     onPressed: () {
-        //       // _saveRecord();
-        //     }),
+        RaisedButton(
+            child: Text('Block User'),
+            onPressed: () {
+              _updateRecord(authData.userId, blockedList);
+            }),
         RaisedButton(
             child: Text('Update User'),
             onPressed: () {
-              _saveRecord();
+              _saveRecord(authData.userId, blockedList);
             }),
         // Row(
         //   mainAxisAlignment: MainAxisAlignment.end,

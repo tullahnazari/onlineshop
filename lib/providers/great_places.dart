@@ -5,6 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:halalbazaar/helper/location_helper.dart';
+import 'package:halalbazaar/models/user.dart';
+import 'package:halalbazaar/providers/user_table_roles.dart';
 import 'package:http/http.dart' as http;
 import '../models/place.dart';
 import 'package:uuid/uuid.dart';
@@ -90,6 +92,13 @@ class GreatPlaces with ChangeNotifier {
     }
   }
 
+  Users user;
+  Future<String> getBlockedUsers(String id) {
+    var users = user.fetchBlockedUsers(id);
+
+    return users;
+  }
+
   Future<void> fetchResultsByState(
     String state,
   ) async {
@@ -103,6 +112,7 @@ class GreatPlaces with ChangeNotifier {
       if (extractedData == null) {
         return;
       }
+
       final List<Place> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(
@@ -125,6 +135,8 @@ class GreatPlaces with ChangeNotifier {
         );
       });
       _items = loadedProducts;
+      // loadedProducts
+      //     .where((posting) => posting.creatorId != getBlockedUsers(userId));
       loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
       notifyListeners();
