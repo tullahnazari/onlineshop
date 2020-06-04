@@ -21,25 +21,27 @@ class Users with ChangeNotifier {
     return [..._items];
   }
 
-  User findById(String id) {
-    return _items.firstWhere((user) => user.blocked == id);
-  }
+  // User findById(String id) {
+  //   return _items.firstWhere((user) => user.blockedUser == id);
+  // }
 
   Future<void> addUserToBlockList(
-    String id,
-    List blocked,
+    String updateUser,
   ) async {
-    var id = userId;
+    List blockedList = [];
+    String blockedId = updateUser;
+    blockedList.add(blockedId);
     final url =
-        'https://bazaar-45301.firebaseio.com/users/$id.json?auth=$authToken';
+        'https://bazaar-45301.firebaseio.com/users/blockedUsers.json?auth=$authToken';
     try {
       final newPlace = User(
-        blocked: blocked,
+        // id: userId,
+        blockedUser: blockedList,
       );
       await http.post(
         url,
         body: json.encode({
-          'blocked': newPlace.blocked,
+          'blockedUser': updateUser,
         }),
       );
       _items.add(newPlace);
@@ -50,26 +52,26 @@ class Users with ChangeNotifier {
   }
 
   //TODO work on this as POST is working but not GET
-  Future<void> fetchBlockedUsers(String id) async {
-    var id = userId;
+  Future<void> fetchBlockedUsers() async {
     final url =
-        'https://bazaar-45301.firebaseio.com/users/$id/.json?auth=$authToken';
+        'https://bazaar-45301.firebaseio.com/users/blockedUsers.json?auth=$authToken';
     try {
       final response = await http.get(url);
 
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       if (extractedData == null) {
-        return;
+        return 'nothing to display';
       }
       final List<User> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(
           User(
-            blocked: prodData['blocked'],
+            blockedUser: prodData,
           ),
         );
       });
       _items = loadedProducts;
+      print(loadedProducts);
 
       notifyListeners();
     } catch (error) {
@@ -77,19 +79,19 @@ class Users with ChangeNotifier {
     }
   }
 
-  Future<void> updateAndBlockUser(String id, List updateUser) async {
-    final prodIndex = _items.indexWhere((prod) => prod.id == id);
-    if (prodIndex >= 0) {
-      final url =
-          'https://bazaar-45301.firebaseio.com/users/$id.json?auth=$authToken';
-      await http.patch(url,
-          body: json.encode({
-            'blocked': updateUser,
-          }));
-      //_items[prodIndex] = updateUser;
-      notifyListeners();
-    } else {
-      print('Blocked user does not exist');
-    }
-  }
+  // Future<void> updateAndBlockUser(String id, List updateUser) async {
+  //   final prodIndex = _items.indexWhere((prod) => prod.id == id);
+  //   if (prodIndex >= 0) {
+  //     final url =
+  //         'https://bazaar-45301.firebaseio.com/users.json?auth=$authToken';
+  //     await http.patch(url,
+  //         body: json.encode({
+  //           'blocked': updateUser,
+  //         }));
+  //     //_items[prodIndex] = updateUser;
+  //     notifyListeners();
+  //   } else {
+  //     print('Blocked user does not exist');
+  //   }
+  // }
 }

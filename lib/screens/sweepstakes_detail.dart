@@ -41,9 +41,14 @@ class SweepstakesDetail extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     final posting = Provider.of<Place>(context, listen: false);
     final authData = Provider.of<Auth>(context, listen: false);
+    final usersData = Provider.of<Users>(context, listen: false);
+    final usermod = Provider.of<User>(context, listen: false);
+    // final usersBlocked = Provider.of<Users>(
+    //   context,
+    //   listen: false,
+    // ).findById(authData.userId);
     //final userData = ModalRoute.of(context).settings.arguments as String;
-    // final usersId =
-    //     Provider.of<Users>(context, listen: false).findById(authData.userId);
+
     final productId = ModalRoute.of(context).settings.arguments as String;
     // is the id!
     final loadedPosting = Provider.of<GreatPlaces>(
@@ -207,21 +212,26 @@ class SweepstakesDetail extends StatelessWidget {
       ).toList(),
     );
 
-    Future<void> _updateRecord(String blockedingUser, List blockList) async {
-      List<String> blockedList = [];
-      String blockedId = loadedPosting.creatorId;
-      blockedList.add(blockedId);
+    // Future<void> _updateRecord() async {
+    //   String blockedId = loadedPosting.creatorId;
+    //   blockedList.add(blockedId);
+    //   await Provider.of<Users>(context, listen: false)
+    //       .updateAndBlockUser(authData.userId, blockedList);
+    // }
+
+    Future<void> _saveRecord() async {
+      // List blockedList = [];
+      // String blockedId = loadedPosting.creatorId;
+      // blockedList.add(blockedId);
       await Provider.of<Users>(context, listen: false)
-          .updateAndBlockUser(blockedingUser, blockedList);
+          .addUserToBlockList(loadedPosting.creatorId);
     }
 
-    Future<void> _saveRecord(String blockedingUser, List blockList) async {
-      List blockedList = [];
-      String blockedId = loadedPosting.creatorId;
-      blockedList.add(blockedId);
-      await Provider.of<Users>(context, listen: false)
-          .addUserToBlockList(blockedingUser, blockedList);
-    }
+    // Future<void> _getBlockedUser(BuildContext context) async {
+    //   await Provider.of<Users>(context, listen: false)
+    //       .fetchBlockedUsers(authData.userId);
+    // }
+
     // final topContent = Stack(
     //   children: <Widget>[
     //     Container(
@@ -325,17 +335,32 @@ class SweepstakesDetail extends StatelessWidget {
                 sendEmail();
               }
             }),
+        // RaisedButton(
+        //     child: Text('Update User'),
+        //     onPressed: () {
+        //       _updateRecord();
+        //     }),
         RaisedButton(
             child: Text('Block User'),
             onPressed: () {
-              _updateRecord(authData.userId, blockedList);
+              _saveRecord();
             }),
-        RaisedButton(
-            child: Text('Update User'),
-            onPressed: () {
-              _saveRecord(authData.userId, blockedList);
-            }),
-        // Row(
+        // RaisedButton(
+        //     child: Text('Get Blocked Users'),
+        //     onPressed: () {
+        //       // final userssId = Provider.of<Users>(context, listen: false)
+        //       //     .findById(authData.userId);
+        //       print(userssId.blockedUser);
+        //       if (userssId.blockedUser == loadedPosting.creatorId) {
+        //         print('yeah that is a blocked user');
+        //       } else {
+        //         print('not a blocked user');
+        //       }
+
+        //       // final blck = usersBlocked.blockedUser;
+        //       // print(blck);
+        //     }),
+        // // Row(
         //   mainAxisAlignment: MainAxisAlignment.end,
         //   children: <Widget>[
         //     IconButton(

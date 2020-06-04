@@ -44,7 +44,7 @@ class _SweepstakeManagementState extends State<SweepstakeManagement> {
   }
 
   Future<void> _refreshProducts(BuildContext context) async {
-    await Provider.of<GreatPlaces>(context, listen: false).fetchAndSetPlaces();
+    await Provider.of<GreatPlaces>(context, listen: false).fetchMyPostings();
   }
 
   @override

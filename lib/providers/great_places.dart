@@ -92,16 +92,17 @@ class GreatPlaces with ChangeNotifier {
     }
   }
 
-  Users user;
-  Future<String> getBlockedUsers(String id) {
-    var users = user.fetchBlockedUsers(id);
+  // Users user;
+  // Future<String> getBlockedUsers(String id) {
+  //   var users = user.fetchBlockedUsers(id);
 
-    return users;
-  }
+  //   return users;
+  // }
 
   Future<void> fetchResultsByState(
     String state,
   ) async {
+    User user;
     //final filterString = 'orderBy="address"&equalTo="$state"';
     final url =
         'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="state"&equalTo="$state"';
@@ -112,6 +113,8 @@ class GreatPlaces with ChangeNotifier {
       if (extractedData == null) {
         return;
       }
+
+      //if (user.fetchBlockedUsers(id))
 
       final List<Place> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
@@ -137,7 +140,9 @@ class GreatPlaces with ChangeNotifier {
       _items = loadedProducts;
       // loadedProducts
       //     .where((posting) => posting.creatorId != getBlockedUsers(userId));
-      loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
+      loadedProducts.removeWhere((loadedProducts) =>
+          loadedProducts.creatorId == user.blockedUser.);
+      //loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
       notifyListeners();
     } catch (error) {
@@ -180,7 +185,7 @@ class GreatPlaces with ChangeNotifier {
   }
 
   //TODO work on this as POST is working but not GET
-  Future<void> fetchAndSetPlaces() async {
+  Future<void> fetchMyPostings() async {
     final url =
         'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="creatorId"&equalTo="$userId"';
     try {

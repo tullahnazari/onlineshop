@@ -1,8 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class User with ChangeNotifier {
-  final String id;
-  final List blocked;
+  final List blockedUser;
 
-  User({this.id, this.blocked});
+  User({this.blockedUser});
 }
