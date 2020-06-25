@@ -223,8 +223,8 @@ class SweepstakesDetail extends StatelessWidget {
       // List blockedList = [];
       // String blockedId = loadedPosting.creatorId;
       // blockedList.add(blockedId);
-      await Provider.of<Users>(context, listen: false)
-          .addUserToBlockList(loadedPosting.creatorId);
+      await Provider.of<GreatPlaces>(context, listen: false)
+          .updateProduct(loadedPosting.id);
     }
 
     // Future<void> _getBlockedUser(BuildContext context) async {

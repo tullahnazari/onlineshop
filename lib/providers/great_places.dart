@@ -140,8 +140,8 @@ class GreatPlaces with ChangeNotifier {
       _items = loadedProducts;
       // loadedProducts
       //     .where((posting) => posting.creatorId != getBlockedUsers(userId));
-      loadedProducts.removeWhere((loadedProducts) =>
-          loadedProducts.creatorId == user.blockedUser.);
+      loadedProducts.removeWhere(
+          (loadedProducts) => loadedProducts.description == 'false');
       //loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
       notifyListeners();
@@ -298,18 +298,16 @@ class GreatPlaces with ChangeNotifier {
     }
   }
 
-  Future<void> updateProduct(String id, Place newPlace) async {
+  Future<void> updateProduct(String id) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
       final url =
           'https://bazaar-45301.firebaseio.com/postings/$id.json?auth=$authToken';
       await http.patch(url,
           body: json.encode({
-            'title': newPlace.title,
-            // 'image': newPlace.image.path,
-            'address': newPlace.location.address,
+            'description': 'false',
           }));
-      _items[prodIndex] = newPlace;
+      // _items[prodIndex] = newPlace;
       notifyListeners();
     } else {
       print('Posting does not exist');
