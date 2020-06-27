@@ -184,6 +184,41 @@ class GreatPlaces with ChangeNotifier {
     }
   }
 
+  //get all decription values that equal false
+  Future<int> getDescriptionvalue() async {
+    final url =
+        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="creatorId"&equalTo="$userId"&orderBy="description"&equalTo="false"';
+    try {
+      final response = await http.get(url);
+
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+
+      final List<Place> loadedProducts = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(Place(
+            id: prodId,
+            title: prodData['title'],
+            description: prodData['description'],
+            //image: File(prodData['image']),
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
+              address: prodData['address'],
+            )));
+      });
+      _items = loadedProducts;
+      final length = loadedProducts.length;
+
+      return length;
+
+      print(length);
+
+      notifyListeners();
+    } catch (error) {
+      throw (error);
+    }
+  }
+
   //TODO work on this as POST is working but not GET
   Future<void> fetchMyPostings() async {
     final url =
