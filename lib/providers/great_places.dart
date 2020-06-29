@@ -99,10 +99,8 @@ class GreatPlaces with ChangeNotifier {
   //   return users;
   // }
 
-  Future<void> fetchResultsByState(
-    String state,
-  ) async {
-    User user;
+  Future<void> fetchResultsByState(String state, String creatorId) async {
+    //var creatorId =
     //final filterString = 'orderBy="address"&equalTo="$state"';
     final url =
         'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="state"&equalTo="$state"';
@@ -140,9 +138,10 @@ class GreatPlaces with ChangeNotifier {
       _items = loadedProducts;
       // loadedProducts
       //     .where((posting) => posting.creatorId != getBlockedUsers(userId));
+      //var creatorId =
       loadedProducts.removeWhere(
-          (loadedProducts) => loadedProducts.description == 'false');
-      //loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
+          (loadedProducts) => loadedProducts.description == '$creatorId false');
+      loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
       notifyListeners();
     } catch (error) {
@@ -187,7 +186,7 @@ class GreatPlaces with ChangeNotifier {
   //get all decription values that equal false
   Future<int> getDescriptionvalue() async {
     final url =
-        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="creatorId"&equalTo="$userId"&orderBy="description"&equalTo="false"';
+        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="description"&equalTo="$userId false"';
     try {
       final response = await http.get(url);
 
@@ -198,7 +197,6 @@ class GreatPlaces with ChangeNotifier {
         loadedProducts.add(Place(
             id: prodId,
             title: prodData['title'],
-            description: prodData['description'],
             //image: File(prodData['image']),
             location: PlaceLocation(
               latitude: prodData['loc_lat'],
@@ -333,14 +331,14 @@ class GreatPlaces with ChangeNotifier {
     }
   }
 
-  Future<void> updateProduct(String id) async {
+  Future<void> updateProduct(String id, String creatorId) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
       final url =
           'https://bazaar-45301.firebaseio.com/postings/$id.json?auth=$authToken';
       await http.patch(url,
           body: json.encode({
-            'description': 'false',
+            'description': '$creatorId false',
           }));
       // _items[prodIndex] = newPlace;
       notifyListeners();

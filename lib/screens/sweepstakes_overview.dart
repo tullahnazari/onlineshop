@@ -22,41 +22,44 @@ import 'package:halalbazaar/widgets/app_drawer.dart';
 import 'package:halalbazaar/widgets/overview_posting.dart';
 import 'package:halalbazaar/widgets/sweepstake_items.dart';
 
-class SweepstakesOverview extends StatelessWidget {
+class SweepstakesOverview extends StatefulWidget {
   static const routeName = '/sweepstakeoverview';
 
+  @override
+  _SweepstakesOverviewState createState() => _SweepstakesOverviewState();
+}
+
+class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   var _isLoading = false;
+
   var _isInit = true;
+
   Position currentLocation;
+
   var value;
 
-  // @override
-  // void initState() {
-  //   super.initState();
+  Place place;
 
-  //   _refreshProducts(context);
-  // }
-
-  // @override
-  // void didChangeDependencies() {
-  //   getUserLocation();
-  //   if (_isInit) {
-  //     setState(() {
-  //       _isLoading = true;
-  //     });
-  //     _refreshProducts(context);
-  //     setState(() {
-  //       _isLoading = false;
-  //     });
-  //   }
-  //   _isInit = false;
-  //   super.didChangeDependencies();
-  // }
+  @override
+  void didChangeDependencies() {
+    getUserLocation();
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      _refreshProducts(context);
+      setState(() {
+        _isLoading = false;
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
 
   Future<void> _refreshProducts(BuildContext context) async {
     await getUserLocation().then((value) async {
       await Provider.of<GreatPlaces>(context, listen: false)
-          .fetchResultsByState(value);
+          .fetchResultsByState(value, place.creatorId);
     });
   }
 
@@ -191,11 +194,11 @@ class SweepstakesOverview extends StatelessWidget {
                               crossAxisCount: 1,
                               mainAxisSpacing: 8,
                               crossAxisSpacing: 8,
-                              //childAspectRatio: 1,
-                              childAspectRatio: MediaQuery.of(context)
-                                      .size
-                                      .width /
-                                  (MediaQuery.of(context).size.height * .50),
+                              childAspectRatio: 1,
+                              // childAspectRatio: MediaQuery.of(context)
+                              //         .size
+                              //         .width /
+                              //     (MediaQuery.of(context).size.height * .50),
                             ),
                           ),
                         ),
@@ -213,16 +216,6 @@ class SweepstakesOverview extends StatelessWidget {
     return Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.lowest);
   }
-
-  // getUserLocation() async {
-  //   currentLocation = await locateUser();
-  //   var lat = currentLocation.latitude;
-  //   var long = currentLocation.longitude;
-  //   List<Placemark> placemark =
-  //       await Geolocator().placemarkFromCoordinates(lat, long);
-  //   String state = placemark.first.administrativeArea;
-  //   return state;
-  // }
 
   getUserLocation() async {
     currentLocation = await locateUser();

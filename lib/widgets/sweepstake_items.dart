@@ -5,6 +5,7 @@ import 'package:fancy_dialog/FancyAnimation.dart';
 import 'package:fancy_dialog/FancyGif.dart';
 import 'package:fancy_dialog/FancyTheme.dart';
 import 'package:fancy_dialog/fancy_dialog.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:halalbazaar/providers/great_places.dart';
@@ -20,6 +21,7 @@ class SweepstakeItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final productCount = Provider.of<GreatPlaces>(context, listen: false);
     return ListTile(
       contentPadding: EdgeInsets.all(4),
       leading: Container(
@@ -59,22 +61,32 @@ class SweepstakeItems extends StatelessWidget {
           IconButton(
         iconSize: 30,
         icon: Icon(Icons.delete),
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) => FancyDialog(
-              ok: 'Delete',
-              title: "We just want to confirm",
-              descreption: "Are you sure you want to delete this posting?",
-              animationType: FancyAnimation.BOTTOM_TOP,
-              theme: FancyTheme.FANCY,
-              gifPath: FancyGif.MOVE_FORWARD, //'./assets/walp.png',
-              okFun: () => {
-                Provider.of<GreatPlaces>(context, listen: false)
-                    .deleteProduct(id)
-              },
-            ),
-          );
+        onPressed: () async {
+          var descriptionValue = await productCount.getDescriptionvalue();
+          if (descriptionValue > 0) {
+            Flushbar(
+              title: "Ohhh Shucks...",
+              message:
+                  "Your account has been flagged, it will stay disabled until you contact halal bazaar. Contact Halal Bazaar",
+              duration: Duration(seconds: 5),
+            )..show(context);
+          } else {
+            await showDialog(
+              context: context,
+              builder: (BuildContext context) => FancyDialog(
+                ok: 'Delete',
+                title: "We just want to confirm",
+                descreption: "Are you sure you want to delete this posting?",
+                animationType: FancyAnimation.BOTTOM_TOP,
+                theme: FancyTheme.FANCY,
+                gifPath: FancyGif.MOVE_FORWARD, //'./assets/walp.png',
+                okFun: () => {
+                  Provider.of<GreatPlaces>(context, listen: false)
+                      .deleteProduct(id)
+                },
+              ),
+            );
+          }
         },
         color: Theme.of(context).errorColor,
       ),
