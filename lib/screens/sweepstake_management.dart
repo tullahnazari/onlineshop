@@ -4,6 +4,8 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:halalbazaar/helper/calls_messaging_service.dart';
+import 'package:halalbazaar/helper/service_locater.dart';
 import 'package:provider/provider.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 import 'package:halalbazaar/providers/auth.dart';
@@ -22,6 +24,7 @@ class SweepstakeManagement extends StatefulWidget {
 }
 
 class _SweepstakeManagementState extends State<SweepstakeManagement> {
+  final CallsAndMessagesService _service = locator<CallsAndMessagesService>();
   var _isLoading = false;
 
   var _isInit = true;
@@ -80,10 +83,21 @@ class _SweepstakeManagementState extends State<SweepstakeManagement> {
               )..show(context);
             } else if (descriptionCount > 0) {
               Flushbar(
-                title: "Ohhh Shucks...",
+                title:
+                    "Sorry, you can't perform this action because you have been reported",
                 message:
-                    "You can only have 5 active postings, please delete inactive or dated posts ",
-                duration: Duration(seconds: 5),
+                    "If you think this is by error, please reach out to Halal Bazaar by clicking send email and we will respond in 24 hours",
+                duration: Duration(seconds: 10),
+                mainButton: FlatButton(
+                  onPressed: () {
+                    _service.sendEmail("affordableapps4u@gmail.com");
+                  },
+                  child: Text(
+                    "Send Email",
+                    style: TextStyle(
+                        color: Theme.of(context).primaryColor, fontSize: 14),
+                  ),
+                ),
               )..show(context);
             } else {
               Navigator.of(context).pushNamed(AddPlaceScreen.routeName);

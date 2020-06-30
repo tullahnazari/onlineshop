@@ -7,6 +7,8 @@ import 'package:fancy_dialog/FancyTheme.dart';
 import 'package:fancy_dialog/fancy_dialog.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:halalbazaar/helper/calls_messaging_service.dart';
+import 'package:halalbazaar/helper/service_locater.dart';
 import 'package:provider/provider.dart';
 import 'package:halalbazaar/providers/great_places.dart';
 import 'package:halalbazaar/screens/sweepstakes_detail.dart';
@@ -18,6 +20,8 @@ class SweepstakeItems extends StatelessWidget {
   final String price;
 
   SweepstakeItems({this.id, this.title, this.image, this.price});
+
+  final CallsAndMessagesService _service = locator<CallsAndMessagesService>();
 
   @override
   Widget build(BuildContext context) {
@@ -65,10 +69,21 @@ class SweepstakeItems extends StatelessWidget {
           var descriptionCount = await productCount.getDescriptionValue();
           if (descriptionCount > 0) {
             Flushbar(
-              title: "Ohhh Shucks...",
+              title:
+                  "Sorry, you can't perform this action because you have been reported",
               message:
-                  "You can only have 5 active postings, please delete inactive or dated posts ",
-              duration: Duration(seconds: 5),
+                  "If you think this is by error, please reach out to Halal Bazaar by clicking send email and we will respond in 24 hours",
+              duration: Duration(seconds: 10),
+              mainButton: FlatButton(
+                onPressed: () {
+                  _service.sendEmail("affordableapps4u@gmail.com");
+                },
+                child: Text(
+                  "Send Email",
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor, fontSize: 14),
+                ),
+              ),
             )..show(context);
           } else {
             showDialog(
