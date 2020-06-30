@@ -90,9 +90,7 @@ class GreatPlaces with ChangeNotifier {
     }
   }
 
-  Future<void> fetchResultsByState(
-    String state,
-  ) async {
+  Future<void> fetchResultsByState(String state) async {
     //final filterString = 'orderBy="address"&equalTo="$state"';
     final url =
         'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="state"&equalTo="$state"';
@@ -103,6 +101,9 @@ class GreatPlaces with ChangeNotifier {
       if (extractedData == null) {
         return;
       }
+
+      //if (user.fetchBlockedUsers(id))
+
       final List<Place> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(
@@ -125,6 +126,11 @@ class GreatPlaces with ChangeNotifier {
         );
       });
       _items = loadedProducts;
+      // loadedProducts
+      //     .where((posting) => posting.creatorId != getBlockedUsers(userId));
+      //var creatorId = place.creatorId;
+      loadedProducts.removeWhere(
+          (loadedProducts) => loadedProducts.description == 'false');
       loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
       notifyListeners();
@@ -160,6 +166,51 @@ class GreatPlaces with ChangeNotifier {
       return length;
 
       print(length);
+
+      notifyListeners();
+    } catch (error) {
+      throw (error);
+    }
+  }
+
+  //TODO work on this as POST is working but not GET
+  Future<int> getDescriptionValue() async {
+    final url =
+        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="creatorId"&equalTo="$userId"';
+    try {
+      final response = await http.get(url);
+
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      // if (extractedData == null) {
+      //   return;
+      // }
+      final List<Place> loadedProducts = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(
+          Place(
+            id: prodId,
+            price: prodData['price'],
+            title: prodData['title'],
+            image: prodData['image'],
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
+              address: prodData['address'],
+            ),
+            address: prodData['address'],
+            description: prodData['description'],
+            email: prodData['email'],
+            phone: prodData['phone'],
+            dateTime: prodData['dateTime'],
+            creatorId: prodData['creatorId'],
+          ),
+        );
+      });
+      _items = loadedProducts;
+      var desc = loadedProducts
+          .where((loadedProducts) => loadedProducts.description == 'false');
+      print(desc.length);
+      return desc.length;
 
       notifyListeners();
     } catch (error) {
@@ -293,6 +344,23 @@ class GreatPlaces with ChangeNotifier {
             'address': newPlace.location.address,
           }));
       _items[prodIndex] = newPlace;
+      notifyListeners();
+    } else {
+      print('Posting does not exist');
+    }
+  }
+
+  //updates description flagging it to be blocked
+  Future<void> updateDescription(String id) async {
+    final prodIndex = _items.indexWhere((prod) => prod.id == id);
+    if (prodIndex >= 0) {
+      final url =
+          'https://bazaar-45301.firebaseio.com/postings/$id.json?auth=$authToken';
+      await http.patch(url,
+          body: json.encode({
+            'description': 'false',
+          }));
+      // _items[prodIndex] = newPlace;
       notifyListeners();
     } else {
       print('Posting does not exist');
