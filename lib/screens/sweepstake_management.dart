@@ -29,6 +29,12 @@ class _SweepstakeManagementState extends State<SweepstakeManagement> {
   Position currentLocation;
 
   @override
+  void initState() {
+    _refreshProducts(context);
+    super.initState();
+  }
+
+  @override
   void didChangeDependencies() {
     if (_isInit) {
       setState(() {
@@ -90,9 +96,31 @@ class _SweepstakeManagementState extends State<SweepstakeManagement> {
           ),
         ),
         body: FutureBuilder(
-            future: _refreshProducts(context),
-            builder: (ctx, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
+          future: _refreshProducts(context),
+          builder: (ctx, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return Center(
+                  child: CircularProgressIndicator(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    strokeWidth: 6,
+                  ),
+                );
+              case ConnectionState.active:
+                return Center(
+                  child: CircularProgressIndicator(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    strokeWidth: 6,
+                  ),
+                );
+              case ConnectionState.waiting:
+                return Center(
+                  child: CircularProgressIndicator(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    strokeWidth: 6,
+                  ),
+                );
+              case ConnectionState.done:
                 return RefreshIndicator(
                   displacement: 120,
                   color: Theme.of(context).primaryColor,
@@ -119,50 +147,46 @@ class _SweepstakeManagementState extends State<SweepstakeManagement> {
                     ),
                   ),
                 );
-              } else
-                return Center(
-                  child: CircularProgressIndicator(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    strokeWidth: 6,
-                  ),
-                );
-            }),
-        // bottomSheet: SolidBottomSheet(
-        //   maxHeight: MediaQuery.of(context).size.height * .22,
-        //   headerBar: Container(
-        //     width: double.infinity,
-        //     decoration: BoxDecoration(
-        //       borderRadius: BorderRadiusDirectional.only(
-        //           topStart: Radius.circular(50), topEnd: Radius.circular(50)),
-        //       color: Theme.of(context).primaryColor,
-        //     ),
-        //     height: MediaQuery.of(context).size.height * .10,
-        //     child: Center(
-        //         child: Text(
-        //       'Swipe up for Instructions',
-        //       style: TextStyle(
-        //           fontSize: 20,
-        //           color: Theme.of(context).accentColor,
-        //           fontFamily: 'Lato'),
-        //     )),
-        //   ), // Your header here
-        //   body: Container(
-        //     height: 100,
-        //     child: Padding(
-        //       padding: const EdgeInsets.all(8.0),
-        //       child: Center(
-        //         child: Text(
-        //           'Click on the plus icon on the right to add a service or product. Your posting will be shared with the community near by. You can also post services you want, such as Food prep service, tailoring, and even a reccomendation for a nice restaurant',
-        //           style: TextStyle(
-        //             fontSize: 20,
-        //             fontFamily: 'Lato',
-        //           ),
-        //         ),
-        //       ),
-        //     ),
-        //   ), // Your body here
-        // ),
+            }
+          },
+        ),
       ),
     );
   }
+  // bottomSheet: SolidBottomSheet(
+  //   maxHeight: MediaQuery.of(context).size.height * .22,
+  //   headerBar: Container(
+  //     width: double.infinity,
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadiusDirectional.only(
+  //           topStart: Radius.circular(50), topEnd: Radius.circular(50)),
+  //       color: Theme.of(context).primaryColor,
+  //     ),
+  //     height: MediaQuery.of(context).size.height * .10,
+  //     child: Center(
+  //         child: Text(
+  //       'Swipe up for Instructions',
+  //       style: TextStyle(
+  //           fontSize: 20,
+  //           color: Theme.of(context).accentColor,
+  //           fontFamily: 'Lato'),
+  //     )),
+  //   ), // Your header here
+  //   body: Container(
+  //     height: 100,
+  //     child: Padding(
+  //       padding: const EdgeInsets.all(8.0),
+  //       child: Center(
+  //         child: Text(
+  //           'Click on the plus icon on the right to add a service or product. Your posting will be shared with the community near by. You can also post services you want, such as Food prep service, tailoring, and even a reccomendation for a nice restaurant',
+  //           style: TextStyle(
+  //             fontSize: 20,
+  //             fontFamily: 'Lato',
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   ), // Your body here
+  // ),
+
 }
