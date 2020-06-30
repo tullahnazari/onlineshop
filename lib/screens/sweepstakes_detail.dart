@@ -199,6 +199,14 @@ class SweepstakesDetail extends StatelessWidget {
       ).toList(),
     );
 
+    Future<void> _saveRecord() async {
+      // List blockedList = [];
+      // String blockedId = loadedPosting.creatorId;
+      // blockedList.add(blockedId);
+      await Provider.of<GreatPlaces>(context, listen: false)
+          .updateProduct(loadedPosting.id, loadedPosting);
+    }
+
     // final topContent = Stack(
     //   children: <Widget>[
     //     Container(
@@ -301,6 +309,11 @@ class SweepstakesDetail extends StatelessWidget {
               } else {
                 sendEmail();
               }
+            }),
+        RaisedButton(
+            child: Text('Block User'),
+            onPressed: () {
+              _saveRecord();
             }),
         // Row(
         //   mainAxisAlignment: MainAxisAlignment.end,

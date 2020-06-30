@@ -90,9 +90,7 @@ class GreatPlaces with ChangeNotifier {
     }
   }
 
-  Future<void> fetchResultsByState(
-    String state,
-  ) async {
+  Future<void> fetchResultsByState(String state) async {
     //final filterString = 'orderBy="address"&equalTo="$state"';
     final url =
         'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="state"&equalTo="$state"';
@@ -103,6 +101,9 @@ class GreatPlaces with ChangeNotifier {
       if (extractedData == null) {
         return;
       }
+
+      //if (user.fetchBlockedUsers(id))
+
       final List<Place> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(
@@ -125,6 +126,11 @@ class GreatPlaces with ChangeNotifier {
         );
       });
       _items = loadedProducts;
+      // loadedProducts
+      //     .where((posting) => posting.creatorId != getBlockedUsers(userId));
+      //var creatorId = place.creatorId;
+      loadedProducts.removeWhere(
+          (loadedProducts) => loadedProducts.description == 'false');
       loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
       notifyListeners();
