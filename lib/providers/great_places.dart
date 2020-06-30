@@ -349,4 +349,21 @@ class GreatPlaces with ChangeNotifier {
       print('Posting does not exist');
     }
   }
+
+  //updates description flagging it to be blocked
+  Future<void> updateDescription(String id) async {
+    final prodIndex = _items.indexWhere((prod) => prod.id == id);
+    if (prodIndex >= 0) {
+      final url =
+          'https://bazaar-45301.firebaseio.com/postings/$id.json?auth=$authToken';
+      await http.patch(url,
+          body: json.encode({
+            'description': 'false',
+          }));
+      // _items[prodIndex] = newPlace;
+      notifyListeners();
+    } else {
+      print('Posting does not exist');
+    }
+  }
 }

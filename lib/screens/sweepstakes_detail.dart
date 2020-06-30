@@ -317,7 +317,7 @@ class SweepstakesDetail extends StatelessWidget {
         RaisedButton(
             child: Text('Block User'),
             onPressed: () {
-              greatPlaces.getDescriptionValue();
+              greatPlaces.updateDescription(loadedPosting.id);
             }),
         // Row(
         //   mainAxisAlignment: MainAxisAlignment.end,
