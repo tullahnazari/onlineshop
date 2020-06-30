@@ -64,7 +64,15 @@ class _SweepstakeManagementState extends State<SweepstakeManagement> {
           backgroundColor: Theme.of(context).primaryColor,
           onPressed: () async {
             var order = await productCount.getCount();
+            var descriptionCount = await productCount.getDescriptionValue();
             if (order > 4) {
+              Flushbar(
+                title: "Ohhh Shucks...",
+                message:
+                    "You can only have 5 active postings, please delete inactive or dated posts ",
+                duration: Duration(seconds: 5),
+              )..show(context);
+            } else if (descriptionCount > 0) {
               Flushbar(
                 title: "Ohhh Shucks...",
                 message:

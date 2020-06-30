@@ -36,6 +36,10 @@ class SweepstakesDetail extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     final posting = Provider.of<Place>(context, listen: false);
+    final greatPlaces = Provider.of<GreatPlaces>(
+      context,
+      listen: false,
+    );
     final productId =
         ModalRoute.of(context).settings.arguments as String; // is the id!
     final loadedPosting = Provider.of<GreatPlaces>(
@@ -204,7 +208,7 @@ class SweepstakesDetail extends StatelessWidget {
       // String blockedId = loadedPosting.creatorId;
       // blockedList.add(blockedId);
       await Provider.of<GreatPlaces>(context, listen: false)
-          .updateProduct(loadedPosting.id, loadedPosting);
+          .getDescriptionValue();
     }
 
     // final topContent = Stack(
@@ -313,7 +317,7 @@ class SweepstakesDetail extends StatelessWidget {
         RaisedButton(
             child: Text('Block User'),
             onPressed: () {
-              _saveRecord();
+              greatPlaces.getDescriptionValue();
             }),
         // Row(
         //   mainAxisAlignment: MainAxisAlignment.end,
