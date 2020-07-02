@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:halalbazaar/screens/sweepstake_management.dart';
 import 'package:moneytextformfield/moneytextformfield.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:provider/provider.dart';
@@ -97,7 +98,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
       _priceController.text,
     );
 
-    Navigator.of(context).pop();
+    Navigator.of(context).pushNamed(SweepstakeManagement.routeName);
   }
 
   Future<void> _getImageList() async {
