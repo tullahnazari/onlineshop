@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
-import 'package:image_picker/image_picker.dart';
 
 class ReportListing extends StatefulWidget {
   static const routeName = '/report-listing';
