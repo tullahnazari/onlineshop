@@ -212,7 +212,7 @@ class SweepstakesOverview extends StatelessWidget {
 
   Future<Position> locateUser() async {
     return Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.lowest);
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
   }
 
   // getUserLocation() async {
