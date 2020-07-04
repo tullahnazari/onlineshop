@@ -31,11 +31,6 @@ class _SweepstakeManagementState extends State<SweepstakeManagement> {
 
   Position currentLocation;
 
-  @override
-  void initState() {
-    _refreshProducts(context);
-    super.initState();
-  }
 
   @override
   void didChangeDependencies() {
