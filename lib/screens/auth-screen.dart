@@ -296,9 +296,9 @@ class _AuthCardState extends State<AuthCard>
 
           //height: _heightAnimation.value.height,
 
-          height: _authMode == AuthMode.Signup ? 370 : 310,
+          height: _authMode == AuthMode.Signup ? 430 : 310,
           constraints: BoxConstraints(
-              minHeight: _authMode == AuthMode.Signup ? 370 : 310),
+              minHeight: _authMode == AuthMode.Signup ? 430 : 310),
           width: deviceSize.width * 0.90,
           padding: EdgeInsets.all(16.0),
 
@@ -351,6 +351,7 @@ class _AuthCardState extends State<AuthCard>
                                 }
                               : null,
                         ),
+                        SizedBox(height: deviceSize.height * .03,),
                         Row(
                           children: <Widget>[
                             Checkbox(
@@ -362,18 +363,16 @@ class _AuthCardState extends State<AuthCard>
                                 });
                               },
                             ),
-                            Text('By clicking Register, you agree to our'),
+                            Flexible(child: Text('By clicking Register, you agree to our Terms and Conditions below.')),
                           ],
                         ),
-                        InkWell(
-                          onTap: () {
+                        RaisedButton(
+                          color: Theme.of(context).primaryColor,
+                          child: Text('Click here to view Terms and Conditions', style: TextStyle(color: Theme.of(context).secondaryHeaderColor), textAlign: TextAlign.center,),
+                          onPressed: () {
                             Navigator.of(context).pushNamed(EULA.routeName);
                           },
-                          child: new Text(
-                            'Terms and Conditions.',
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor),
-                          ),
+                        
                         ),
                       ],
                     ),

@@ -322,57 +322,59 @@ class SweepstakesDetail extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
-              width: width * .36,
+              width: width * .4,
               child: ButtonTheme(
                 shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                 
                 buttonColor: Theme.of(context).primaryColor,
                 height: height * .05,
-                minWidth: width * .04,
                 
-                        child: RaisedButton(
-                        
+                        child: Flexible(
+                                                  child: RaisedButton(
+                          
                   
-                    child: Text('Report Posting', style: TextStyle(color: Theme.of(context).secondaryHeaderColor),),
+                    child: Text('Report Posting', style: TextStyle(color: Theme.of(context).secondaryHeaderColor), textAlign: TextAlign.center,),
                     onPressed: () {
                       if (Platform.isIOS) {
-                        sendEmail();
+                          sendEmail();
                       } else {
-                        sendEmail();
+                          sendEmail();
                       }
                     }),
+                        ),
               ),
             ),
           
         
         Container(
-          width: width * .36,
+          width: width * .4,
           child: ButtonTheme(
             shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
             buttonColor: Theme.of(context).primaryColor,
             height: height * .05,
-                minWidth: width * .04,
-                    child: RaisedButton(
-                child: Text('Block User', style: TextStyle(color: Theme.of(context).secondaryHeaderColor),),
+                    child: Flexible(
+                                          child: RaisedButton(
+                child: Text('Block User', style: TextStyle(color: Theme.of(context).secondaryHeaderColor), textAlign: TextAlign.center,),
                 onPressed: () {
                   
                   showDialog(
                   context: context,
                   builder: (BuildContext context) => FancyDialog(
-                    ok: 'Delete',
-                    title: "We just want to confirm",
-                    descreption: "Are you sure you want to block this user?",
-                    animationType: FancyAnimation.BOTTOM_TOP,
-                    theme: FancyTheme.FANCY,
-                    gifPath: FancyGif.MOVE_FORWARD, //'./assets/walp.png',
-                    okFun: () => {
-                      blockConfirmationAndNavigate(),
-                      
-                    },
+                      ok: 'Delete',
+                      title: "We just want to confirm",
+                      descreption: "Are you sure you want to block this user?",
+                      animationType: FancyAnimation.BOTTOM_TOP,
+                      theme: FancyTheme.FANCY,
+                      gifPath: FancyGif.MOVE_FORWARD, //'./assets/walp.png',
+                      okFun: () => {
+                        blockConfirmationAndNavigate(),
+                        
+                      },
                   ),
                 );
                   
                 }),
+                    ),
           ),
         ),
           ],),
