@@ -35,6 +35,7 @@ class SweepstakesDetail extends StatelessWidget {
   static const routeName = '/sweepstakedetail';
 
   final CallsAndMessagesService _service = locator<CallsAndMessagesService>();
+  
 
   @override
   Widget build(BuildContext context) {
@@ -315,38 +316,66 @@ class SweepstakesDetail extends StatelessWidget {
         ),
         Text('For confideniality, Map has a radius'),
         SizedBox(
-          height: 20,
+          height: 100,
         ),
-        RaisedButton(
-            child: Text('Report Posting'),
-            onPressed: () {
-              if (Platform.isIOS) {
-                sendEmail();
-              } else {
-                sendEmail();
-              }
-            }),
-        RaisedButton(
-            child: Text('Block User'),
-            onPressed: () {
-              
-              showDialog(
-              context: context,
-              builder: (BuildContext context) => FancyDialog(
-                ok: 'Delete',
-                title: "We just want to confirm",
-                descreption: "Are you sure you want to block this user?",
-                animationType: FancyAnimation.BOTTOM_TOP,
-                theme: FancyTheme.FANCY,
-                gifPath: FancyGif.MOVE_FORWARD, //'./assets/walp.png',
-                okFun: () => {
-                  blockConfirmationAndNavigate(),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Container(
+              width: width * .36,
+              child: ButtonTheme(
+                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                
+                buttonColor: Theme.of(context).primaryColor,
+                height: height * .05,
+                minWidth: width * .04,
+                
+                        child: RaisedButton(
+                        
                   
-                },
+                    child: Text('Report Posting', style: TextStyle(color: Theme.of(context).secondaryHeaderColor),),
+                    onPressed: () {
+                      if (Platform.isIOS) {
+                        sendEmail();
+                      } else {
+                        sendEmail();
+                      }
+                    }),
               ),
-            );
-              
-            }),
+            ),
+          
+        
+        Container(
+          width: width * .36,
+          child: ButtonTheme(
+            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+            buttonColor: Theme.of(context).primaryColor,
+            height: height * .05,
+                minWidth: width * .04,
+                    child: RaisedButton(
+                child: Text('Block User', style: TextStyle(color: Theme.of(context).secondaryHeaderColor),),
+                onPressed: () {
+                  
+                  showDialog(
+                  context: context,
+                  builder: (BuildContext context) => FancyDialog(
+                    ok: 'Delete',
+                    title: "We just want to confirm",
+                    descreption: "Are you sure you want to block this user?",
+                    animationType: FancyAnimation.BOTTOM_TOP,
+                    theme: FancyTheme.FANCY,
+                    gifPath: FancyGif.MOVE_FORWARD, //'./assets/walp.png',
+                    okFun: () => {
+                      blockConfirmationAndNavigate(),
+                      
+                    },
+                  ),
+                );
+                  
+                }),
+          ),
+        ),
+          ],),
         // Row(
         //   mainAxisAlignment: MainAxisAlignment.end,
         //   children: <Widget>[
