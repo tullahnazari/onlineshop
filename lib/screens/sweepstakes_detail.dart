@@ -5,6 +5,10 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:clippy_flutter/diagonal.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
+import 'package:fancy_dialog/FancyAnimation.dart';
+import 'package:fancy_dialog/FancyGif.dart';
+import 'package:fancy_dialog/FancyTheme.dart';
+import 'package:fancy_dialog/fancy_dialog.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flushbar/flushbar_route.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +16,7 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:halalbazaar/screens/report_posting.dart';
+import 'package:halalbazaar/screens/sweepstakes_overview.dart';
 import 'package:provider/provider.dart';
 import 'package:halalbazaar/helper/calls_messaging_service.dart';
 import 'package:halalbazaar/helper/location_helper.dart';
@@ -30,6 +35,7 @@ class SweepstakesDetail extends StatelessWidget {
   static const routeName = '/sweepstakedetail';
 
   final CallsAndMessagesService _service = locator<CallsAndMessagesService>();
+  
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +60,13 @@ class SweepstakesDetail extends StatelessWidget {
         longitude: lng,
       );
       //return staticMapImageUrl;
+    }
+
+    blockConfirmationAndNavigate() async {
+        greatPlaces.updateDescription(loadedPosting.id).whenComplete(() => Navigator.of(context).pushNamed(
+            SweepstakesOverview.routeName,
+          ));
+                   
     }
 
     _sendEmail() async {
@@ -303,22 +316,68 @@ class SweepstakesDetail extends StatelessWidget {
         ),
         Text('For confideniality, Map has a radius'),
         SizedBox(
-          height: 20,
+          height: 100,
         ),
-        RaisedButton(
-            child: Text('Report Posting'),
-            onPressed: () {
-              if (Platform.isIOS) {
-                sendEmail();
-              } else {
-                sendEmail();
-              }
-            }),
-        RaisedButton(
-            child: Text('Block User'),
-            onPressed: () {
-              greatPlaces.updateDescription(loadedPosting.id);
-            }),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Container(
+              width: width * .4,
+              child: ButtonTheme(
+                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                
+                buttonColor: Theme.of(context).primaryColor,
+                height: height * .05,
+                
+                        child: Flexible(
+                                                  child: RaisedButton(
+                          
+                  
+                    child: Text('Report Posting', style: TextStyle(color: Theme.of(context).secondaryHeaderColor), textAlign: TextAlign.center,),
+                    onPressed: () {
+                      if (Platform.isIOS) {
+                          sendEmail();
+                      } else {
+                          sendEmail();
+                      }
+                    }),
+                        ),
+              ),
+            ),
+          
+        
+        Container(
+          width: width * .4,
+          child: ButtonTheme(
+            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+            buttonColor: Theme.of(context).primaryColor,
+            height: height * .05,
+                    child: Flexible(
+                                          child: RaisedButton(
+                child: Text('Block User', style: TextStyle(color: Theme.of(context).secondaryHeaderColor), textAlign: TextAlign.center,),
+                onPressed: () {
+                  
+                  showDialog(
+                  context: context,
+                  builder: (BuildContext context) => FancyDialog(
+                      ok: 'Delete',
+                      title: "We just want to confirm",
+                      descreption: "Are you sure you want to block this user?",
+                      animationType: FancyAnimation.BOTTOM_TOP,
+                      theme: FancyTheme.FANCY,
+                      gifPath: FancyGif.MOVE_FORWARD, //'./assets/walp.png',
+                      okFun: () => {
+                        blockConfirmationAndNavigate(),
+                        
+                      },
+                  ),
+                );
+                  
+                }),
+                    ),
+          ),
+        ),
+          ],),
         // Row(
         //   mainAxisAlignment: MainAxisAlignment.end,
         //   children: <Widget>[
