@@ -35,7 +35,6 @@ class SweepstakesDetail extends StatelessWidget {
   static const routeName = '/sweepstakedetail';
 
   final CallsAndMessagesService _service = locator<CallsAndMessagesService>();
-  
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +62,11 @@ class SweepstakesDetail extends StatelessWidget {
     }
 
     blockConfirmationAndNavigate() async {
-        greatPlaces.updateDescription(loadedPosting.id).whenComplete(() => Navigator.of(context).pushNamed(
-            SweepstakesOverview.routeName,
-          ));
-                   
+      greatPlaces
+          .updateDescription(loadedPosting.id)
+          .whenComplete(() => Navigator.of(context).pushNamed(
+                SweepstakesOverview.routeName,
+              ));
     }
 
     _sendEmail() async {
@@ -76,7 +76,7 @@ class SweepstakesDetail extends StatelessWidget {
       if (await canLaunch(_email)) {
         await launch(_email);
       } else {
-        throw "Can't phone that number.";
+        throw "Can't send email at this point, please block the user and we will investigate";
       }
     }
 
@@ -324,60 +324,65 @@ class SweepstakesDetail extends StatelessWidget {
             Container(
               width: width * .4,
               child: ButtonTheme(
-                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                
+                shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(30.0)),
                 buttonColor: Theme.of(context).primaryColor,
                 height: height * .05,
-                
-                        child: Flexible(
-                                                  child: RaisedButton(
-                          
-                  
-                    child: Text('Report Posting', style: TextStyle(color: Theme.of(context).secondaryHeaderColor), textAlign: TextAlign.center,),
-                    onPressed: () {
-                      if (Platform.isIOS) {
+                child: Flexible(
+                  child: RaisedButton(
+                      child: Text(
+                        'Report Posting',
+                        style: TextStyle(
+                            color: Theme.of(context).secondaryHeaderColor),
+                        textAlign: TextAlign.center,
+                      ),
+                      onPressed: () {
+                        if (Platform.isIOS) {
+                          _sendEmail();
+                        } else {
                           sendEmail();
-                      } else {
-                          sendEmail();
-                      }
-                    }),
-                        ),
+                        }
+                      }),
+                ),
               ),
             ),
-          
-        
-        Container(
-          width: width * .4,
-          child: ButtonTheme(
-            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-            buttonColor: Theme.of(context).primaryColor,
-            height: height * .05,
-                    child: Flexible(
-                                          child: RaisedButton(
-                child: Text('Block User', style: TextStyle(color: Theme.of(context).secondaryHeaderColor), textAlign: TextAlign.center,),
-                onPressed: () {
-                  
-                  showDialog(
-                  context: context,
-                  builder: (BuildContext context) => FancyDialog(
-                      ok: 'Delete',
-                      title: "We just want to confirm",
-                      descreption: "Are you sure you want to block this user?",
-                      animationType: FancyAnimation.BOTTOM_TOP,
-                      theme: FancyTheme.FANCY,
-                      gifPath: FancyGif.MOVE_FORWARD, //'./assets/walp.png',
-                      okFun: () => {
-                        blockConfirmationAndNavigate(),
-                        
-                      },
-                  ),
-                );
-                  
-                }),
-                    ),
-          ),
+            Container(
+              width: width * .4,
+              child: ButtonTheme(
+                shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(30.0)),
+                buttonColor: Theme.of(context).primaryColor,
+                height: height * .05,
+                child: Flexible(
+                  child: RaisedButton(
+                      child: Text(
+                        'Block User',
+                        style: TextStyle(
+                            color: Theme.of(context).secondaryHeaderColor),
+                        textAlign: TextAlign.center,
+                      ),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => FancyDialog(
+                            ok: 'Block',
+                            title: "Block user",
+                            descreption: "Are you sure?",
+                            animationType: FancyAnimation.BOTTOM_TOP,
+                            theme: FancyTheme.FANCY,
+                            gifPath:
+                                FancyGif.MOVE_FORWARD, //'./assets/walp.png',
+                            okFun: () => {
+                              blockConfirmationAndNavigate(),
+                            },
+                          ),
+                        );
+                      }),
+                ),
+              ),
+            ),
+          ],
         ),
-          ],),
         // Row(
         //   mainAxisAlignment: MainAxisAlignment.end,
         //   children: <Widget>[
