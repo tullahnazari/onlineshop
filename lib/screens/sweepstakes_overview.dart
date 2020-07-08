@@ -9,6 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:halalbazaar/helper/location_helper.dart';
@@ -22,37 +23,31 @@ import 'package:halalbazaar/widgets/app_drawer.dart';
 import 'package:halalbazaar/widgets/overview_posting.dart';
 import 'package:halalbazaar/widgets/sweepstake_items.dart';
 
-class SweepstakesOverview extends StatelessWidget {
+class SweepstakesOverview extends StatefulWidget {
   static const routeName = '/sweepstakeoverview';
 
+  @override
+  _SweepstakesOverviewState createState() => _SweepstakesOverviewState();
+}
+
+class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   var _isLoading = false;
+
   var _isInit = true;
+
   Position currentLocation;
+
   var value;
+
   Place place;
 
-  // @override
-  // void initState() {
-  //   super.initState();
+  List<Permission> lp = Permission.values;
 
-  //   _refreshProducts(context);
-  // }
-
-  // @override
-  // void didChangeDependencies() {
-  //   getUserLocation();
-  //   if (_isInit) {
-  //     setState(() {
-  //       _isLoading = true;
-  //     });
-  //     _refreshProducts(context);
-  //     setState(() {
-  //       _isLoading = false;
-  //     });
-  //   }
-  //   _isInit = false;
-  //   super.didChangeDependencies();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    getDeviceLocationPermission();
+  }
 
   Future<void> _refreshProducts(BuildContext context) async {
     await getUserLocation().then((value) async {
@@ -215,15 +210,22 @@ class SweepstakesOverview extends StatelessWidget {
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
   }
 
-  // getUserLocation() async {
-  //   currentLocation = await locateUser();
-  //   var lat = currentLocation.latitude;
-  //   var long = currentLocation.longitude;
-  //   List<Placemark> placemark =
-  //       await Geolocator().placemarkFromCoordinates(lat, long);
-  //   String state = placemark.first.administrativeArea;
-  //   return state;
-  // }
+  Future<PermissionStatus> getDeviceLocationPermission() async {
+    Permission _permission = lp.elementAt(5); // 5 = location in use permission
+
+    print(_permission);
+    // The following line then prompts the required alert dialog
+    //final PermissionStatus permissionStatus = await _permission.request();
+
+    final PermissionStatus permissionStatus =
+        await Permission.locationWhenInUse.status;
+
+    if (permissionStatus != PermissionStatus.granted) {
+      await Permission.locationWhenInUse.request();
+    }
+
+    return permissionStatus;
+  }
 
   getUserLocation() async {
     currentLocation = await locateUser();
