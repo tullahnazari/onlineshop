@@ -90,8 +90,8 @@ class SweepstakeItems extends StatelessWidget {
               context: context,
               builder: (BuildContext context) => FancyDialog(
                 ok: 'Delete',
-                title: "We just want to confirm",
-                descreption: "Are you sure you want to delete this posting?",
+                title: "Just Confirming",
+                descreption: "You sure?",
                 animationType: FancyAnimation.BOTTOM_TOP,
                 theme: FancyTheme.FANCY,
                 gifPath: FancyGif.MOVE_FORWARD, //'./assets/walp.png',
