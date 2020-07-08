@@ -59,46 +59,38 @@ dependencies:
   data_connection_checker: ^0.3.4
   connectivity: ^0.4.8+2
   flutter_html: ^0.11.1
-
-
-
-  
+  permission_handler: ^5.0.1+1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.7.4
 
-flutter_icons: 
+flutter_icons:
   android: true
   ios: true
   image_path: "assets/images/hblogo.png"
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
 
   assets:
-   - assets/images/google_logo.png
-   - assets/images/fblogo.png
-   - assets/images/hblogo.png
-   - assets/images/HLogotransparent.png
-   - assets/images/HLogowithbackground.png
-
+    - assets/images/google_logo.png
+    - assets/images/fblogo.png
+    - assets/images/hblogo.png
+    - assets/images/HLogotransparent.png
+    - assets/images/HLogowithbackground.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
