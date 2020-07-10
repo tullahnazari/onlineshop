@@ -310,6 +310,9 @@ class _AuthCardState extends State<AuthCard>
                   TextFormField(
                     decoration: InputDecoration(labelText: 'E-Mail'),
                     keyboardType: TextInputType.emailAddress,
+                    inputFormatters: [
+                      BlacklistingTextInputFormatter(new RegExp(r"\s\b|\b\s"))
+                    ],
                     validator: (value) {
                       if (value.isEmpty || !value.contains('@')) {
                         return 'Invalid email!';
@@ -351,7 +354,9 @@ class _AuthCardState extends State<AuthCard>
                                 }
                               : null,
                         ),
-                        SizedBox(height: deviceSize.height * .03,),
+                        SizedBox(
+                          height: deviceSize.height * .03,
+                        ),
                         Row(
                           children: <Widget>[
                             Checkbox(
@@ -363,16 +368,22 @@ class _AuthCardState extends State<AuthCard>
                                 });
                               },
                             ),
-                            Flexible(child: Text('By clicking Register, you agree to our Terms and Conditions below.')),
+                            Flexible(
+                                child: Text(
+                                    'By clicking Register, you agree to our Terms and Conditions below.')),
                           ],
                         ),
                         RaisedButton(
                           color: Theme.of(context).primaryColor,
-                          child: Text('Click here to view Terms and Conditions', style: TextStyle(color: Theme.of(context).secondaryHeaderColor), textAlign: TextAlign.center,),
+                          child: Text(
+                            'Click here to view Terms and Conditions',
+                            style: TextStyle(
+                                color: Theme.of(context).secondaryHeaderColor),
+                            textAlign: TextAlign.center,
+                          ),
                           onPressed: () {
                             Navigator.of(context).pushNamed(EULA.routeName);
                           },
-                        
                         ),
                       ],
                     ),

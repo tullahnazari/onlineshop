@@ -214,8 +214,6 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
     Permission _permission = lp.elementAt(5); // 5 = location in use permission
 
     print(_permission);
-    // The following line then prompts the required alert dialog
-    //final PermissionStatus permissionStatus = await _permission.request();
 
     final PermissionStatus permissionStatus =
         await Permission.locationWhenInUse.status;
