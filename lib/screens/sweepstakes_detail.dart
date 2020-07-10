@@ -328,22 +328,20 @@ class SweepstakesDetail extends StatelessWidget {
                     borderRadius: new BorderRadius.circular(30.0)),
                 buttonColor: Theme.of(context).primaryColor,
                 height: height * .05,
-                child: Flexible(
-                  child: RaisedButton(
-                      child: Text(
-                        'Report Posting',
-                        style: TextStyle(
-                            color: Theme.of(context).secondaryHeaderColor),
-                        textAlign: TextAlign.center,
-                      ),
-                      onPressed: () {
-                        if (Platform.isIOS) {
-                          _sendEmail();
-                        } else {
-                          sendEmail();
-                        }
-                      }),
-                ),
+                child: RaisedButton(
+                    child: Text(
+                      'Report Posting',
+                      style: TextStyle(
+                          color: Theme.of(context).secondaryHeaderColor),
+                      textAlign: TextAlign.center,
+                    ),
+                    onPressed: () {
+                      if (Platform.isIOS) {
+                        _sendEmail();
+                      } else {
+                        sendEmail();
+                      }
+                    }),
               ),
             ),
             Container(
@@ -353,32 +351,29 @@ class SweepstakesDetail extends StatelessWidget {
                     borderRadius: new BorderRadius.circular(30.0)),
                 buttonColor: Theme.of(context).primaryColor,
                 height: height * .05,
-                child: Flexible(
-                  child: RaisedButton(
-                      child: Text(
-                        'Block User',
-                        style: TextStyle(
-                            color: Theme.of(context).secondaryHeaderColor),
-                        textAlign: TextAlign.center,
-                      ),
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => FancyDialog(
-                            ok: 'Block',
-                            title: "Block user",
-                            descreption: "Are you sure?",
-                            animationType: FancyAnimation.BOTTOM_TOP,
-                            theme: FancyTheme.FANCY,
-                            gifPath:
-                                FancyGif.MOVE_FORWARD, //'./assets/walp.png',
-                            okFun: () => {
-                              blockConfirmationAndNavigate(),
-                            },
-                          ),
-                        );
-                      }),
-                ),
+                child: RaisedButton(
+                    child: Text(
+                      'Block User',
+                      style: TextStyle(
+                          color: Theme.of(context).secondaryHeaderColor),
+                      textAlign: TextAlign.center,
+                    ),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => FancyDialog(
+                          ok: 'Block',
+                          title: "Block user",
+                          descreption: "Are you sure?",
+                          animationType: FancyAnimation.BOTTOM_TOP,
+                          theme: FancyTheme.FANCY,
+                          gifPath: FancyGif.MOVE_FORWARD, //'./assets/walp.png',
+                          okFun: () => {
+                            blockConfirmationAndNavigate(),
+                          },
+                        ),
+                      );
+                    }),
               ),
             ),
           ],
