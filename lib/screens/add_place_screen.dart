@@ -77,7 +77,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
         _titleController.text.isEmpty ||
         _emailController.text.isEmpty ||
         _phoneController.text.isEmpty ||
-        imageList == null ||
+        imageList.isEmpty ||
         _pickedLocation == null ||
         _isLoading == true) {
       return Flushbar(
@@ -87,18 +87,19 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
         backgroundColor: Colors.redAccent,
         duration: Duration(seconds: 5),
       )..show(context);
-    }
-    await Provider.of<GreatPlaces>(context, listen: false).addPlace(
-      _titleController.text,
-      imageList,
-      _pickedLocation,
-      _descriptionController.text,
-      _emailController.text,
-      _phoneController.text,
-      _priceController.text,
-    );
+    } else {
+      await Provider.of<GreatPlaces>(context, listen: false).addPlace(
+        _titleController.text,
+        imageList,
+        _pickedLocation,
+        _descriptionController.text,
+        _emailController.text,
+        _phoneController.text,
+        _priceController.text,
+      );
 
-    Navigator.of(context).pushNamed(SweepstakeManagement.routeName);
+      Navigator.of(context).pushNamed(SweepstakeManagement.routeName);
+    }
   }
 
   Future<void> _getImageList() async {
@@ -424,7 +425,9 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                 'Add Posting',
                 style: TextStyle(color: Theme.of(context).accentColor),
               ),
-              onPressed: _savePlace,
+              onPressed: () {
+                _savePlace();
+              },
               elevation: 10,
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               color: Theme.of(context).primaryColor,
