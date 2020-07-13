@@ -58,7 +58,6 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
 
   @override
   Widget build(BuildContext context) {
-    final productCount = Provider.of<GreatPlaces>(context, listen: false);
     return WillPopScope(
       onWillPop: () async => false,
       // final loadedSweepstakeData = Provider.of<GreatPlaces>(context);
