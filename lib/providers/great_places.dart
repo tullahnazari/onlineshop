@@ -173,6 +173,39 @@ class GreatPlaces with ChangeNotifier {
     }
   }
 
+  //get length for posts
+  Future<int> getCountByState(String state) async {
+    final url =
+        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="state"&equalTo="$state"';
+    try {
+      final response = await http.get(url);
+
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+
+      final List<Place> loadedProducts = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(Place(
+            id: prodId,
+            title: prodData['title'],
+            //image: File(prodData['image']),
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
+              address: prodData['address'],
+            )));
+      });
+      _items = loadedProducts;
+      final length = loadedProducts.length;
+      return length;
+
+      print(length);
+
+      notifyListeners();
+    } catch (error) {
+      throw (error);
+    }
+  }
+
   //TODO work on this as POST is working but not GET
   Future<int> getDescriptionValue() async {
     final url =
