@@ -9,6 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,6 +44,11 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
 
   List<Permission> lp = Permission.values;
 
+  List<int> data = [];
+  int currentLength = 0;
+
+  final int increment = 10;
+
   @override
   void initState() {
     super.initState();
@@ -55,6 +61,22 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
           .fetchResultsByState(value);
     });
   }
+
+  // Future _loadMore() async {
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
+
+  //   // Add in an artificial delay
+  //   await new Future.delayed(const Duration(seconds: 2));
+  //   for (var i = currentLength; i <= currentLength + increment; i++) {
+  //     data.add(i);
+  //   }
+  //   setState(() {
+  //     _isLoading = false;
+  //     currentLength = data.length;
+  //   });
+  // }
 
   Future _loadMore() async {
     Container(child: Text('you have reached the bottom'));
@@ -159,45 +181,48 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                       //     ),
                       //   );
                       // } else {
-                      return RefreshIndicator(
-                        displacement: 120,
-                        color: Theme.of(context).primaryColor,
-                        onRefresh: () => _refreshProducts(context),
-                        child: Consumer<GreatPlaces>(
-                          builder: (ctx, greatPlaces, _) => Padding(
-                            padding: const EdgeInsets.only(
-                                top: 2, bottom: 2, left: 2, right: 2),
-                            child: GridView.builder(
-                              // padding: const EdgeInsets.all(8),
-                              //padding: const EdgeInsets.all(10.0),
-                              itemCount: greatPlaces.items.length,
-                              itemBuilder: (ctx, i) =>
-                                  ChangeNotifierProvider.value(
-                                // builder: (c) => products[i],
-                                value: greatPlaces.items[i],
-                                child: OverviewPosting(
-                                  id: greatPlaces.items[i].id,
-                                  title: greatPlaces.items[i].title,
-                                  image: greatPlaces.items[i].image,
-                                  address:
-                                      greatPlaces.items[i].location.address,
+                      return LazyLoadScrollView(
+                        onEndOfPage: () => _loadMore(),
+                        child: RefreshIndicator(
+                          displacement: 120,
+                          color: Theme.of(context).primaryColor,
+                          onRefresh: () => _refreshProducts(context),
+                          child: Consumer<GreatPlaces>(
+                            builder: (ctx, greatPlaces, _) => Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 2, bottom: 2, left: 2, right: 2),
+                              child: GridView.builder(
+                                // padding: const EdgeInsets.all(8),
+                                //padding: const EdgeInsets.all(10.0),
+                                itemCount: greatPlaces.items.length,
+                                itemBuilder: (ctx, i) =>
+                                    ChangeNotifierProvider.value(
+                                  // builder: (c) => products[i],
+                                  value: greatPlaces.items[i],
+                                  child: OverviewPosting(
+                                    id: greatPlaces.items[i].id,
+                                    title: greatPlaces.items[i].title,
+                                    image: greatPlaces.items[i].image,
+                                    address:
+                                        greatPlaces.items[i].location.address,
+                                  ),
+                                ),
+                                scrollDirection: Axis.vertical,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 1,
+                                  mainAxisSpacing: 8,
+                                  crossAxisSpacing: 8,
+                                  //childAspectRatio: 1,
+                                  childAspectRatio:
+                                      MediaQuery.of(context).size.width /
+                                          (MediaQuery.of(context).size.height *
+                                              .50),
                                 ),
                               ),
-                              scrollDirection: Axis.vertical,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 1,
-                                mainAxisSpacing: 8,
-                                crossAxisSpacing: 8,
-                                //childAspectRatio: 1,
-                                childAspectRatio: MediaQuery.of(context)
-                                        .size
-                                        .width /
-                                    (MediaQuery.of(context).size.height * .50),
-                              ),
                             ),
+                            // ),
                           ),
-                          // ),
                         ),
                       );
                     //   );
@@ -205,6 +230,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                 }
                 //      },
                 ),
+        // ),
       ),
     );
   }
