@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:halalbazaar/screens/eula.dart';
 import 'package:halalbazaar/screens/report_posting.dart';
+import 'package:native_state/native_state.dart';
 import 'package:provider/provider.dart';
 import 'package:halalbazaar/helper/service_locater.dart';
 import 'package:halalbazaar/models/place.dart';
@@ -29,7 +30,7 @@ import 'package:halalbazaar/screens/sweepstakes_overview.dart';
 void main() {
   setupLocator();
 
-  runApp(MyApp());
+  runApp(SavedState(child: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -84,6 +85,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    var savedState = SavedState.of(context);
     //ability to add multiple providers at root of app
     return MultiProvider(
       providers: [
@@ -126,6 +128,7 @@ class _MyAppState extends State<MyApp> {
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(
+          navigatorObservers: [SavedStateRouteObserver(savedState: savedState)],
           navigatorKey: nav,
           title: 'Halal Bazaar',
           theme: ThemeData(
@@ -134,7 +137,7 @@ class _MyAppState extends State<MyApp> {
             fontFamily: 'Lato',
           ),
           // home: SweepstakesOverview(),
-
+          initialRoute: SavedStateRouteObserver.restoreRoute(savedState) ?? "/",
           // /fix after landing page is finished
           home: auth.isAuth
               ? SweepstakesOverview()
@@ -147,6 +150,9 @@ class _MyAppState extends State<MyApp> {
                           : AuthScreen(),
                 ),
           routes: {
+            // NestedState.route: (context) => SavedState.builder(
+            // builder: (context, savedState) =>
+            //     NestedState(savedState: savedState)),
             SweepstakesDetail.routeName: (ctx) => SweepstakesDetail(),
             SweepstakeManagement.routeName: (ctx) => SweepstakeManagement(),
             SweepstakesOverview.routeName: (ctx) => SweepstakesOverview(),

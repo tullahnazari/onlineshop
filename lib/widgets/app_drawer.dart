@@ -47,7 +47,7 @@ class AppDrawer extends StatelessWidget {
             },
           ),
           SizedBox(
-            height: deviceSize.height * .42,
+            height: deviceSize.height * .38,
           ),
           ListTile(
             contentPadding: EdgeInsets.all(8),
