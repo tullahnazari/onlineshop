@@ -36,6 +36,8 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
 
   var _isInit = true;
 
+  var _category = 'default';
+
   Position currentLocation;
 
   var value;
@@ -51,10 +53,19 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   }
 
   Future<void> _refreshProducts(BuildContext context) async {
-    await getUserLocation().then((value) async {
-      await Provider.of<GreatPlaces>(context, listen: false)
-          .fetchResultsByState(value);
-    });
+    if (_category == 'default') {
+      await getUserLocation().then((value) async {
+        await Provider.of<GreatPlaces>(context, listen: false)
+            .fetchResultsByState(value);
+      });
+    } else if (_category == 'Hose') {
+      _isLoading = true;
+      await getUserLocation().then((value) async {
+        await Provider.of<GreatPlaces>(context, listen: false)
+            .fetchResultsByStateAndVehicles(value);
+        _isLoading = false;
+      });
+    }
   }
 
   Future _loadMore() async {
@@ -72,23 +83,34 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
       child: Scaffold(
         drawer: AppDrawer(),
         appBar: AppBar(
-          // actions: <Widget>[
-          //   Icon(Icons.search),
-          //   PopupMenuButton(
-          //     icon: Icon(Icons.more_vert),
-          //     itemBuilder: (_) => [
-          //       PopupMenuItem(
-          //         child: FlatButton(
-          //             child: Text("Logout"),
-          //             onPressed: () {
-          //               Navigator.of(context).pop();
-          //               Navigator.of(context).pushReplacementNamed('/');
-          //               Provider.of<Auth>(context, listen: false).logout();
-          //             }),
-          //       ),
-          //     ],
-          //   ),
-          // ],
+          actions: <Widget>[
+            PopupMenuButton(
+              icon: Icon(Icons.filter_list),
+              itemBuilder: (_) => [
+                PopupMenuItem(
+                  child: FlatButton(
+                      child: Text("Show All"),
+                      onPressed: () {
+                        setState(() {
+                          _category = 'default';
+                        });
+                      }),
+                ),
+                PopupMenuItem(
+                  child: FlatButton(
+                      child: Text("Show Hose"),
+                      onPressed: () {
+                        setState(() {
+                          _category = 'Hose';
+                          _refreshProducts(context);
+
+                          print(_category);
+                        });
+                      }),
+                ),
+              ],
+            ),
+          ],
           title: Text(
             'Near you',
             style: TextStyle(
