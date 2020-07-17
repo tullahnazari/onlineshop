@@ -64,11 +64,9 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
             .fetchResultsByState(value);
       });
     } else if (_category == 'Hose') {
-      _isLoading = true;
       await getUserLocation().then((value) async {
         await Provider.of<GreatPlaces>(context, listen: false)
             .fetchResultsByStateAndVehicles(value);
-        _isLoading = false;
       });
     }
   }
@@ -93,6 +91,200 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
     Container(child: Text('you have reached the bottom'));
   }
 
+  bool showAllChecked() {
+    if (_category == 'default') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool showElectronics() {
+    if (_category == 'electronics') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool showVehicles() {
+    if (_category == 'vehicles') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool showHomeAppliances() {
+    if (_category == 'homeapp') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool showJobsService() {
+    if (_category == 'jobsservice') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool showClothes() {
+    if (_category == 'clothes') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool showToys() {
+    if (_category == 'toys') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool showCommunityGatherings() {
+    if (_category == 'communitygatherings') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Widget _threeItemPopup() => PopupMenuButton(
+        itemBuilder: (context) {
+          var list = List<PopupMenuEntry<Object>>();
+          list.add(
+            PopupMenuItem(
+              child: Text('Filter By Category'),
+              // value: 1,
+            ),
+          );
+          list.add(
+            PopupMenuDivider(
+              height: 10,
+            ),
+          );
+          list.add(
+            CheckedPopupMenuItem(
+              child: Text(
+                "Show All",
+                style: TextStyle(color: Colors.black),
+              ),
+              value: 1,
+              checked: showAllChecked(),
+            ),
+          );
+          list.add(
+            CheckedPopupMenuItem(
+              child: Text(
+                "Electronics",
+                style: TextStyle(color: Colors.black),
+              ),
+              value: 2,
+              checked: false,
+            ),
+          );
+          list.add(
+            CheckedPopupMenuItem(
+              child: Text(
+                "Vehicles",
+                style: TextStyle(color: Colors.black),
+              ),
+              value: 2,
+              checked: false,
+            ),
+          );
+          list.add(
+            CheckedPopupMenuItem(
+              child: Text(
+                "Home & Tools",
+                style: TextStyle(color: Colors.black),
+              ),
+              value: 3,
+              //checked: false,
+            ),
+          );
+          list.add(
+            CheckedPopupMenuItem(
+              child: Text(
+                "Jobs & Services",
+                style: TextStyle(color: Colors.black),
+              ),
+              value: 4,
+              //checked: false,
+            ),
+          );
+          list.add(
+            CheckedPopupMenuItem(
+              child: Text(
+                "Clothes",
+                style: TextStyle(color: Colors.black),
+              ),
+              value: 5,
+              //checked: false,
+            ),
+          );
+          list.add(
+            CheckedPopupMenuItem(
+              child: Text(
+                "Toys",
+                style: TextStyle(color: Colors.black),
+              ),
+              value: 6,
+              //checked: false,
+            ),
+          );
+          list.add(
+            CheckedPopupMenuItem(
+              child: Text(
+                "Community Gatherings",
+                style: TextStyle(color: Colors.black),
+              ),
+              value: 7,
+              //checked: false,
+            ),
+          );
+          return list;
+        },
+        //initialValue: 1,
+        onSelected: (value) {
+          if (value == 1) {
+            setState(() {
+              _category = 'default';
+            });
+          }
+          if (value == 2) {
+            setState(() {
+              _category = 'Hose';
+              //    _isLoading = true;
+              _refreshProducts(context);
+              //  _isLoading = false;
+
+              print(_category);
+            });
+          }
+          if (value == 3) {
+            setState(() {
+              _category = 'Hose';
+              //    _isLoading = true;
+              _refreshProducts(context);
+              //  _isLoading = false;
+
+              print(_category);
+            });
+          }
+        },
+        icon: Icon(
+          Icons.filter_list,
+          color: Colors.white,
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -105,32 +297,35 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
         drawer: AppDrawer(),
         appBar: AppBar(
           actions: <Widget>[
-            PopupMenuButton(
-              icon: Icon(Icons.filter_list),
-              itemBuilder: (_) => [
-                PopupMenuItem(
-                  child: FlatButton(
-                      child: Text("Show All"),
-                      onPressed: () {
-                        setState(() {
-                          _category = 'default';
-                        });
-                      }),
-                ),
-                PopupMenuItem(
-                  child: FlatButton(
-                      child: Text("Show Hose"),
-                      onPressed: () {
-                        setState(() {
-                          _category = 'Hose';
-                          _refreshProducts(context);
+            _threeItemPopup(),
+            // PopupMenuButton(
+            //   icon: Icon(Icons.filter_list),
+            //   itemBuilder: (_) => [
+            //     PopupMenuItem(
+            //       child: FlatButton(
+            //           child: Text("Show All"),
+            //           onPressed: () {
+            //             setState(() {
+            //               _category = 'default';
+            //             });
+            //           }),
+            //     ),
+            //     PopupMenuItem(
+            //       child: FlatButton(
+            //           child: Text("Show Hose"),
+            //           onPressed: () {
+            //             setState(() {
+            //               _category = 'Hose';
+            //               //    _isLoading = true;
+            //               _refreshProducts(context);
+            //               //  _isLoading = false;
 
-                          print(_category);
-                        });
-                      }),
-                ),
-              ],
-            ),
+            //               print(_category);
+            //             });
+            //           }),
+            //     ),
+            //   ],
+            // ),
           ],
           title: Text(
             'Near you',
