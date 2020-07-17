@@ -44,6 +44,11 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
 
   List<Permission> lp = Permission.values;
 
+  List<int> data = [];
+  int currentLength = 0;
+
+  final int increment = 10;
+
   @override
   void initState() {
     super.initState();
@@ -57,6 +62,22 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
     });
   }
 
+  // Future _loadMore() async {
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
+
+  //   // Add in an artificial delay
+  //   await new Future.delayed(const Duration(seconds: 2));
+  //   for (var i = currentLength; i <= currentLength + increment; i++) {
+  //     data.add(i);
+  //   }
+  //   setState(() {
+  //     _isLoading = false;
+  //     currentLength = data.length;
+  //   });
+  // }
+
   Future _loadMore() async {
     Container(child: Text('you have reached the bottom'));
   }
@@ -68,7 +89,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
       // final loadedSweepstakeData = Provider.of<GreatPlaces>(context);
       // final loadedSweepstake = loadedSweepstakeData.items;
       // final userProvider = Provider.of<Auth>(context);
-      //final productCount = Provider.of<GreatPlaces>(context, listen: false);
+
       child: Scaffold(
         drawer: AppDrawer(),
         appBar: AppBar(
@@ -162,7 +183,6 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                       // } else {
                       return LazyLoadScrollView(
                         onEndOfPage: () => _loadMore(),
-                        scrollOffset: 10,
                         child: RefreshIndicator(
                           displacement: 120,
                           color: Theme.of(context).primaryColor,
@@ -201,6 +221,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                                 ),
                               ),
                             ),
+                            // ),
                           ),
                         ),
                       );
@@ -209,6 +230,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                 }
                 //      },
                 ),
+        // ),
       ),
     );
   }
