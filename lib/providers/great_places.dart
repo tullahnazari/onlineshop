@@ -183,8 +183,8 @@ class GreatPlaces with ChangeNotifier {
       //var creatorId = place.creatorId;
       loadedProducts.removeWhere(
           (loadedProducts) => loadedProducts.description == 'false');
-      loadedProducts
-          .removeWhere((loadedProducts) => loadedProducts.title != 'Used Hose');
+      loadedProducts.removeWhere(
+          (loadedProducts) => loadedProducts.category != 'Vehicles');
       loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
       notifyListeners();
@@ -234,8 +234,8 @@ class GreatPlaces with ChangeNotifier {
       //var creatorId = place.creatorId;
       loadedProducts.removeWhere(
           (loadedProducts) => loadedProducts.description == 'false');
-      loadedProducts
-          .removeWhere((loadedProducts) => loadedProducts.title != 'Used Hose');
+      loadedProducts.removeWhere(
+          (loadedProducts) => loadedProducts.category != 'Electronics');
       loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
       notifyListeners();
@@ -285,8 +285,8 @@ class GreatPlaces with ChangeNotifier {
       //var creatorId = place.creatorId;
       loadedProducts.removeWhere(
           (loadedProducts) => loadedProducts.description == 'false');
-      loadedProducts
-          .removeWhere((loadedProducts) => loadedProducts.title != 'Used Hose');
+      loadedProducts.removeWhere(
+          (loadedProducts) => loadedProducts.category != 'Home & Tools');
       loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
       notifyListeners();
@@ -336,8 +336,8 @@ class GreatPlaces with ChangeNotifier {
       //var creatorId = place.creatorId;
       loadedProducts.removeWhere(
           (loadedProducts) => loadedProducts.description == 'false');
-      loadedProducts
-          .removeWhere((loadedProducts) => loadedProducts.title != 'Used Hose');
+      loadedProducts.removeWhere(
+          (loadedProducts) => loadedProducts.category != 'Jobs & Services');
       loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
       notifyListeners();
@@ -387,8 +387,8 @@ class GreatPlaces with ChangeNotifier {
       //var creatorId = place.creatorId;
       loadedProducts.removeWhere(
           (loadedProducts) => loadedProducts.description == 'false');
-      loadedProducts
-          .removeWhere((loadedProducts) => loadedProducts.title != 'Used Hose');
+      loadedProducts.removeWhere(
+          (loadedProducts) => loadedProducts.category != 'Clothes');
       loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
       notifyListeners();
@@ -439,7 +439,7 @@ class GreatPlaces with ChangeNotifier {
       loadedProducts.removeWhere(
           (loadedProducts) => loadedProducts.description == 'false');
       loadedProducts
-          .removeWhere((loadedProducts) => loadedProducts.title != 'Used Hose');
+          .removeWhere((loadedProducts) => loadedProducts.category != 'Toys');
       loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
       notifyListeners();
@@ -489,8 +489,8 @@ class GreatPlaces with ChangeNotifier {
       //var creatorId = place.creatorId;
       loadedProducts.removeWhere(
           (loadedProducts) => loadedProducts.description == 'false');
-      loadedProducts
-          .removeWhere((loadedProducts) => loadedProducts.title != 'Used Hose');
+      loadedProducts.removeWhere((loadedProducts) =>
+          loadedProducts.category != 'Community Gatherings');
       loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
       notifyListeners();

@@ -81,7 +81,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
         _emailController.text.isEmpty ||
         _phoneController.text.isEmpty ||
         imageList.isEmpty ||
-        // _categoryController.text.isNotEmpty ||
+        _chosenValue.isNotEmpty ||
         _pickedLocation == null ||
         _isLoading == true) {
       return Flushbar(
@@ -211,7 +211,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                       items: <String>[
                         'Electronics',
                         'Vehicles',
-                        'Home & Appliances',
+                        'Home & Tools',
                         'Jobs & Services',
                         'Clothes',
                         'Toys',

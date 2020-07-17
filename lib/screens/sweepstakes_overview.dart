@@ -63,7 +63,37 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
         await Provider.of<GreatPlaces>(context, listen: false)
             .fetchResultsByState(value);
       });
-    } else if (_category == 'Hose') {
+    } else if (_category == 'Vehicles') {
+      await getUserLocation().then((value) async {
+        await Provider.of<GreatPlaces>(context, listen: false)
+            .fetchResultsByStateAndVehicles(value);
+      });
+    } else if (_category == 'Electronics') {
+      await getUserLocation().then((value) async {
+        await Provider.of<GreatPlaces>(context, listen: false)
+            .fetchResultsByStateAndVehicles(value);
+      });
+    } else if (_category == 'Home & Tools') {
+      await getUserLocation().then((value) async {
+        await Provider.of<GreatPlaces>(context, listen: false)
+            .fetchResultsByStateAndVehicles(value);
+      });
+    } else if (_category == 'Jobs & Services') {
+      await getUserLocation().then((value) async {
+        await Provider.of<GreatPlaces>(context, listen: false)
+            .fetchResultsByStateAndVehicles(value);
+      });
+    } else if (_category == 'Clothes') {
+      await getUserLocation().then((value) async {
+        await Provider.of<GreatPlaces>(context, listen: false)
+            .fetchResultsByStateAndVehicles(value);
+      });
+    } else if (_category == 'Toys') {
+      await getUserLocation().then((value) async {
+        await Provider.of<GreatPlaces>(context, listen: false)
+            .fetchResultsByStateAndVehicles(value);
+      });
+    } else if (_category == 'Community Gatherings') {
       await getUserLocation().then((value) async {
         await Provider.of<GreatPlaces>(context, listen: false)
             .fetchResultsByStateAndVehicles(value);
@@ -100,7 +130,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   }
 
   bool showElectronics() {
-    if (_category == 'electronics') {
+    if (_category == 'Electronics') {
       return true;
     } else {
       return false;
@@ -108,7 +138,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   }
 
   bool showVehicles() {
-    if (_category == 'vehicles') {
+    if (_category == 'Vehicles') {
       return true;
     } else {
       return false;
@@ -116,7 +146,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   }
 
   bool showHomeAppliances() {
-    if (_category == 'homeapp') {
+    if (_category == 'Home & Tools') {
       return true;
     } else {
       return false;
@@ -124,7 +154,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   }
 
   bool showJobsService() {
-    if (_category == 'jobsservice') {
+    if (_category == 'Jobs & Services') {
       return true;
     } else {
       return false;
@@ -132,7 +162,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   }
 
   bool showClothes() {
-    if (_category == 'clothes') {
+    if (_category == 'Clothes') {
       return true;
     } else {
       return false;
@@ -140,7 +170,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   }
 
   bool showToys() {
-    if (_category == 'toys') {
+    if (_category == 'Toys') {
       return true;
     } else {
       return false;
@@ -148,7 +178,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   }
 
   bool showCommunityGatherings() {
-    if (_category == 'communitygatherings') {
+    if (_category == 'Community Gatherings') {
       return true;
     } else {
       return false;
@@ -195,7 +225,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                 "Vehicles",
                 style: TextStyle(color: Colors.black),
               ),
-              value: 2,
+              value: 3,
               checked: false,
             ),
           );
@@ -205,7 +235,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                 "Home & Tools",
                 style: TextStyle(color: Colors.black),
               ),
-              value: 3,
+              value: 4,
               //checked: false,
             ),
           );
@@ -215,7 +245,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                 "Jobs & Services",
                 style: TextStyle(color: Colors.black),
               ),
-              value: 4,
+              value: 5,
               //checked: false,
             ),
           );
@@ -225,7 +255,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                 "Clothes",
                 style: TextStyle(color: Colors.black),
               ),
-              value: 5,
+              value: 6,
               //checked: false,
             ),
           );
@@ -235,7 +265,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                 "Toys",
                 style: TextStyle(color: Colors.black),
               ),
-              value: 6,
+              value: 7,
               //checked: false,
             ),
           );
@@ -245,7 +275,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                 "Community Gatherings",
                 style: TextStyle(color: Colors.black),
               ),
-              value: 7,
+              value: 8,
               //checked: false,
             ),
           );
@@ -260,7 +290,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
           }
           if (value == 2) {
             setState(() {
-              _category = 'Hose';
+              _category = 'Electronics';
               //    _isLoading = true;
               _refreshProducts(context);
               //  _isLoading = false;
@@ -270,7 +300,57 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
           }
           if (value == 3) {
             setState(() {
-              _category = 'Hose';
+              _category = 'Vehicles';
+              //    _isLoading = true;
+              _refreshProducts(context);
+              //  _isLoading = false;
+
+              print(_category);
+            });
+          }
+          if (value == 4) {
+            setState(() {
+              _category = 'Home & Tools';
+              //    _isLoading = true;
+              _refreshProducts(context);
+              //  _isLoading = false;
+
+              print(_category);
+            });
+          }
+          if (value == 5) {
+            setState(() {
+              _category = 'Jobs & Services';
+              //    _isLoading = true;
+              _refreshProducts(context);
+              //  _isLoading = false;
+
+              print(_category);
+            });
+          }
+          if (value == 6) {
+            setState(() {
+              _category = 'Clothes';
+              //    _isLoading = true;
+              _refreshProducts(context);
+              //  _isLoading = false;
+
+              print(_category);
+            });
+          }
+          if (value == 7) {
+            setState(() {
+              _category = 'Toys';
+              //    _isLoading = true;
+              _refreshProducts(context);
+              //  _isLoading = false;
+
+              print(_category);
+            });
+          }
+          if (value == 8) {
+            setState(() {
+              _category = 'Community Gatherings';
               //    _isLoading = true;
               _refreshProducts(context);
               //  _isLoading = false;
