@@ -58,47 +58,129 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   }
 
   Future<void> _refreshProducts(BuildContext context) async {
-    if (_category == 'default') {
-      await getUserLocation().then((value) async {
-        await Provider.of<GreatPlaces>(context, listen: false)
-            .fetchResultsByState(value);
-      });
-    } else if (_category == 'Vehicles') {
-      await getUserLocation().then((value) async {
-        await Provider.of<GreatPlaces>(context, listen: false)
-            .fetchResultsByStateAndVehicles(value);
-      });
-    } else if (_category == 'Electronics') {
-      await getUserLocation().then((value) async {
-        await Provider.of<GreatPlaces>(context, listen: false)
-            .fetchResultsByStateAndVehicles(value);
-      });
-    } else if (_category == 'Home & Tools') {
-      await getUserLocation().then((value) async {
-        await Provider.of<GreatPlaces>(context, listen: false)
-            .fetchResultsByStateAndVehicles(value);
-      });
-    } else if (_category == 'Jobs & Services') {
-      await getUserLocation().then((value) async {
-        await Provider.of<GreatPlaces>(context, listen: false)
-            .fetchResultsByStateAndVehicles(value);
-      });
-    } else if (_category == 'Clothes') {
-      await getUserLocation().then((value) async {
-        await Provider.of<GreatPlaces>(context, listen: false)
-            .fetchResultsByStateAndVehicles(value);
-      });
-    } else if (_category == 'Toys') {
-      await getUserLocation().then((value) async {
-        await Provider.of<GreatPlaces>(context, listen: false)
-            .fetchResultsByStateAndVehicles(value);
-      });
-    } else if (_category == 'Community Gatherings') {
-      await getUserLocation().then((value) async {
-        await Provider.of<GreatPlaces>(context, listen: false)
-            .fetchResultsByStateAndVehicles(value);
-      });
+    switch (_category) {
+      case "Vehicles":
+        {
+          await getUserLocation().then((value) async {
+            await Provider.of<GreatPlaces>(context, listen: false)
+                .fetchResultsByStateAndVehicles(value);
+          });
+        }
+        break;
+
+      case "default":
+        {
+          await getUserLocation().then((value) async {
+            await Provider.of<GreatPlaces>(context, listen: false)
+                .fetchResultsByState(value);
+          });
+        }
+        break;
+
+      case "Electronics":
+        {
+          await getUserLocation().then((value) async {
+            await Provider.of<GreatPlaces>(context, listen: false)
+                .fetchResultsByStateAndElectronics(value);
+          });
+        }
+        break;
+      case "Home & Tools":
+        {
+          await getUserLocation().then((value) async {
+            await Provider.of<GreatPlaces>(context, listen: false)
+                .fetchResultsByStateAndHomeapp(value);
+          });
+        }
+        break;
+      case "Jobs & Services":
+        {
+          await getUserLocation().then((value) async {
+            await Provider.of<GreatPlaces>(context, listen: false)
+                .fetchResultsByStateAndJobsservice(value);
+          });
+        }
+        break;
+      case "Clothes":
+        {
+          await getUserLocation().then((value) async {
+            await Provider.of<GreatPlaces>(context, listen: false)
+                .fetchResultsByStateAndClothes(value);
+          });
+        }
+        break;
+      case "Toys":
+        {
+          await getUserLocation().then((value) async {
+            await Provider.of<GreatPlaces>(context, listen: false)
+                .fetchResultsByStateAndToys(value);
+          });
+        }
+        break;
+      case "Community Gatherings":
+        {
+          try {
+            await getUserLocation().then((value) async {
+              await Provider.of<GreatPlaces>(context, listen: false)
+                  .fetchResultsByStateAndCommunitygatherings(value);
+            });
+          } catch (error) {
+            Container(
+              child: Text(
+                'No results found',
+                style: TextStyle(fontSize: 50),
+              ),
+            );
+          }
+        }
+        break;
+      default:
+        {
+          print("Invalid choice");
+        }
+        break;
     }
+    // if (_category == 'default') {
+    //   await getUserLocation().then((value) async {
+    //     await Provider.of<GreatPlaces>(context, listen: false)
+    //         .fetchResultsByState(value);
+    //   });
+    // } else if (_category == 'Vehicles') {
+    //   await getUserLocation().then((value) async {
+    //     await Provider.of<GreatPlaces>(context, listen: false)
+    //         .fetchResultsByStateAndVehicles(value);
+    //   });
+    // } else if (_category == 'Electronics') {
+    //   await getUserLocation().then((value) async {
+    //     await Provider.of<GreatPlaces>(context, listen: false)
+    //         .fetchResultsByStateAndElectronics(value);
+    //   });
+    // } else if (_category == 'Home & Tools') {
+    //   await getUserLocation().then((value) async {
+    //     await Provider.of<GreatPlaces>(context, listen: false)
+    //         .fetchResultsByStateAndHomeapp(value);
+    //   });
+    // } else if (_category == 'Jobs & Services') {
+    //   await getUserLocation().then((value) async {
+    //     await Provider.of<GreatPlaces>(context, listen: false)
+    //         .fetchResultsByStateAndJobsservice(value);
+    //   });
+    // } else if (_category == 'Clothes') {
+    //   await getUserLocation().then((value) async {
+    //     await Provider.of<GreatPlaces>(context, listen: false)
+    //         .fetchResultsByStateAndClothes(value);
+    //   });
+    // } else if (_category == 'Toys') {
+    //   await getUserLocation().then((value) async {
+    //     await Provider.of<GreatPlaces>(context, listen: false)
+    //         .fetchResultsByStateAndToys(value);
+    //   });
+    // } else if (_category == 'Community Gatherings') {
+    //   await getUserLocation().then((value) async {
+    //     await Provider.of<GreatPlaces>(context, listen: false)
+    //         .fetchResultsByStateAndCommunitygatherings(value);
+    //   });
+    // }
   }
 
   // Future _loadMore() async {
@@ -216,7 +298,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                 style: TextStyle(color: Colors.black),
               ),
               value: 2,
-              checked: false,
+              checked: showElectronics(),
             ),
           );
           list.add(
@@ -226,7 +308,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                 style: TextStyle(color: Colors.black),
               ),
               value: 3,
-              checked: false,
+              checked: showVehicles(),
             ),
           );
           list.add(
@@ -236,6 +318,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                 style: TextStyle(color: Colors.black),
               ),
               value: 4,
+              checked: showHomeAppliances(),
               //checked: false,
             ),
           );
@@ -246,6 +329,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                 style: TextStyle(color: Colors.black),
               ),
               value: 5,
+              checked: showJobsService(),
               //checked: false,
             ),
           );
@@ -256,6 +340,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                 style: TextStyle(color: Colors.black),
               ),
               value: 6,
+              checked: showClothes(),
               //checked: false,
             ),
           );
@@ -266,6 +351,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                 style: TextStyle(color: Colors.black),
               ),
               value: 7,
+              checked: showToys(),
               //checked: false,
             ),
           );
@@ -276,6 +362,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                 style: TextStyle(color: Colors.black),
               ),
               value: 8,
+              checked: showCommunityGatherings(),
               //checked: false,
             ),
           );

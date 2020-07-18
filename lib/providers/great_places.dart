@@ -111,21 +111,23 @@ class GreatPlaces with ChangeNotifier {
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(
           Place(
-              id: prodId,
-              dateTime: prodData['dateTime'],
-              title: prodData['title'],
-              image: prodData['image'],
-              location: PlaceLocation(
-                latitude: prodData['loc_lat'],
-                longitude: prodData['loc_lng'],
-                address: prodData['address'],
-              ),
-              description: prodData['description'],
-              email: prodData['email'],
-              phone: prodData['phone'],
-              price: prodData['price'],
+            id: prodId,
+            dateTime: prodData['dateTime'],
+            title: prodData['title'],
+            image: prodData['image'],
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
               address: prodData['address'],
-              creatorId: prodData['creatorId']),
+            ),
+            description: prodData['description'],
+            email: prodData['email'],
+            phone: prodData['phone'],
+            price: prodData['price'],
+            address: prodData['address'],
+            creatorId: prodData['creatorId'],
+            category: prodData['category'],
+          ),
         );
       });
       _items = loadedProducts;
@@ -160,21 +162,23 @@ class GreatPlaces with ChangeNotifier {
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(
           Place(
-              id: prodId,
-              dateTime: prodData['dateTime'],
-              title: prodData['title'],
-              image: prodData['image'],
-              location: PlaceLocation(
-                latitude: prodData['loc_lat'],
-                longitude: prodData['loc_lng'],
-                address: prodData['address'],
-              ),
-              description: prodData['description'],
-              email: prodData['email'],
-              phone: prodData['phone'],
-              price: prodData['price'],
+            id: prodId,
+            dateTime: prodData['dateTime'],
+            title: prodData['title'],
+            image: prodData['image'],
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
               address: prodData['address'],
-              creatorId: prodData['creatorId']),
+            ),
+            description: prodData['description'],
+            email: prodData['email'],
+            phone: prodData['phone'],
+            price: prodData['price'],
+            address: prodData['address'],
+            creatorId: prodData['creatorId'],
+            category: prodData['category'],
+          ),
         );
       });
       _items = loadedProducts;
@@ -211,21 +215,23 @@ class GreatPlaces with ChangeNotifier {
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(
           Place(
-              id: prodId,
-              dateTime: prodData['dateTime'],
-              title: prodData['title'],
-              image: prodData['image'],
-              location: PlaceLocation(
-                latitude: prodData['loc_lat'],
-                longitude: prodData['loc_lng'],
-                address: prodData['address'],
-              ),
-              description: prodData['description'],
-              email: prodData['email'],
-              phone: prodData['phone'],
-              price: prodData['price'],
+            id: prodId,
+            dateTime: prodData['dateTime'],
+            title: prodData['title'],
+            image: prodData['image'],
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
               address: prodData['address'],
-              creatorId: prodData['creatorId']),
+            ),
+            description: prodData['description'],
+            email: prodData['email'],
+            phone: prodData['phone'],
+            price: prodData['price'],
+            address: prodData['address'],
+            creatorId: prodData['creatorId'],
+            category: prodData['category'],
+          ),
         );
       });
       _items = loadedProducts;
@@ -262,21 +268,23 @@ class GreatPlaces with ChangeNotifier {
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(
           Place(
-              id: prodId,
-              dateTime: prodData['dateTime'],
-              title: prodData['title'],
-              image: prodData['image'],
-              location: PlaceLocation(
-                latitude: prodData['loc_lat'],
-                longitude: prodData['loc_lng'],
-                address: prodData['address'],
-              ),
-              description: prodData['description'],
-              email: prodData['email'],
-              phone: prodData['phone'],
-              price: prodData['price'],
+            id: prodId,
+            dateTime: prodData['dateTime'],
+            title: prodData['title'],
+            image: prodData['image'],
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
               address: prodData['address'],
-              creatorId: prodData['creatorId']),
+            ),
+            description: prodData['description'],
+            email: prodData['email'],
+            phone: prodData['phone'],
+            price: prodData['price'],
+            address: prodData['address'],
+            creatorId: prodData['creatorId'],
+            category: prodData['category'],
+          ),
         );
       });
       _items = loadedProducts;
@@ -313,21 +321,23 @@ class GreatPlaces with ChangeNotifier {
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(
           Place(
-              id: prodId,
-              dateTime: prodData['dateTime'],
-              title: prodData['title'],
-              image: prodData['image'],
-              location: PlaceLocation(
-                latitude: prodData['loc_lat'],
-                longitude: prodData['loc_lng'],
-                address: prodData['address'],
-              ),
-              description: prodData['description'],
-              email: prodData['email'],
-              phone: prodData['phone'],
-              price: prodData['price'],
+            id: prodId,
+            dateTime: prodData['dateTime'],
+            title: prodData['title'],
+            image: prodData['image'],
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
               address: prodData['address'],
-              creatorId: prodData['creatorId']),
+            ),
+            description: prodData['description'],
+            email: prodData['email'],
+            phone: prodData['phone'],
+            price: prodData['price'],
+            address: prodData['address'],
+            creatorId: prodData['creatorId'],
+            category: prodData['category'],
+          ),
         );
       });
       _items = loadedProducts;
@@ -364,21 +374,23 @@ class GreatPlaces with ChangeNotifier {
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(
           Place(
-              id: prodId,
-              dateTime: prodData['dateTime'],
-              title: prodData['title'],
-              image: prodData['image'],
-              location: PlaceLocation(
-                latitude: prodData['loc_lat'],
-                longitude: prodData['loc_lng'],
-                address: prodData['address'],
-              ),
-              description: prodData['description'],
-              email: prodData['email'],
-              phone: prodData['phone'],
-              price: prodData['price'],
+            id: prodId,
+            dateTime: prodData['dateTime'],
+            title: prodData['title'],
+            image: prodData['image'],
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
               address: prodData['address'],
-              creatorId: prodData['creatorId']),
+            ),
+            description: prodData['description'],
+            email: prodData['email'],
+            phone: prodData['phone'],
+            price: prodData['price'],
+            address: prodData['address'],
+            creatorId: prodData['creatorId'],
+            category: prodData['category'],
+          ),
         );
       });
       _items = loadedProducts;
@@ -415,21 +427,23 @@ class GreatPlaces with ChangeNotifier {
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(
           Place(
-              id: prodId,
-              dateTime: prodData['dateTime'],
-              title: prodData['title'],
-              image: prodData['image'],
-              location: PlaceLocation(
-                latitude: prodData['loc_lat'],
-                longitude: prodData['loc_lng'],
-                address: prodData['address'],
-              ),
-              description: prodData['description'],
-              email: prodData['email'],
-              phone: prodData['phone'],
-              price: prodData['price'],
+            id: prodId,
+            dateTime: prodData['dateTime'],
+            title: prodData['title'],
+            image: prodData['image'],
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
               address: prodData['address'],
-              creatorId: prodData['creatorId']),
+            ),
+            description: prodData['description'],
+            email: prodData['email'],
+            phone: prodData['phone'],
+            price: prodData['price'],
+            address: prodData['address'],
+            creatorId: prodData['creatorId'],
+            category: prodData['category'],
+          ),
         );
       });
       _items = loadedProducts;
@@ -466,21 +480,23 @@ class GreatPlaces with ChangeNotifier {
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(
           Place(
-              id: prodId,
-              dateTime: prodData['dateTime'],
-              title: prodData['title'],
-              image: prodData['image'],
-              location: PlaceLocation(
-                latitude: prodData['loc_lat'],
-                longitude: prodData['loc_lng'],
-                address: prodData['address'],
-              ),
-              description: prodData['description'],
-              email: prodData['email'],
-              phone: prodData['phone'],
-              price: prodData['price'],
+            id: prodId,
+            dateTime: prodData['dateTime'],
+            title: prodData['title'],
+            image: prodData['image'],
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
               address: prodData['address'],
-              creatorId: prodData['creatorId']),
+            ),
+            description: prodData['description'],
+            email: prodData['email'],
+            phone: prodData['phone'],
+            price: prodData['price'],
+            address: prodData['address'],
+            creatorId: prodData['creatorId'],
+            category: prodData['category'],
+          ),
         );
       });
       _items = loadedProducts;

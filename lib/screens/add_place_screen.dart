@@ -81,7 +81,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
         _emailController.text.isEmpty ||
         _phoneController.text.isEmpty ||
         imageList.isEmpty ||
-        _chosenValue.isNotEmpty ||
+        _chosenValue.isEmpty ||
         _pickedLocation == null ||
         _isLoading == true) {
       return Flushbar(
