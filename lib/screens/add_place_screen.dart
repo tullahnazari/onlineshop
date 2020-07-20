@@ -29,9 +29,12 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
   final _titleFocusNode = FocusNode();
   final _emailFocusNode = FocusNode();
   final _phoneFocusNode = FocusNode();
+  final _categoryFocusNode = FocusNode();
 
   String price;
   final _priceController = TextEditingController();
+  String _chosenValue;
+  final _categoryController = TextEditingController();
   String emailText;
   final _emailController = TextEditingController();
   String phoneText;
@@ -78,6 +81,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
         _emailController.text.isEmpty ||
         _phoneController.text.isEmpty ||
         imageList.isEmpty ||
+        _chosenValue.isEmpty ||
         _pickedLocation == null ||
         _isLoading == true) {
       return Flushbar(
@@ -96,6 +100,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
         _emailController.text,
         _phoneController.text,
         _priceController.text,
+        _chosenValue,
       );
 
       Navigator.of(context).pushNamed(SweepstakeManagement.routeName);
@@ -195,13 +200,42 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                 padding: EdgeInsets.all(10),
                 child: Column(
                   children: <Widget>[
+                    DropdownButton<String>(
+                      isExpanded: true,
+                      hint: Text('Please select a category'),
+                      value: _chosenValue,
+                      underline: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.blueAccent)),
+                      ), // this is the magic
+                      items: <String>[
+                        'Wanted',
+                        'Electronics',
+                        'Vehicles',
+                        'Home & Tools',
+                        'Jobs & Services',
+                        'Clothes',
+                        'Food & Grocery',
+                        'Community Gatherings'
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String value) {
+                        setState(() {
+                          _chosenValue = value;
+                        });
+                      },
+                    ),
                     SizedBox(
                       width: double.infinity,
                       child: RaisedButton(
                         elevation: 10,
                         color: Theme.of(context).primaryColor,
                         child: Text(
-                          'Upload',
+                          'Upload Photos',
                           style:
                               TextStyle(color: Theme.of(context).accentColor),
                         ),
@@ -367,6 +401,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                         ///print(databaseText);
                       },
                     ),
+
                     TextFormField(
                       focusNode: _descriptionFocusNode,
                       maxLines: 3,
@@ -394,6 +429,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                         ///print(databaseText);
                       },
                     ),
+
                     SizedBox(
                       height: 10,
                     ),

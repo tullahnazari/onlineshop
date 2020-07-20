@@ -30,7 +30,7 @@ import 'package:halalbazaar/screens/sweepstakes_overview.dart';
 void main() {
   setupLocator();
 
-  runApp(SavedState(child: MyApp()));
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -85,7 +85,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    var savedState = SavedState.of(context);
     //ability to add multiple providers at root of app
     return MultiProvider(
       providers: [
@@ -128,7 +127,6 @@ class _MyAppState extends State<MyApp> {
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => MaterialApp(
-          navigatorObservers: [SavedStateRouteObserver(savedState: savedState)],
           navigatorKey: nav,
           title: 'Halal Bazaar',
           theme: ThemeData(
@@ -137,7 +135,7 @@ class _MyAppState extends State<MyApp> {
             fontFamily: 'Lato',
           ),
           // home: SweepstakesOverview(),
-          initialRoute: SavedStateRouteObserver.restoreRoute(savedState) ?? "/",
+
           // /fix after landing page is finished
           home: auth.isAuth
               ? SweepstakesOverview()
@@ -150,9 +148,6 @@ class _MyAppState extends State<MyApp> {
                           : AuthScreen(),
                 ),
           routes: {
-            // NestedState.route: (context) => SavedState.builder(
-            // builder: (context, savedState) =>
-            //     NestedState(savedState: savedState)),
             SweepstakesDetail.routeName: (ctx) => SweepstakesDetail(),
             SweepstakeManagement.routeName: (ctx) => SweepstakeManagement(),
             SweepstakesOverview.routeName: (ctx) => SweepstakesOverview(),

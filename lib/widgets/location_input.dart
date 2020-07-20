@@ -65,10 +65,10 @@ class _LocationInputState extends State<LocationInput> {
           ),
           child: _previewImageUrl == null
               ? Text(
-                  "Please click Current Location below. We will not share your location with anyone but need it for searching locally",
+                  "Please click 'Current Location' below. We will not share your location with anyone but need it for searching locally",
                   textDirection: TextDirection.ltr,
-                  style: new TextStyle(fontSize: 10.0, color: Colors.black),
-                  maxLines: 2,
+                  style: new TextStyle(fontSize: 20.0, color: Colors.black),
+                  maxLines: 5,
                   textAlign: TextAlign.center,
                 )
               : Image.network(

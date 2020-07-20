@@ -35,6 +35,7 @@ class GreatPlaces with ChangeNotifier {
     String pickedEmail,
     String pickedPhone,
     String pickedPrice,
+    String category,
   ) async {
     var stateAddress = await LocationHelper.getPlaceAddress(
         pickedLocation.latitude, pickedLocation.longitude);
@@ -64,6 +65,7 @@ class GreatPlaces with ChangeNotifier {
         phone: pickedPhone,
         price: pickedPrice,
         creatorId: userId,
+        category: category,
       );
       await http.post(
         url,
@@ -81,6 +83,7 @@ class GreatPlaces with ChangeNotifier {
           'email': newPlace.email,
           'phone': newPlace.phone,
           'price': newPlace.price,
+          'category': newPlace.category,
         }),
       );
       _items.add(newPlace);
@@ -108,21 +111,23 @@ class GreatPlaces with ChangeNotifier {
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(
           Place(
-              id: prodId,
-              dateTime: prodData['dateTime'],
-              title: prodData['title'],
-              image: prodData['image'],
-              location: PlaceLocation(
-                latitude: prodData['loc_lat'],
-                longitude: prodData['loc_lng'],
-                address: prodData['address'],
-              ),
-              description: prodData['description'],
-              email: prodData['email'],
-              phone: prodData['phone'],
-              price: prodData['price'],
+            id: prodId,
+            dateTime: prodData['dateTime'],
+            title: prodData['title'],
+            image: prodData['image'],
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
               address: prodData['address'],
-              creatorId: prodData['creatorId']),
+            ),
+            description: prodData['description'],
+            email: prodData['email'],
+            phone: prodData['phone'],
+            price: prodData['price'],
+            address: prodData['address'],
+            creatorId: prodData['creatorId'],
+            category: prodData['category'],
+          ),
         );
       });
       _items = loadedProducts;
@@ -157,21 +162,394 @@ class GreatPlaces with ChangeNotifier {
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(
           Place(
-              id: prodId,
-              dateTime: prodData['dateTime'],
-              title: prodData['title'],
-              image: prodData['image'],
-              location: PlaceLocation(
-                latitude: prodData['loc_lat'],
-                longitude: prodData['loc_lng'],
-                address: prodData['address'],
-              ),
-              description: prodData['description'],
-              email: prodData['email'],
-              phone: prodData['phone'],
-              price: prodData['price'],
+            id: prodId,
+            dateTime: prodData['dateTime'],
+            title: prodData['title'],
+            image: prodData['image'],
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
               address: prodData['address'],
-              creatorId: prodData['creatorId']),
+            ),
+            description: prodData['description'],
+            email: prodData['email'],
+            phone: prodData['phone'],
+            price: prodData['price'],
+            address: prodData['address'],
+            creatorId: prodData['creatorId'],
+            category: prodData['category'],
+          ),
+        );
+      });
+      _items = loadedProducts;
+      // loadedProducts
+      //     .where((posting) => posting.creatorId != getBlockedUsers(userId));
+      //var creatorId = place.creatorId;
+      loadedProducts.removeWhere(
+          (loadedProducts) => loadedProducts.description == 'false');
+      loadedProducts.removeWhere(
+          (loadedProducts) => loadedProducts.category != 'Vehicles');
+      loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
+
+      notifyListeners();
+    } catch (error) {
+      throw (error);
+    }
+  }
+
+  Future<void> fetchResultsByStateAndElectronics(String state) async {
+    //final filterString = 'orderBy="address"&equalTo="$state"';
+    final url =
+        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="state"&equalTo="$state"';
+    try {
+      final response = await http.get(url);
+
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      if (extractedData == null) {
+        return;
+      }
+
+      //if (user.fetchBlockedUsers(id))
+
+      final List<Place> loadedProducts = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(
+          Place(
+            id: prodId,
+            dateTime: prodData['dateTime'],
+            title: prodData['title'],
+            image: prodData['image'],
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
+              address: prodData['address'],
+            ),
+            description: prodData['description'],
+            email: prodData['email'],
+            phone: prodData['phone'],
+            price: prodData['price'],
+            address: prodData['address'],
+            creatorId: prodData['creatorId'],
+            category: prodData['category'],
+          ),
+        );
+      });
+      _items = loadedProducts;
+      // loadedProducts
+      //     .where((posting) => posting.creatorId != getBlockedUsers(userId));
+      //var creatorId = place.creatorId;
+      loadedProducts.removeWhere(
+          (loadedProducts) => loadedProducts.description == 'false');
+      loadedProducts.removeWhere(
+          (loadedProducts) => loadedProducts.category != 'Electronics');
+      loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
+
+      notifyListeners();
+    } catch (error) {
+      throw (error);
+    }
+  }
+
+  Future<void> fetchResultsByStateAndHomeapp(String state) async {
+    //final filterString = 'orderBy="address"&equalTo="$state"';
+    final url =
+        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="state"&equalTo="$state"';
+    try {
+      final response = await http.get(url);
+
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      if (extractedData == null) {
+        return;
+      }
+
+      //if (user.fetchBlockedUsers(id))
+
+      final List<Place> loadedProducts = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(
+          Place(
+            id: prodId,
+            dateTime: prodData['dateTime'],
+            title: prodData['title'],
+            image: prodData['image'],
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
+              address: prodData['address'],
+            ),
+            description: prodData['description'],
+            email: prodData['email'],
+            phone: prodData['phone'],
+            price: prodData['price'],
+            address: prodData['address'],
+            creatorId: prodData['creatorId'],
+            category: prodData['category'],
+          ),
+        );
+      });
+      _items = loadedProducts;
+      // loadedProducts
+      //     .where((posting) => posting.creatorId != getBlockedUsers(userId));
+      //var creatorId = place.creatorId;
+      loadedProducts.removeWhere(
+          (loadedProducts) => loadedProducts.description == 'false');
+      loadedProducts.removeWhere(
+          (loadedProducts) => loadedProducts.category != 'Home & Tools');
+      loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
+
+      notifyListeners();
+    } catch (error) {
+      throw (error);
+    }
+  }
+
+  Future<void> fetchResultsByStateAndJobsservice(String state) async {
+    //final filterString = 'orderBy="address"&equalTo="$state"';
+    final url =
+        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="state"&equalTo="$state"';
+    try {
+      final response = await http.get(url);
+
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      if (extractedData == null) {
+        return;
+      }
+
+      //if (user.fetchBlockedUsers(id))
+
+      final List<Place> loadedProducts = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(
+          Place(
+            id: prodId,
+            dateTime: prodData['dateTime'],
+            title: prodData['title'],
+            image: prodData['image'],
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
+              address: prodData['address'],
+            ),
+            description: prodData['description'],
+            email: prodData['email'],
+            phone: prodData['phone'],
+            price: prodData['price'],
+            address: prodData['address'],
+            creatorId: prodData['creatorId'],
+            category: prodData['category'],
+          ),
+        );
+      });
+      _items = loadedProducts;
+      // loadedProducts
+      //     .where((posting) => posting.creatorId != getBlockedUsers(userId));
+      //var creatorId = place.creatorId;
+      loadedProducts.removeWhere(
+          (loadedProducts) => loadedProducts.description == 'false');
+      loadedProducts.removeWhere(
+          (loadedProducts) => loadedProducts.category != 'Jobs & Services');
+      loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
+
+      notifyListeners();
+    } catch (error) {
+      throw (error);
+    }
+  }
+
+  Future<void> fetchResultsByStateAndClothes(String state) async {
+    //final filterString = 'orderBy="address"&equalTo="$state"';
+    final url =
+        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="state"&equalTo="$state"';
+    try {
+      final response = await http.get(url);
+
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      if (extractedData == null) {
+        return;
+      }
+
+      //if (user.fetchBlockedUsers(id))
+
+      final List<Place> loadedProducts = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(
+          Place(
+            id: prodId,
+            dateTime: prodData['dateTime'],
+            title: prodData['title'],
+            image: prodData['image'],
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
+              address: prodData['address'],
+            ),
+            description: prodData['description'],
+            email: prodData['email'],
+            phone: prodData['phone'],
+            price: prodData['price'],
+            address: prodData['address'],
+            creatorId: prodData['creatorId'],
+            category: prodData['category'],
+          ),
+        );
+      });
+      _items = loadedProducts;
+      // loadedProducts
+      //     .where((posting) => posting.creatorId != getBlockedUsers(userId));
+      //var creatorId = place.creatorId;
+      loadedProducts.removeWhere(
+          (loadedProducts) => loadedProducts.description == 'false');
+      loadedProducts.removeWhere(
+          (loadedProducts) => loadedProducts.category != 'Clothes');
+      loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
+
+      notifyListeners();
+    } catch (error) {
+      throw (error);
+    }
+  }
+
+  Future<void> fetchResultsByStateAndFood(String state) async {
+    //final filterString = 'orderBy="address"&equalTo="$state"';
+    final url =
+        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="state"&equalTo="$state"';
+    try {
+      final response = await http.get(url);
+
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      if (extractedData == null) {
+        return;
+      }
+
+      //if (user.fetchBlockedUsers(id))
+
+      final List<Place> loadedProducts = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(
+          Place(
+            id: prodId,
+            dateTime: prodData['dateTime'],
+            title: prodData['title'],
+            image: prodData['image'],
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
+              address: prodData['address'],
+            ),
+            description: prodData['description'],
+            email: prodData['email'],
+            phone: prodData['phone'],
+            price: prodData['price'],
+            address: prodData['address'],
+            creatorId: prodData['creatorId'],
+            category: prodData['category'],
+          ),
+        );
+      });
+      _items = loadedProducts;
+      // loadedProducts
+      //     .where((posting) => posting.creatorId != getBlockedUsers(userId));
+      //var creatorId = place.creatorId;
+      loadedProducts.removeWhere(
+          (loadedProducts) => loadedProducts.description == 'false');
+      loadedProducts.removeWhere(
+          (loadedProducts) => loadedProducts.category != 'Food & Grocery');
+      loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
+
+      notifyListeners();
+    } catch (error) {
+      throw (error);
+    }
+  }
+
+  Future<void> fetchResultsByStateAndCommunitygatherings(String state) async {
+    //final filterString = 'orderBy="address"&equalTo="$state"';
+    final url =
+        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="state"&equalTo="$state"';
+    try {
+      final response = await http.get(url);
+
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      if (extractedData == null) {
+        return;
+      }
+
+      //if (user.fetchBlockedUsers(id))
+
+      final List<Place> loadedProducts = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(
+          Place(
+            id: prodId,
+            dateTime: prodData['dateTime'],
+            title: prodData['title'],
+            image: prodData['image'],
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
+              address: prodData['address'],
+            ),
+            description: prodData['description'],
+            email: prodData['email'],
+            phone: prodData['phone'],
+            price: prodData['price'],
+            address: prodData['address'],
+            creatorId: prodData['creatorId'],
+            category: prodData['category'],
+          ),
+        );
+      });
+      _items = loadedProducts;
+      // loadedProducts
+      //     .where((posting) => posting.creatorId != getBlockedUsers(userId));
+      //var creatorId = place.creatorId;
+      loadedProducts.removeWhere(
+          (loadedProducts) => loadedProducts.description == 'false');
+      loadedProducts.removeWhere((loadedProducts) =>
+          loadedProducts.category != 'Community Gatherings');
+      loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
+
+      notifyListeners();
+    } catch (error) {
+      throw (error);
+    }
+  }
+
+  Future<void> fetchResultsByStateAndWanted(String state) async {
+    //final filterString = 'orderBy="address"&equalTo="$state"';
+    final url =
+        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="state"&equalTo="$state"';
+    try {
+      final response = await http.get(url);
+
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      if (extractedData == null) {
+        return;
+      }
+
+      //if (user.fetchBlockedUsers(id))
+
+      final List<Place> loadedProducts = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(
+          Place(
+            id: prodId,
+            dateTime: prodData['dateTime'],
+            title: prodData['title'],
+            image: prodData['image'],
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
+              address: prodData['address'],
+            ),
+            description: prodData['description'],
+            email: prodData['email'],
+            phone: prodData['phone'],
+            price: prodData['price'],
+            address: prodData['address'],
+            creatorId: prodData['creatorId'],
+            category: prodData['category'],
+          ),
         );
       });
       _items = loadedProducts;
@@ -181,7 +559,7 @@ class GreatPlaces with ChangeNotifier {
       loadedProducts.removeWhere(
           (loadedProducts) => loadedProducts.description == 'false');
       loadedProducts
-          .removeWhere((loadedProducts) => loadedProducts.title != 'Used Hose');
+          .removeWhere((loadedProducts) => loadedProducts.category != 'Wanted');
       loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
       notifyListeners();
