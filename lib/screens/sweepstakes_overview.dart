@@ -537,11 +537,11 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                 : FutureBuilder(
                     future: _refreshProducts(context),
                     builder: (BuildContext ctx, AsyncSnapshot snapshot) {
-                      if (snapshot.connectionState == ConnectionState.active &&
-                          snapshot.hasData) {
-                        //print('project snapshot data is: ${projectSnap.data}');
-                        return Container();
-                      }
+                      // if (snapshot.connectionState == ConnectionState.active &&
+                      //     snapshot.hasData) {
+                      //   //print('project snapshot data is: ${projectSnap.data}');
+                      //   return Container();
+                      // }
                       // switch (snapshot.connectionState) {
                       //   case ConnectionState.none:
                       //     return Center(
@@ -576,55 +576,68 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                       // if (!snapshot.hasData || snapshot.data == null) {
                       //   return Text('Loading');
                       // }
-
-                      return LazyLoadScrollView(
-                        onEndOfPage: () => _loadMore(),
-                        child: RefreshIndicator(
-                          displacement: 120,
-                          color: Theme.of(context).primaryColor,
-                          onRefresh: () => _refreshProducts(context),
-                          child: Consumer<GreatPlaces>(
-                            builder: (ctx, greatPlaces, _) => Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 2, bottom: 2, left: 2, right: 2),
-                              child: greatPlaces.items.length == 0
-                                  ? emptyGrid()
-                                  : GridView.builder(
-                                      // padding: const EdgeInsets.all(8),
-                                      //padding: const EdgeInsets.all(10.0),
-                                      itemCount: greatPlaces.items.length,
-                                      itemBuilder: (ctx, i) =>
-                                          ChangeNotifierProvider.value(
-                                        // builder: (c) => products[i],
-                                        value: greatPlaces.items[i],
-                                        child: OverviewPosting(
-                                          id: greatPlaces.items[i].id,
-                                          title: greatPlaces.items[i].title,
-                                          image: greatPlaces.items[i].image,
-                                          address: greatPlaces
-                                              .items[i].location.address,
+                      if (snapshot.connectionState == ConnectionState.waiting ||
+                          snapshot.connectionState == ConnectionState.none) {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            strokeWidth: 6,
+                          ),
+                        );
+                      } else if (snapshot.connectionState ==
+                              ConnectionState.active ||
+                          snapshot.connectionState == ConnectionState.done) {
+                        return LazyLoadScrollView(
+                          onEndOfPage: () => _loadMore(),
+                          child: RefreshIndicator(
+                            displacement: 120,
+                            color: Theme.of(context).primaryColor,
+                            onRefresh: () => _refreshProducts(context),
+                            child: Consumer<GreatPlaces>(
+                              builder: (ctx, greatPlaces, _) => Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 2, bottom: 2, left: 2, right: 2),
+                                child: greatPlaces.items.length == 0
+                                    ? emptyGrid()
+                                    : GridView.builder(
+                                        // padding: const EdgeInsets.all(8),
+                                        //padding: const EdgeInsets.all(10.0),
+                                        itemCount: greatPlaces.items.length,
+                                        itemBuilder: (ctx, i) =>
+                                            ChangeNotifierProvider.value(
+                                          // builder: (c) => products[i],
+                                          value: greatPlaces.items[i],
+                                          child: OverviewPosting(
+                                            id: greatPlaces.items[i].id,
+                                            title: greatPlaces.items[i].title,
+                                            image: greatPlaces.items[i].image,
+                                            address: greatPlaces
+                                                .items[i].location.address,
+                                          ),
+                                        ),
+                                        scrollDirection: Axis.vertical,
+                                        gridDelegate:
+                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 1,
+                                          mainAxisSpacing: 8,
+                                          crossAxisSpacing: 8,
+                                          //childAspectRatio: 1,
+                                          childAspectRatio:
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  (MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      .50),
                                         ),
                                       ),
-                                      scrollDirection: Axis.vertical,
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 1,
-                                        mainAxisSpacing: 8,
-                                        crossAxisSpacing: 8,
-                                        //childAspectRatio: 1,
-                                        childAspectRatio:
-                                            MediaQuery.of(context).size.width /
-                                                (MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    .50),
-                                      ),
-                                    ),
+                              ),
+                              // ),
                             ),
-                            // ),
                           ),
-                        ),
-                      );
+                        );
+                      }
                     })));
   }
 
