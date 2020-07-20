@@ -751,7 +751,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
         child: Column(
           children: <Widget>[
             Text(
-              "No results found near you. You can add a wanted posting by navigating to your 'Manage Postings' and clicking the + button on the bottom right,",
+              "No results found near you. You can add a wanted posting by navigating to your 'Manage Postings' and clicking the + button on the bottom right.",
               style: TextStyle(fontSize: 24),
             ),
             SizedBox(
