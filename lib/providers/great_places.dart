@@ -409,7 +409,7 @@ class GreatPlaces with ChangeNotifier {
     }
   }
 
-  Future<void> fetchResultsByStateAndToys(String state) async {
+  Future<void> fetchResultsByStateAndFood(String state) async {
     //final filterString = 'orderBy="address"&equalTo="$state"';
     final url =
         'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="state"&equalTo="$state"';
@@ -452,8 +452,8 @@ class GreatPlaces with ChangeNotifier {
       //var creatorId = place.creatorId;
       loadedProducts.removeWhere(
           (loadedProducts) => loadedProducts.description == 'false');
-      loadedProducts
-          .removeWhere((loadedProducts) => loadedProducts.category != 'Toys');
+      loadedProducts.removeWhere(
+          (loadedProducts) => loadedProducts.category != 'Food & Grocery');
       loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
       notifyListeners();

@@ -137,7 +137,8 @@ class _MyAppState extends State<MyApp> {
             fontFamily: 'Lato',
           ),
           // home: SweepstakesOverview(),
-          initialRoute: SavedStateRouteObserver.restoreRoute(savedState) ?? "/",
+          initialRoute: SavedStateRouteObserver.restoreRoute(savedState) ??
+              "/sweepstakeoverview",
           // /fix after landing page is finished
           home: auth.isAuth
               ? SweepstakesOverview()

@@ -214,7 +214,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                         'Home & Tools',
                         'Jobs & Services',
                         'Clothes',
-                        'Toys',
+                        'Food & Grocery',
                         'Community Gatherings'
                       ].map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -42,6 +43,8 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
 
   var value;
 
+  GreatPlaces postings;
+
   Place place;
 
   List<Permission> lp = Permission.values;
@@ -65,8 +68,9 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
             await Provider.of<GreatPlaces>(context, listen: false)
                 .fetchResultsByStateAndVehicles(value);
           });
+
+          break;
         }
-        break;
 
       case "default":
         {
@@ -83,6 +87,8 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
             await Provider.of<GreatPlaces>(context, listen: false)
                 .fetchResultsByStateAndElectronics(value);
           });
+
+          break;
         }
         break;
       case "Home & Tools":
@@ -91,49 +97,45 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
             await Provider.of<GreatPlaces>(context, listen: false)
                 .fetchResultsByStateAndHomeapp(value);
           });
+
+          break;
         }
-        break;
       case "Jobs & Services":
         {
           await getUserLocation().then((value) async {
             await Provider.of<GreatPlaces>(context, listen: false)
                 .fetchResultsByStateAndJobsservice(value);
           });
+
+          break;
         }
-        break;
       case "Clothes":
         {
           await getUserLocation().then((value) async {
             await Provider.of<GreatPlaces>(context, listen: false)
-                .fetchResultsByStateAndClothes(value);
+                .fetchResultsByStateAndCommunitygatherings(value);
           });
+
+          break;
         }
-        break;
-      case "Toys":
+      case "Food & Grocery":
+        {
+          getUserLocation().then((value) {
+            Provider.of<GreatPlaces>(context, listen: false)
+                .fetchResultsByStateAndFood(value);
+          });
+
+          break;
+        }
+      case "Community Gatherings":
         {
           await getUserLocation().then((value) async {
             await Provider.of<GreatPlaces>(context, listen: false)
-                .fetchResultsByStateAndToys(value);
+                .fetchResultsByStateAndCommunitygatherings(value);
           });
+
+          break;
         }
-        break;
-      case "Community Gatherings":
-        {
-          try {
-            await getUserLocation().then((value) async {
-              await Provider.of<GreatPlaces>(context, listen: false)
-                  .fetchResultsByStateAndCommunitygatherings(value);
-            });
-          } catch (error) {
-            Container(
-              child: Text(
-                'No results found',
-                style: TextStyle(fontSize: 50),
-              ),
-            );
-          }
-        }
-        break;
       default:
         {
           print("Invalid choice");
@@ -252,7 +254,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   }
 
   bool showToys() {
-    if (_category == 'Toys') {
+    if (_category == 'Food & Grocery') {
       return true;
     } else {
       return false;
@@ -347,7 +349,7 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
           list.add(
             CheckedPopupMenuItem(
               child: Text(
-                "Toys",
+                "Food & Grocery",
                 style: TextStyle(color: Colors.black),
               ),
               value: 7,
@@ -374,13 +376,14 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
             setState(() {
               _category = 'default';
             });
+            _refreshProducts(context);
           }
           if (value == 2) {
             setState(() {
               _category = 'Electronics';
-              //    _isLoading = true;
+              _isLoading = true;
               _refreshProducts(context);
-              //  _isLoading = false;
+              _isLoading = false;
 
               print(_category);
             });
@@ -388,9 +391,9 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
           if (value == 3) {
             setState(() {
               _category = 'Vehicles';
-              //    _isLoading = true;
+              _isLoading = true;
               _refreshProducts(context);
-              //  _isLoading = false;
+              _isLoading = false;
 
               print(_category);
             });
@@ -398,9 +401,9 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
           if (value == 4) {
             setState(() {
               _category = 'Home & Tools';
-              //    _isLoading = true;
+              _isLoading = true;
               _refreshProducts(context);
-              //  _isLoading = false;
+              _isLoading = false;
 
               print(_category);
             });
@@ -408,9 +411,9 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
           if (value == 5) {
             setState(() {
               _category = 'Jobs & Services';
-              //    _isLoading = true;
+              _isLoading = true;
               _refreshProducts(context);
-              //  _isLoading = false;
+              _isLoading = false;
 
               print(_category);
             });
@@ -418,19 +421,19 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
           if (value == 6) {
             setState(() {
               _category = 'Clothes';
-              //    _isLoading = true;
+              _isLoading = true;
               _refreshProducts(context);
-              //  _isLoading = false;
+              _isLoading = false;
 
               print(_category);
             });
           }
           if (value == 7) {
             setState(() {
-              _category = 'Toys';
-              //    _isLoading = true;
+              _category = 'Food & Grocery';
+              _isLoading = true;
               _refreshProducts(context);
-              //  _isLoading = false;
+              _isLoading = false;
 
               print(_category);
             });
@@ -438,9 +441,9 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
           if (value == 8) {
             setState(() {
               _category = 'Community Gatherings';
-              //    _isLoading = true;
+              _isLoading = true;
               _refreshProducts(context);
-              //  _isLoading = false;
+              _isLoading = false;
 
               print(_category);
             });
@@ -455,108 +458,113 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => false,
-      // final loadedSweepstakeData = Provider.of<GreatPlaces>(context);
-      // final loadedSweepstake = loadedSweepstakeData.items;
-      // final userProvider = Provider.of<Auth>(context);
+        onWillPop: () async => false,
+        // final loadedSweepstakeData = Provider.of<GreatPlaces>(context);
+        // final loadedSweepstake = loadedSweepstakeData.items;
+        // final userProvider = Provider.of<Auth>(context);
 
-      child: Scaffold(
-        drawer: AppDrawer(),
-        appBar: AppBar(
-          actions: <Widget>[
-            _threeItemPopup(),
-            // PopupMenuButton(
-            //   icon: Icon(Icons.filter_list),
-            //   itemBuilder: (_) => [
-            //     PopupMenuItem(
-            //       child: FlatButton(
-            //           child: Text("Show All"),
-            //           onPressed: () {
-            //             setState(() {
-            //               _category = 'default';
-            //             });
-            //           }),
-            //     ),
-            //     PopupMenuItem(
-            //       child: FlatButton(
-            //           child: Text("Show Hose"),
-            //           onPressed: () {
-            //             setState(() {
-            //               _category = 'Hose';
-            //               //    _isLoading = true;
-            //               _refreshProducts(context);
-            //               //  _isLoading = false;
+        child: Scaffold(
+            drawer: AppDrawer(),
+            appBar: AppBar(
+              actions: <Widget>[
+                _threeItemPopup(),
+                // PopupMenuButton(
+                //   icon: Icon(Icons.filter_list),
+                //   itemBuilder: (_) => [
+                //     PopupMenuItem(
+                //       child: FlatButton(
+                //           child: Text("Show All"),
+                //           onPressed: () {
+                //             setState(() {
+                //               _category = 'default';
+                //             });
+                //           }),
+                //     ),
+                //     PopupMenuItem(
+                //       child: FlatButton(
+                //           child: Text("Show Hose"),
+                //           onPressed: () {
+                //             setState(() {
+                //               _category = 'Hose';
+                //               //    _isLoading = true;
+                //               _refreshProducts(context);
+                //               //  _isLoading = false;
 
-            //               print(_category);
-            //             });
-            //           }),
-            //     ),
-            //   ],
+                //               print(_category);
+                //             });
+                //           }),
+                //     ),
+                //   ],
+                // ),
+              ],
+              title: Text(
+                'Near you',
+                style: TextStyle(
+                    color: Theme.of(context).accentColor, fontFamily: 'Lato'),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+            // floatingActionButton: FloatingActionButton(
+            //   tooltip: 'Add A Posting',
+            //   backgroundColor: Theme.of(context).primaryColor,
+            //   onPressed: () async {
+            //     var order = await productCount.getCount();
+            //     if (order > 4) {
+            //       Flushbar(
+            //         title: "Ohhh Shucks...",
+            //         message:
+            //             "You can only have 5 active postings, please delete inactive or dated posts ",
+            //         duration: Duration(seconds: 5),
+            //       )..show(context);
+            //     } else {
+            //       Navigator.of(context).pushNamed(AddPlaceScreen.routeName);
+            //     }
+            //   },
+            //   child: Icon(
+            //     FontAwesomeIcons.plus,
+            //     size: 30,
+            //     color: Theme.of(context).accentColor,
+            //   ),
             // ),
-          ],
-          title: Text(
-            'Near you',
-            style: TextStyle(
-                color: Theme.of(context).accentColor, fontFamily: 'Lato'),
-            textAlign: TextAlign.center,
-          ),
-        ),
-        // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        // floatingActionButton: FloatingActionButton(
-        //   tooltip: 'Add A Posting',
-        //   backgroundColor: Theme.of(context).primaryColor,
-        //   onPressed: () async {
-        //     var order = await productCount.getCount();
-        //     if (order > 4) {
-        //       Flushbar(
-        //         title: "Ohhh Shucks...",
-        //         message:
-        //             "You can only have 5 active postings, please delete inactive or dated posts ",
-        //         duration: Duration(seconds: 5),
-        //       )..show(context);
-        //     } else {
-        //       Navigator.of(context).pushNamed(AddPlaceScreen.routeName);
-        //     }
-        //   },
-        //   child: Icon(
-        //     FontAwesomeIcons.plus,
-        //     size: 30,
-        //     color: Theme.of(context).accentColor,
-        //   ),
-        // ),
-        // bottomNavigationBar: BottomBar(),
-        body: _isLoading
-            ? Center(
-                child: CircularProgressIndicator(
-                  backgroundColor: Theme.of(context).primaryColor,
-                ),
-              )
-            : FutureBuilder(
-                future: _refreshProducts(context),
-                builder: (ctx, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                      return Center(
-                        child: CircularProgressIndicator(
-                          backgroundColor: Theme.of(context).primaryColor,
-                          strokeWidth: 6,
-                        ),
-                      );
-                    case ConnectionState.active:
-                      return Center(
-                        child: CircularProgressIndicator(
-                          backgroundColor: Theme.of(context).primaryColor,
-                          strokeWidth: 6,
-                        ),
-                      );
-                    case ConnectionState.waiting:
-                      return Center(
-                        child: CircularProgressIndicator(
-                          backgroundColor: Theme.of(context).primaryColor,
-                          strokeWidth: 6,
-                        ),
-                      );
-                    case ConnectionState.done:
+            // bottomNavigationBar: BottomBar(),
+            body: _isLoading
+                ? Center(
+                    child: CircularProgressIndicator(
+                      backgroundColor: Theme.of(context).primaryColor,
+                    ),
+                  )
+                : FutureBuilder(
+                    future: _refreshProducts(context),
+                    builder: (BuildContext ctx, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState == ConnectionState.active &&
+                          snapshot.hasData) {
+                        //print('project snapshot data is: ${projectSnap.data}');
+                        return Container();
+                      }
+                      // switch (snapshot.connectionState) {
+                      //   case ConnectionState.none:
+                      //     return Center(
+                      //       child: CircularProgressIndicator(
+                      //         backgroundColor: Theme.of(context).primaryColor,
+                      //         strokeWidth: 6,
+                      //       ),
+                      //     );
+                      //   case ConnectionState.active:
+                      //     return Center(
+                      //       child: CircularProgressIndicator(
+                      //         backgroundColor: Theme.of(context).primaryColor,
+                      //         strokeWidth: 6,
+                      //       ),
+                      //     );
+                      //   case ConnectionState.waiting:
+                      //     return Center(
+                      //       child: CircularProgressIndicator(
+                      //         backgroundColor: Theme.of(context).primaryColor,
+                      //         strokeWidth: 6,
+                      //       ),
+                      //     );
+                      //   case ConnectionState.done:
                       // if (snapshot.hasError) {
                       //   return Center(
                       //     child: CircularProgressIndicator(
@@ -564,7 +572,11 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                       //       strokeWidth: 6,
                       //     ),
                       //   );
-                      // } else {
+                      // // } else {
+                      // if (!snapshot.hasData || snapshot.data == null) {
+                      //   return Text('Loading');
+                      // }
+
                       return LazyLoadScrollView(
                         onEndOfPage: () => _loadMore(),
                         child: RefreshIndicator(
@@ -575,48 +587,45 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
                             builder: (ctx, greatPlaces, _) => Padding(
                               padding: const EdgeInsets.only(
                                   top: 2, bottom: 2, left: 2, right: 2),
-                              child: GridView.builder(
-                                // padding: const EdgeInsets.all(8),
-                                //padding: const EdgeInsets.all(10.0),
-                                itemCount: greatPlaces.items.length,
-                                itemBuilder: (ctx, i) =>
-                                    ChangeNotifierProvider.value(
-                                  // builder: (c) => products[i],
-                                  value: greatPlaces.items[i],
-                                  child: OverviewPosting(
-                                    id: greatPlaces.items[i].id,
-                                    title: greatPlaces.items[i].title,
-                                    image: greatPlaces.items[i].image,
-                                    address:
-                                        greatPlaces.items[i].location.address,
-                                  ),
-                                ),
-                                scrollDirection: Axis.vertical,
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 1,
-                                  mainAxisSpacing: 8,
-                                  crossAxisSpacing: 8,
-                                  //childAspectRatio: 1,
-                                  childAspectRatio:
-                                      MediaQuery.of(context).size.width /
-                                          (MediaQuery.of(context).size.height *
-                                              .50),
-                                ),
-                              ),
+                              child: greatPlaces.items.length == 0
+                                  ? emptyGrid()
+                                  : GridView.builder(
+                                      // padding: const EdgeInsets.all(8),
+                                      //padding: const EdgeInsets.all(10.0),
+                                      itemCount: greatPlaces.items.length,
+                                      itemBuilder: (ctx, i) =>
+                                          ChangeNotifierProvider.value(
+                                        // builder: (c) => products[i],
+                                        value: greatPlaces.items[i],
+                                        child: OverviewPosting(
+                                          id: greatPlaces.items[i].id,
+                                          title: greatPlaces.items[i].title,
+                                          image: greatPlaces.items[i].image,
+                                          address: greatPlaces
+                                              .items[i].location.address,
+                                        ),
+                                      ),
+                                      scrollDirection: Axis.vertical,
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 1,
+                                        mainAxisSpacing: 8,
+                                        crossAxisSpacing: 8,
+                                        //childAspectRatio: 1,
+                                        childAspectRatio:
+                                            MediaQuery.of(context).size.width /
+                                                (MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    .50),
+                                      ),
+                                    ),
                             ),
                             // ),
                           ),
                         ),
                       );
-                    //   );
-                  }
-                }
-                //      },
-                ),
-        // ),
-      ),
-    );
+                    })));
   }
 
   Future<Position> locateUser() async {
@@ -654,5 +663,41 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
         entry['types'].contains('administrative_area_level_1'))['long_name'];
     print(address);
     return address;
+  }
+
+  Future<void> _showDialog1(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('No Results found for this Category near you'),
+          content: const Text(
+              'You can add a wanted posting for the search criteria so others are aware you are looking for these items. You can also filter by a different category.'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SweepstakesOverview(),
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Container emptyGrid() {
+    return Container(
+      child: Center(
+        child: Column(
+          children: <Widget>[Text("No Data Found")],
+        ),
+      ),
+    );
   }
 }
