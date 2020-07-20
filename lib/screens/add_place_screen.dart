@@ -209,6 +209,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                             border: Border.all(color: Colors.blueAccent)),
                       ), // this is the magic
                       items: <String>[
+                        'Wanted',
                         'Electronics',
                         'Vehicles',
                         'Home & Tools',

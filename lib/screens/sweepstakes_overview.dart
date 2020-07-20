@@ -10,6 +10,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:halalbazaar/screens/sweepstake_management.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -132,6 +133,15 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
           await getUserLocation().then((value) async {
             await Provider.of<GreatPlaces>(context, listen: false)
                 .fetchResultsByStateAndCommunitygatherings(value);
+          });
+
+          break;
+        }
+      case "Wanted":
+        {
+          await getUserLocation().then((value) async {
+            await Provider.of<GreatPlaces>(context, listen: false)
+                .fetchResultsByStateAndWanted(value);
           });
 
           break;
@@ -269,6 +279,14 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
     }
   }
 
+  bool showWanted() {
+    if (_category == 'Wanted') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Widget _threeItemPopup() => PopupMenuButton(
         itemBuilder: (context) {
           var list = List<PopupMenuEntry<Object>>();
@@ -368,6 +386,17 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
               //checked: false,
             ),
           );
+          list.add(
+            CheckedPopupMenuItem(
+              child: Text(
+                "Wanted",
+                style: TextStyle(color: Colors.black),
+              ),
+              value: 9,
+              checked: showWanted(),
+              //checked: false,
+            ),
+          );
           return list;
         },
         //initialValue: 1,
@@ -441,6 +470,16 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
           if (value == 8) {
             setState(() {
               _category = 'Community Gatherings';
+              _isLoading = true;
+              _refreshProducts(context);
+              _isLoading = false;
+
+              print(_category);
+            });
+          }
+          if (value == 9) {
+            setState(() {
+              _category = 'Wanted';
               _isLoading = true;
               _refreshProducts(context);
               _isLoading = false;
@@ -705,10 +744,65 @@ class _SweepstakesOverviewState extends State<SweepstakesOverview> {
   }
 
   Container emptyGrid() {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Container(
       child: Center(
         child: Column(
-          children: <Widget>[Text("No Data Found")],
+          children: <Widget>[
+            Text(
+              "No results found near you. You can add a wanted posting by navigating to your 'Manage Postings' and clicking the + button on the bottom right,",
+              style: TextStyle(fontSize: 24),
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Container(
+                  width: width * .4,
+                  child: ButtonTheme(
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30.0)),
+                    buttonColor: Theme.of(context).primaryColor,
+                    height: height * .05,
+                    child: RaisedButton(
+                        child: Text(
+                          'View All Postings',
+                          style: TextStyle(
+                              color: Theme.of(context).secondaryHeaderColor),
+                          textAlign: TextAlign.center,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pushReplacementNamed(
+                              SweepstakesOverview.routeName);
+                        }),
+                  ),
+                ),
+                Container(
+                  width: width * .4,
+                  child: ButtonTheme(
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30.0)),
+                    buttonColor: Theme.of(context).primaryColor,
+                    height: height * .05,
+                    child: RaisedButton(
+                        child: Text(
+                          'Go to Manage Postings',
+                          style: TextStyle(
+                              color: Theme.of(context).secondaryHeaderColor),
+                          textAlign: TextAlign.center,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pushReplacementNamed(
+                              SweepstakeManagement.routeName);
+                        }),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

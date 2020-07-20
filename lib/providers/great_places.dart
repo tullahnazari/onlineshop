@@ -515,6 +515,59 @@ class GreatPlaces with ChangeNotifier {
     }
   }
 
+  Future<void> fetchResultsByStateAndWanted(String state) async {
+    //final filterString = 'orderBy="address"&equalTo="$state"';
+    final url =
+        'https://bazaar-45301.firebaseio.com/postings.json?auth=$authToken&orderBy="state"&equalTo="$state"';
+    try {
+      final response = await http.get(url);
+
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      if (extractedData == null) {
+        return;
+      }
+
+      //if (user.fetchBlockedUsers(id))
+
+      final List<Place> loadedProducts = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(
+          Place(
+            id: prodId,
+            dateTime: prodData['dateTime'],
+            title: prodData['title'],
+            image: prodData['image'],
+            location: PlaceLocation(
+              latitude: prodData['loc_lat'],
+              longitude: prodData['loc_lng'],
+              address: prodData['address'],
+            ),
+            description: prodData['description'],
+            email: prodData['email'],
+            phone: prodData['phone'],
+            price: prodData['price'],
+            address: prodData['address'],
+            creatorId: prodData['creatorId'],
+            category: prodData['category'],
+          ),
+        );
+      });
+      _items = loadedProducts;
+      // loadedProducts
+      //     .where((posting) => posting.creatorId != getBlockedUsers(userId));
+      //var creatorId = place.creatorId;
+      loadedProducts.removeWhere(
+          (loadedProducts) => loadedProducts.description == 'false');
+      loadedProducts
+          .removeWhere((loadedProducts) => loadedProducts.category != 'Wanted');
+      loadedProducts.sort((a, b) => b.dateTime.compareTo(a.dateTime));
+
+      notifyListeners();
+    } catch (error) {
+      throw (error);
+    }
+  }
+
   //get length
   Future<int> getCount() async {
     final url =
