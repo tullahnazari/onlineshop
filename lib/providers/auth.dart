@@ -15,6 +15,8 @@ class Auth with ChangeNotifier {
   DateTime _expiryDate;
   String _userId;
   Timer _authTimer;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
 
   bool get isAuth {
     return token != null;
@@ -31,6 +33,78 @@ class Auth with ChangeNotifier {
 
   String get userId {
     return _userId;
+  }
+
+  Future<void> signInWithGoogle() async {
+    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+
+    final AuthResult authResult = await _auth.signInWithCredential(credential);
+    final FirebaseUser user = authResult.user;
+
+    // assert(!user.isAnonymous);
+    // assert(await user.getIdToken() != null);
+
+    final FirebaseUser currentUser = await _auth.currentUser();
+    assert(user.uid == currentUser.uid);
+
+    var currentUserIDToken = googleSignInAuthentication.idToken;
+    var providerId = googleSignInAccount.id;
+    //var requestUri = currentUser.
+
+    final url =
+        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithIdp?key=AIzaSyCmLH-IxHIPUR0XsPJ5U_R_bE1MbTOwH0I';
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(
+          {
+            'postBody': "id_token=$currentUserIDToken&providerId=google.com",
+            'returnIdpCredential': true,
+            'returnSecureToken': true,
+            'requestUri': 'http://localhost'
+          },
+        ),
+      );
+      final responseData = json.decode(response.body);
+      if (responseData['error'] != null) {
+        throw HttpException(responseData['error']['message']);
+      }
+      _token = responseData['idToken'];
+      _userId = responseData['localId'];
+      _expiryDate = DateTime.now().add(
+        Duration(
+          seconds: int.parse(
+            responseData['expiresIn'],
+          ),
+        ),
+      );
+      _autoLogout();
+      notifyListeners();
+      final prefs = await SharedPreferences.getInstance();
+      final userData = json.encode(
+        {
+          'token': _token,
+          'userId': _userId,
+          'expiryDate': _expiryDate.toIso8601String(),
+        },
+      );
+      prefs.setString('userData', userData);
+      final refreshTokenData = json.encode(
+        {
+          'refreshToken': responseData['refreshToken'],
+        },
+      );
+      prefs.setString('refreshTokenData', refreshTokenData);
+    } catch (error) {
+      throw error;
+    }
   }
 
   Future<void> _authenticate(
