@@ -4,8 +4,10 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:halalbazaar/screens/eula.dart';
+import 'package:halalbazaar/screens/sweepstakes_overview.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:halalbazaar/helper/location_helper.dart';
@@ -128,6 +130,12 @@ class AuthScreen extends StatelessWidget {
             // ),
 
             AuthCard(),
+            GoogleSignInButton(
+              onPressed: () {
+                Provider.of<Auth>(context, listen: false).signInWithGoogle();
+              },
+              darkMode: true, // default: false
+            ),
             // SizedBox(
             //   height: 10,
             // ),
